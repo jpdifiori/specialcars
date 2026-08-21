@@ -1,9 +1,26 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { createClient } from '@supabase/supabase-js';
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://wxsvznvmeuylzbkxgcde.supabase.co';
-const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'juanpablo.difiori@gmail.com';
-const ADMIN_PASSWORD = process.env.ADMIN_INITIAL_PASSWORD || 'SpecialCars2026!';
+// Cargar .env.local
+const envPath = path.resolve(process.cwd(), '.env.local');
+const envContent = fs.readFileSync(envPath, 'utf8');
+const envVars: Record<string, string> = {};
+
+envContent.split('\n').forEach(line => {
+    const match = line.match(/^\s*([\w_]+)\s*=\s*(.*)?\s*$/);
+    if (match) {
+        let val = match[2] || '';
+        if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
+        if (val.startsWith("'") && val.endsWith("'")) val = val.slice(1, -1);
+        envVars[match[1]] = val;
+    }
+});
+
+const SUPABASE_URL = envVars.NEXT_PUBLIC_SUPABASE_URL || 'https://wxsvznvmeuylzbkxgcde.supabase.co';
+const SERVICE_ROLE_KEY = envVars.SUPABASE_SERVICE_ROLE_KEY || '';
+const ADMIN_EMAIL = envVars.ADMIN_EMAIL || 'juanpablo.difiori@gmail.com';
+const ADMIN_PASSWORD = envVars.ADMIN_INITIAL_PASSWORD || 'SpecialCars2026!';
 
 async function setupSupabase() {
     console.log('🚀 Conectando a Supabase:', SUPABASE_URL);
@@ -48,14 +65,18 @@ async function setupSupabase() {
         // 2. Registrar en tabla admins si existe
         if (adminId) {
             try {
-                await supabase.from('admins').upsert({
+                const { error: adminErr } = await supabase.from('admins').upsert({
                     id: adminId,
                     email: ADMIN_EMAIL,
                     full_name: 'Juan Pablo Di Fiori (Admin)'
                 });
-                console.log('✅ Registro en tabla admins verificado');
+                if (adminErr) {
+                    console.log('⚠️ Aviso en tabla admins:', adminErr.message);
+                } else {
+                    console.log('✅ Registro en tabla admins verificado exitosamente');
+                }
             } catch (err) {
-                console.log('ℹ️ Tabla admins aún no creada (se registrará tras aplicar el schema SQL)');
+                console.log('ℹ️ Error registrando admin:', err);
             }
         }
     }
