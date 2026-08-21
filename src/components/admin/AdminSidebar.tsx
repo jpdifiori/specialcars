@@ -32,10 +32,14 @@ const NAV_ITEMS = [
 export function AdminSidebar() {
     const pathname = usePathname();
     const router = useRouter();
-    const supabase = createClient();
 
     const handleLogout = async () => {
-        await supabase.auth.signOut();
+        try {
+            const supabase = createClient();
+            await supabase.auth.signOut();
+        } catch (err) {
+            console.error('Error logging out:', err);
+        }
         router.push('/login');
         router.refresh();
     };
