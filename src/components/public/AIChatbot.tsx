@@ -13,7 +13,8 @@ import {
     ExternalLink,
     Car,
     MapPin,
-    ArrowRight
+    ArrowRight,
+    MessageCircle
 } from 'lucide-react';
 import Link from 'next/link';
 import { sendMessageToAssistant } from '@/lib/actions/chat';
@@ -27,10 +28,26 @@ interface Message {
 
 const QUICK_QUESTIONS = [
     { label: '🚗 Autos disponibles', text: '¿Qué autos tienen disponibles en stock hoy?' },
+    { label: '💰 Financiación y Permutas', text: '¿Qué opciones de financiación y toma de permuta tienen?' },
     { label: '📍 Ubicación y Horarios', text: '¿Dónde están ubicados y qué horarios de atención tienen?' },
-    { label: '🔄 Entrega de permutas', text: '¿Cómo funciona la toma de un auto usado en permuta?' },
-    { label: '💬 Hablar por WhatsApp', text: 'Quiero el link directo para contactar a un asesor por WhatsApp' }
+    { label: '💬 Contactar a un vendedor', text: 'Quiero contactar a un vendedor por WhatsApp para más información' }
 ];
+
+function isWhatsAppDerivation(text: string): boolean {
+    const lower = text.toLowerCase();
+    return (
+        lower.includes('wa.me') ||
+        lower.includes('whatsapp') ||
+        lower.includes('financiaci') ||
+        lower.includes('permuta') ||
+        lower.includes('forma de pago') ||
+        lower.includes('vendedor') ||
+        lower.includes('asesor') ||
+        lower.includes('cotiz') ||
+        lower.includes('seña') ||
+        lower.includes('reservar')
+    );
+}
 
 export function AIChatbot({ 
     whatsappNumber = '5492262574254',
@@ -429,6 +446,38 @@ export function AIChatbot({
                                     }}>
                                         {isUser ? m.content : renderFormattedContent(m.content)}
                                     </div>
+
+                                    {/* Botón WhatsApp destacado para derivaciones comerciales */}
+                                    {!isUser && isWhatsAppDerivation(m.content) && (
+                                        <a
+                                            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola, estoy en su sitio web y necesito mas información')}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            style={{
+                                                marginTop: 8,
+                                                maxWidth: '85%',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                gap: 8,
+                                                backgroundColor: '#25D366',
+                                                color: '#FFFFFF',
+                                                padding: '10px 16px',
+                                                borderRadius: 12,
+                                                fontSize: 13,
+                                                fontWeight: 700,
+                                                boxShadow: '0 4px 14px rgba(37, 211, 102, 0.35)',
+                                                textDecoration: 'none',
+                                                transition: 'all 0.2s ease-in-out'
+                                            }}
+                                            onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.backgroundColor = '#22C55E'; }}
+                                            onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.backgroundColor = '#25D366'; }}
+                                        >
+                                            <MessageCircle size={18} />
+                                            <span>Enviar mensaje al vendedor</span>
+                                        </a>
+                                    )}
+
                                     <span style={{ fontSize: 10, color: '#94A3B8', marginTop: 3, padding: '0 4px' }}>
                                         {m.timestamp}
                                     </span>
