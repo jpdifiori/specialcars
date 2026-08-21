@@ -1,7 +1,6 @@
 import '@/styles/public.css';
 import { PublicNavbar } from '@/components/public/PublicNavbar';
 import { PublicFooter } from '@/components/public/PublicFooter';
-import { FloatingWhatsApp } from '@/components/public/FloatingWhatsApp';
 import { AIChatbot } from '@/components/public/AIChatbot';
 import { getAgencySettings } from '@/lib/actions/settings';
 
@@ -24,7 +23,6 @@ export default async function PublicLayout({
             </main>
 
             <PublicFooter settings={settings} />
-            <FloatingWhatsApp whatsappNumber={settings.whatsapp} />
             <AIChatbot 
                 whatsappNumber={settings.whatsapp} 
                 agencyAddress={settings.address} 
