@@ -1205,7 +1205,7 @@ INSERT INTO agency_settings (
     name, description, address, city, province, phone, whatsapp, email, instagram, facebook, tiktok, business_hours, legal_info
 ) VALUES (
     'Special Cars',
-    'Concesionaria líder en vehículos premium, seminuevos seleccionados y 0 KM. Más de 15 años brindando transparencia, calidad y confianza en cada operación.',
+    'Concesionaria líder en vehículos premium, usados y 0 KM. Más de 15 años brindando transparencia, calidad y confianza en cada operación.',
     'Av. del Libertador 4500',
     'Palermo',
     'CABA',

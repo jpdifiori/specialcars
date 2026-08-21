@@ -22,7 +22,7 @@ export async function getAgencySettings(): Promise<AgencySettings> {
         return {
             id: 'default',
             name: 'Special Cars',
-            description: 'Agencia de automóviles seleccionados, seminuevos y 0 KM.',
+            description: 'Concesionaria líder en vehículos premium, usados y 0 KM. Más de 15 años brindando transparencia, calidad y confianza en cada operación.',
             address: 'Av. del Libertador 4500',
             city: 'Buenos Aires',
             province: 'CABA',

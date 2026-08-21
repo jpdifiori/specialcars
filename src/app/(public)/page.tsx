@@ -167,7 +167,7 @@ export default async function PublicHomePage() {
                             {settings.name || 'Special Cars'}
                         </h2>
                         <p style={{ fontSize: 15, color: '#334155', lineHeight: 1.7, marginBottom: 16 }}>
-                            {settings.description || 'Somos una agencia dedicada a brindar la mejor experiencia en la compra y venta de automóviles seleccionados, seminuevos y 0 KM en Argentina.'}
+                            {settings.description || 'Concesionaria líder en vehículos premium, usados y 0 KM. Más de 15 años brindando transparencia, calidad y confianza en cada operación.'}
                         </p>
                         <p style={{ fontSize: 14, color: '#64748B', lineHeight: 1.6, marginBottom: 24 }}>
                             Nuestro compromiso es la transparencia absoluta en cada operación: te mostramos el estado real del vehículo, verificamos la documentación legal y te brindamos asesoramiento personalizado.

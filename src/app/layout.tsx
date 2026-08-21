@@ -6,7 +6,7 @@ export const metadata: Metadata = {
         template: '%s | Special Cars',
         default: 'Special Cars | Concesionaria de Autos en Argentina'
     },
-    description: 'Sistema integral de gestión y catálogo de automóviles seleccionados, seminuevos y 0 KM.',
+    description: 'Sistema integral de gestión y catálogo de automóviles seleccionados, usados y 0 KM.',
     keywords: ['autos argentina', 'concesionaria', 'compra y venta de autos', 'permutas', 'special cars']
 };
 

@@ -15,7 +15,7 @@ export function PublicFooter({ settings }: { settings: AgencySettings }) {
                         <BrandLogo variant="dark" size="md" />
                     </div>
                     <p style={{ fontSize: 13.5, color: '#94A3B8', lineHeight: 1.6, marginBottom: 16 }}>
-                        {settings.description || 'Concesionaria líder en venta de automóviles seleccionados, seminuevos y 0 KM en Argentina.'}
+                        {settings.description || 'Concesionaria líder en vehículos premium, usados y 0 KM. Más de 15 años brindando transparencia, calidad y confianza en cada operación.'}
                     </p>
                     <div style={{ display: 'flex', gap: 12 }}>
                         {settings.instagram && (
