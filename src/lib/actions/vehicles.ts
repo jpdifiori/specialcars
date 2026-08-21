@@ -450,7 +450,7 @@ export async function deleteVehicle(id: string) {
  * Nunca expone datos financieros privados (costos, compra, gastos, margen).
  */
 export async function getPublicVehicles(params: VehicleFilterParams = {}) {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const {
         brand,
         body_type,
@@ -552,12 +552,13 @@ export async function getPublicVehicles(params: VehicleFilterParams = {}) {
 }
 
 /**
- * Obtiene la ficha pública de un vehículo por su slug.
+ * Obtiene la ficha pública de un vehículo por su slug o ID.
  */
-export async function getPublicVehicleBySlug(slug: string): Promise<PublicVehicleItem | null> {
-    const supabase = await createServerSupabaseClient();
+export async function getPublicVehicleBySlug(slugOrId: string): Promise<PublicVehicleItem | null> {
+    const supabase = createAdminClient();
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slugOrId);
 
-    const { data, error } = await supabase
+    let query = supabase
         .from('vehicles')
         .select(`
             id, stock_code, slug, commercial_title, brand, model, version, year,
@@ -566,10 +567,16 @@ export async function getPublicVehicleBySlug(slug: string): Promise<PublicVehicl
             meta_title, meta_description, created_at,
             images:vehicle_images(id, url, is_primary, sort_order)
         `)
-        .eq('slug', slug)
         .eq('published', true)
-        .eq('is_deleted', false)
-        .maybeSingle();
+        .eq('is_deleted', false);
+
+    if (isUuid) {
+        query = query.or(`slug.eq.${slugOrId},id.eq.${slugOrId}`);
+    } else {
+        query = query.eq('slug', slugOrId);
+    }
+
+    const { data, error } = await query.maybeSingle();
 
     if (error || !data) {
         return null;

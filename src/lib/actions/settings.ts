@@ -9,7 +9,7 @@ import { revalidatePath } from 'next/cache';
  * Obtiene la configuración de la agencia (datos de contacto, horarios, redes, legal).
  */
 export async function getAgencySettings(): Promise<AgencySettings> {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
 
     const { data, error } = await supabase
         .from('agency_settings')
