@@ -345,9 +345,9 @@ CREATE TABLE IF NOT EXISTS agency_settings (
     phone TEXT DEFAULT '+54 2262 57-4254',
     whatsapp TEXT DEFAULT '5492262574254',
     email TEXT DEFAULT 'contacto@specialcars.com.ar',
-    instagram TEXT DEFAULT 'https://instagram.com/specialcarsneceochea',
+    instagram TEXT DEFAULT 'https://www.instagram.com/specialcarsnecochea',
     facebook TEXT DEFAULT 'https://facebook.com/specialcars',
-    tiktok TEXT DEFAULT 'https://tiktok.com/@specialcars_neceochea',
+    tiktok TEXT DEFAULT 'https://www.tiktok.com/@specialcars_necochea',
     google_maps_url TEXT,
     business_hours TEXT DEFAULT 'Lunes a Viernes de 9:00 a 19:00 hs. Sábados de 10:00 a 14:00 hs.',
     legal_info TEXT,
@@ -1213,9 +1213,9 @@ INSERT INTO agency_settings (
     '+54 2262 57-4254',
     '5492262574254',
     'juanpablo.difiori@gmail.com',
-    'https://instagram.com/specialcarsneceochea',
+    'https://www.instagram.com/specialcarsnecochea',
     'https://facebook.com/specialcars',
-    'https://tiktok.com/@specialcars_neceochea',
+    'https://www.tiktok.com/@specialcars_necochea',
     'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 08:00 a 12:30 hs.',
     NULL
 ) ON CONFLICT DO NOTHING;
