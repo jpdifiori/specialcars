@@ -153,17 +153,17 @@ export default function AdminVehiclesPage() {
                         </select>
 
                         {/* Toggle Vista */}
-                        <div style={{ display: 'flex', backgroundColor: '#151b2a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, overflow: 'hidden' }}>
+                        <div style={{ display: 'flex', backgroundColor: '#F1F5F9', border: '1px solid #E2E8F0', borderRadius: 6, overflow: 'hidden' }}>
                             <button
                                 onClick={() => setViewMode('table')}
-                                style={{ padding: '8px 12px', background: viewMode === 'table' ? '#3b82f6' : 'transparent', color: '#fff' }}
+                                style={{ padding: '8px 12px', background: viewMode === 'table' ? '#EA580C' : 'transparent', color: viewMode === 'table' ? '#fff' : '#000' }}
                                 title="Vista Tabla"
                             >
                                 <List size={16} />
                             </button>
                             <button
                                 onClick={() => setViewMode('cards')}
-                                style={{ padding: '8px 12px', background: viewMode === 'cards' ? '#3b82f6' : 'transparent', color: '#fff' }}
+                                style={{ padding: '8px 12px', background: viewMode === 'cards' ? '#EA580C' : 'transparent', color: viewMode === 'cards' ? '#fff' : '#000' }}
                                 title="Vista Cards"
                             >
                                 <LayoutGrid size={16} />
@@ -297,18 +297,18 @@ export default function AdminVehiclesPage() {
                             const primaryImg = v.images?.find((img) => img.is_primary) || v.images?.[0];
                             return (
                                 <div key={v.id} style={{
-                                    backgroundColor: '#121826',
-                                    border: '1px solid rgba(255,255,255,0.08)',
+                                    backgroundColor: '#FFFFFF',
+                                    border: '1px solid #E2E8F0',
                                     borderRadius: 12,
                                     overflow: 'hidden',
                                     display: 'flex',
                                     flexDirection: 'column'
                                 }}>
-                                    <div style={{ position: 'relative', width: '100%', height: 160, backgroundColor: '#171f2e' }}>
+                                    <div style={{ position: 'relative', width: '100%', height: 160, backgroundColor: '#F1F5F9' }}>
                                         {primaryImg?.url ? (
                                             <img src={primaryImg.url} alt={v.brand} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                         ) : (
-                                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000000' }}>
+                                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#CBD5E1' }}>
                                                 <ImageIcon size={28} />
                                             </div>
                                         )}
@@ -318,19 +318,19 @@ export default function AdminVehiclesPage() {
                                         </div>
                                     </div>
                                     <div style={{ padding: 16, display: 'flex', flexDirection: 'column', flex: 1 }}>
-                                        <div style={{ fontSize: 11, color: '#60a5fa', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
+                                        <div style={{ fontSize: 11, color: '#EA580C', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
                                             {v.stock_code} {v.plate ? `• ${v.plate}` : ''}
                                         </div>
-                                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#fff', margin: '4px 0' }}>
+                                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', margin: '4px 0' }}>
                                             {v.brand} {v.model}
                                         </h3>
-                                        <div style={{ fontSize: 12, color: '#000000', marginBottom: 12 }}>
+                                        <div style={{ fontSize: 12, color: '#334155', marginBottom: 12 }}>
                                             {v.version || ''} • {v.year} • {v.mileage?.toLocaleString('es-AR')} km
                                         </div>
-                                        <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                                        <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 12, borderTop: '1px solid #E2E8F0' }}>
                                             <div>
-                                                <div style={{ fontSize: 11, color: '#000000' }}>Precio de Venta</div>
-                                                <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#34d399', fontSize: 16 }}>
+                                                <div style={{ fontSize: 11, color: '#334155', fontWeight: 600 }}>Precio de Venta</div>
+                                                <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#059669', fontSize: 16 }}>
                                                     {formatARS(v.sale_price)}
                                                 </div>
                                             </div>

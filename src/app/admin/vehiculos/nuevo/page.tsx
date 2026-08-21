@@ -181,7 +181,7 @@ export default function NewVehiclePage() {
                 {/* PASO 1: DATOS BÁSICOS */}
                 {currentStep === 1 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 20 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#000000', marginBottom: 20 }}>
                             Paso 1: Datos Básicos
                         </h2>
                         <div className="form-grid">
@@ -260,7 +260,7 @@ export default function NewVehiclePage() {
                 {/* PASO 2: INFORMACIÓN TÉCNICA */}
                 {currentStep === 2 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 20 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#000000', marginBottom: 20 }}>
                             Paso 2: Información Técnica
                         </h2>
                         <div className="form-grid">
@@ -372,7 +372,7 @@ export default function NewVehiclePage() {
                 {/* PASO 3: INFORMACIÓN COMERCIAL (ARS) */}
                 {currentStep === 3 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 8 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#000000', marginBottom: 8 }}>
                             Paso 3: Información Comercial (ARS)
                         </h2>
                         <p style={{ fontSize: 13, color: '#000000', marginBottom: 20 }}>
@@ -422,10 +422,10 @@ export default function NewVehiclePage() {
 
                         {/* Cálculo instantáneo de rentabilidad preliminar */}
                         <div style={{
-                            backgroundColor: '#151b2a',
+                            backgroundColor: '#F8FAFC',
                             borderRadius: 10,
                             padding: '18px 22px',
-                            border: '1px solid rgba(255,255,255,0.08)',
+                            border: '1px solid #E2E8F0',
                             marginTop: 16,
                             display: 'flex',
                             justifyContent: 'space-between',
@@ -435,13 +435,13 @@ export default function NewVehiclePage() {
                         }}>
                             <div>
                                 <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 700 }}>Ganancia Potencial</div>
-                                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: '#fbbf24' }}>
+                                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: '#EA580C' }}>
                                     {formatARS(formData.sale_price - formData.purchase_price)}
                                 </div>
                             </div>
                             <div>
                                 <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 700 }}>Margen Proyectado</div>
-                                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: '#34d399' }}>
+                                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: '#059669' }}>
                                     {formData.purchase_price > 0 ? `${(((formData.sale_price - formData.purchase_price) / formData.purchase_price) * 100).toFixed(1)} %` : '0 %'}
                                 </div>
                             </div>
@@ -452,7 +452,7 @@ export default function NewVehiclePage() {
                 {/* PASO 4: ORIGEN */}
                 {currentStep === 4 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 20 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#000000', marginBottom: 20 }}>
                             Paso 4: Origen y Trazabilidad
                         </h2>
                         <div className="form-grid">
@@ -490,7 +490,7 @@ export default function NewVehiclePage() {
                 {/* PASO 5: FOTOGRAFÍAS */}
                 {currentStep === 5 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 8 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#000000', marginBottom: 8 }}>
                             Paso 5: Fotografías del Vehículo
                         </h2>
                         <p style={{ fontSize: 13, color: '#000000', marginBottom: 20 }}>
@@ -498,17 +498,17 @@ export default function NewVehiclePage() {
                         </p>
 
                         <div style={{
-                            border: '2px dashed rgba(255, 255, 255, 0.15)',
+                            border: '2px dashed #CBD5E1',
                             borderRadius: 12,
                             padding: '40px 24px',
                             textAlign: 'center',
-                            backgroundColor: '#121826'
+                            backgroundColor: '#F8FAFC'
                         }}>
-                            <UploadCloud size={40} style={{ color: '#3b82f6', margin: '0 auto 12px' }} />
-                            <p style={{ fontSize: 15, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>
+                            <UploadCloud size={40} style={{ color: '#EA580C', margin: '0 auto 12px' }} />
+                            <p style={{ fontSize: 15, fontWeight: 600, color: '#000000', marginBottom: 4 }}>
                                 Subida de imágenes optimizada a Supabase Storage
                             </p>
-                            <p style={{ fontSize: 12.5, color: '#000000', maxWidth: 460, margin: '0 auto' }}>
+                            <p style={{ fontSize: 12.5, color: '#334155', maxWidth: 460, margin: '0 auto' }}>
                                 Arrastrá y soltá fotos aquí o seleccionalas desde tu computadora. Podrás definir la imagen de portada y reordenarlas con drag & drop.
                             </p>
                         </div>
@@ -518,7 +518,7 @@ export default function NewVehiclePage() {
                 {/* PASO 6: PUBLICACIÓN WEB */}
                 {currentStep === 6 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 20 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#000000', marginBottom: 20 }}>
                             Paso 6: Información para la Página Web
                         </h2>
                         <div className="form-grid" style={{ gridTemplateColumns: '1fr' }}>
@@ -563,7 +563,7 @@ export default function NewVehiclePage() {
                                         checked={formData.published}
                                         onChange={(e) => updateField('published', e.target.checked)}
                                     />
-                                    <span style={{ fontSize: 13.5, fontWeight: 600, color: '#f8fafc' }}>
+                                    <span style={{ fontSize: 13.5, fontWeight: 600, color: '#000000' }}>
                                         Publicar en el Catálogo Web
                                     </span>
                                 </label>
@@ -586,13 +586,13 @@ export default function NewVehiclePage() {
                 {/* PASO 7: VISTA PREVIA */}
                 {currentStep === 7 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 20 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#000000', marginBottom: 20 }}>
                             Paso 7: Vista Previa de la Ficha
                         </h2>
                         
                         <div style={{
-                            backgroundColor: '#0e121c',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            backgroundColor: '#F8FAFC',
+                            border: '1px solid #E2E8F0',
                             borderRadius: 14,
                             padding: 24
                         }}>
@@ -601,23 +601,23 @@ export default function NewVehiclePage() {
                                     <span className="badge badge-available" style={{ marginBottom: 6 }}>
                                         {formData.status}
                                     </span>
-                                    <h3 style={{ fontSize: 22, fontWeight: 800, color: '#fff' }}>
+                                    <h3 style={{ fontSize: 22, fontWeight: 800, color: '#000000' }}>
                                         {formData.commercial_title || autoTitle}
                                     </h3>
-                                    <p style={{ fontSize: 13, color: '#000000' }}>
+                                    <p style={{ fontSize: 13, color: '#334155' }}>
                                         Año {formData.year} • {formData.mileage?.toLocaleString('es-AR')} km • {formData.fuel_type} • Caja {formData.transmission}
                                     </p>
                                 </div>
                                 <div style={{ textAlign: 'right' }}>
-                                    <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase' }}>Precio Publicado</div>
-                                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: 24, fontWeight: 800, color: '#34d399' }}>
+                                    <div style={{ fontSize: 11, color: '#334155', textTransform: 'uppercase', fontWeight: 700 }}>Precio Publicado</div>
+                                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: 24, fontWeight: 800, color: '#059669' }}>
                                         {formatARS(formData.sale_price)}
                                     </div>
                                 </div>
                             </div>
 
                             {formData.description && (
-                                <p style={{ fontSize: 13.5, color: '#000000', lineHeight: 1.6, padding: '12px 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                                <p style={{ fontSize: 13.5, color: '#000000', lineHeight: 1.6, padding: '12px 0', borderTop: '1px solid #E2E8F0' }}>
                                     {formData.description}
                                 </p>
                             )}
@@ -629,7 +629,7 @@ export default function NewVehiclePage() {
                 {currentStep === 8 && (
                     <div style={{ textAlign: 'center', padding: '20px 0' }}>
                         <Check size={48} style={{ color: '#34d399', margin: '0 auto 16px' }} />
-                        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#f8fafc', marginBottom: 8 }}>
+                        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#000000', marginBottom: 8 }}>
                             ¡Vehículo Listo para Guardar!
                         </h2>
                         <p style={{ fontSize: 14, color: '#000000', maxWidth: 500, margin: '0 auto 32px' }}>

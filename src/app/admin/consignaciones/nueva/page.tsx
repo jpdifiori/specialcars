@@ -174,22 +174,22 @@ export default function NewConsignmentPage() {
 
                 {/* Cálculo de Comisión */}
                 <div style={{
-                    backgroundColor: '#151b2a',
+                    backgroundColor: '#F8FAFC',
                     borderRadius: 10,
                     padding: 20,
                     margin: '20px 0',
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    border: '1px solid rgba(255,255,255,0.08)'
+                    border: '1px solid #E2E8F0'
                 }}>
                     <div>
                         <div style={{ fontSize: 12, color: '#000000', textTransform: 'uppercase', fontWeight: 700 }}>Comisión Proyectada de la Agencia</div>
-                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 800, color: '#fbbf24' }}>
+                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 800, color: '#EA580C' }}>
                             {formatARS(estimatedCommission)}
                         </div>
                     </div>
-                    <div style={{ fontSize: 13, color: '#000000' }}>
+                    <div style={{ fontSize: 13, color: '#334155', fontWeight: 600 }}>
                         Precio Web - Precio Propietario
                     </div>
                 </div>
