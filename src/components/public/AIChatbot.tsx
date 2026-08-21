@@ -261,7 +261,11 @@ export function AIChatbot({
                         animation: 'fadeIn 0.3s ease-out'
                     }}
                 >
-                    <Sparkles size={16} style={{ color: '#EA580C', flexShrink: 0 }} />
+                    <img 
+                        src="/images/franco-avatar.jpg" 
+                        alt="Franco" 
+                        style={{ width: 28, height: 28, borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #EA580C', flexShrink: 0 }} 
+                    />
                     <span>¡Hola! Soy Franco. ¿En qué te puedo ayudar?</span>
                     <button 
                         onClick={(e) => { e.stopPropagation(); setShowBubbleTip(false); }} 
@@ -281,35 +285,48 @@ export function AIChatbot({
                     bottom: 24,
                     right: 24,
                     zIndex: 99,
-                    width: 60,
-                    height: 60,
+                    width: 62,
+                    height: 62,
                     borderRadius: '50%',
                     background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 60%, #EA580C 100%)',
                     color: '#FFFFFF',
-                    border: '2px solid rgba(234, 88, 12, 0.4)',
+                    border: '2.5px solid #EA580C',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     cursor: 'pointer',
                     boxShadow: '0 8px 30px rgba(15, 23, 42, 0.45)',
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    padding: 0,
+                    overflow: 'hidden'
                 }}
-                title={isOpen ? 'Cerrar Asistente' : 'Abrir Asistente Virtual Special Cars'}
+                title={isOpen ? 'Cerrar Asistente' : 'Hablar con Franco (Asesor Virtual)'}
             >
                 {isOpen ? (
-                    <ChevronDown size={28} />
+                    <ChevronDown size={30} style={{ color: '#FFFFFF' }} />
                 ) : (
-                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Bot size={28} style={{ color: '#FFFFFF' }} />
+                    <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <img 
+                            src="/images/franco-avatar.jpg" 
+                            alt="Franco Asesor" 
+                            style={{ 
+                                width: '100%', 
+                                height: '100%', 
+                                objectFit: 'cover', 
+                                borderRadius: '50%',
+                                display: 'block'
+                            }} 
+                        />
                         <span style={{
                             position: 'absolute',
-                            top: -4,
-                            right: -4,
-                            width: 10,
-                            height: 10,
+                            bottom: 2,
+                            right: 2,
+                            width: 12,
+                            height: 12,
                             borderRadius: '50%',
                             backgroundColor: '#22C55E',
-                            border: '2px solid #0F172A'
+                            border: '2px solid #0F172A',
+                            boxShadow: '0 0 6px #22C55E'
                         }} />
                     </div>
                 )}
@@ -346,16 +363,19 @@ export function AIChatbot({
                     }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                             <div style={{
-                                width: 40,
-                                height: 40,
+                                width: 44,
+                                height: 44,
                                 borderRadius: '50%',
-                                backgroundColor: 'rgba(234, 88, 12, 0.2)',
-                                border: '1.5px solid #EA580C',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
+                                border: '2px solid #EA580C',
+                                overflow: 'hidden',
+                                flexShrink: 0,
+                                position: 'relative'
                             }}>
-                                <Bot size={22} style={{ color: '#EA580C' }} />
+                                <img 
+                                    src="/images/franco-avatar.jpg" 
+                                    alt="Franco" 
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                                />
                             </div>
                             <div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -487,10 +507,14 @@ export function AIChatbot({
 
                         {/* Indicador de escritura animado */}
                         {isLoading && (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, alignSelf: 'flex-start', backgroundColor: '#FFFFFF', padding: '10px 16px', borderRadius: '18px 18px 18px 4px', border: '1px solid #E2E8F0' }}>
-                                <Bot size={14} style={{ color: '#EA580C' }} />
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, alignSelf: 'flex-start', backgroundColor: '#FFFFFF', padding: '10px 16px', borderRadius: '18px 18px 18px 4px', border: '1px solid #E2E8F0' }}>
+                                <img 
+                                    src="/images/franco-avatar.jpg" 
+                                    alt="Franco" 
+                                    style={{ width: 22, height: 22, borderRadius: '50%', objectFit: 'cover' }} 
+                                />
                                 <span style={{ fontSize: 12, color: '#64748B' }}>Franco está escribiendo...</span>
-                                <div style={{ display: 'flex', gap: 3, marginLeft: 4 }}>
+                                <div style={{ display: 'flex', gap: 3, marginLeft: 2 }}>
                                     <span className="dot-pulse" style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: '#EA580C' }} />
                                     <span className="dot-pulse" style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: '#EA580C', animationDelay: '0.2s' }} />
                                     <span className="dot-pulse" style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: '#EA580C', animationDelay: '0.4s' }} />
