@@ -6,7 +6,8 @@ import { Gauge, Fuel, Cog, Calendar, ArrowRight, Image as ImageIcon, MessageCirc
 export function VehicleCard({ vehicle }: { vehicle: PublicVehicleItem }) {
     const slugUrl = `/vehiculos/${vehicle.slug || vehicle.id}`;
     const wpNumber = '5492262574254';
-    const wpMsg = `Hola, necesito mas informacion sobre el vehículo ${vehicle.brand} ${vehicle.model} ${vehicle.version || ''} (${vehicle.year}). (Código: ${vehicle.stock_code})`;
+    const vehicleName = `${vehicle.brand} ${vehicle.model} ${vehicle.version || ''} (${vehicle.year})`.replace(/\s+/g, ' ').trim();
+    const wpMsg = `Hola, necesito mas información sobre el vehículo ${vehicleName}`;
     const wpUrl = `https://wa.me/${wpNumber}?text=${encodeURIComponent(wpMsg)}`;
 
     return (
