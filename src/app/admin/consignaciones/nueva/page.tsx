@@ -184,12 +184,12 @@ export default function NewConsignmentPage() {
                     border: '1px solid rgba(255,255,255,0.08)'
                 }}>
                     <div>
-                        <div style={{ fontSize: 12, color: '#64748b', textTransform: 'uppercase', fontWeight: 700 }}>Comisión Proyectada de la Agencia</div>
+                        <div style={{ fontSize: 12, color: '#000000', textTransform: 'uppercase', fontWeight: 700 }}>Comisión Proyectada de la Agencia</div>
                         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 800, color: '#fbbf24' }}>
                             {formatARS(estimatedCommission)}
                         </div>
                     </div>
-                    <div style={{ fontSize: 13, color: '#94a3b8' }}>
+                    <div style={{ fontSize: 13, color: '#000000' }}>
                         Precio Web - Precio Propietario
                     </div>
                 </div>

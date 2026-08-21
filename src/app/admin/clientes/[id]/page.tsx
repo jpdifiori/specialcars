@@ -54,7 +54,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                             <h1 className="admin-page-title" style={{ marginBottom: 2 }}>
                                 {client.first_name} {client.last_name}
                             </h1>
-                            <div style={{ fontSize: 13, color: '#94a3b8' }}>
+                            <div style={{ fontSize: 13, color: '#000000' }}>
                                 Cliente desde el {formatDate(client.created_at)} • {client.operations_count || 0} operaciones registradas
                             </div>
                         </div>
@@ -80,21 +80,21 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontSize: 13.5 }}>
                         {client.dni && (
                             <div>
-                                <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>DNI</div>
+                                <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 600 }}>DNI</div>
                                 <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#f8fafc' }}>{client.dni}</div>
                             </div>
                         )}
 
                         {client.cuit_cuil && (
                             <div>
-                                <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>CUIT / CUIL</div>
+                                <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 600 }}>CUIT / CUIL</div>
                                 <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#f8fafc' }}>{client.cuit_cuil}</div>
                             </div>
                         )}
 
                         {client.phone && (
                             <div>
-                                <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Teléfono / WhatsApp</div>
+                                <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 600 }}>Teléfono / WhatsApp</div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#34d399', fontWeight: 600 }}>
                                     <Phone size={14} />
                                     <span>{client.phone}</span>
@@ -104,15 +104,15 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
 
                         {client.email && (
                             <div>
-                                <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Email</div>
+                                <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 600 }}>Email</div>
                                 <div style={{ color: '#60a5fa' }}>{client.email}</div>
                             </div>
                         )}
 
                         {(client.address || client.city) && (
                             <div>
-                                <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Dirección</div>
-                                <div style={{ color: '#cbd5e1' }}>
+                                <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 600 }}>Dirección</div>
+                                <div style={{ color: '#000000' }}>
                                     {client.address ? `${client.address}, ` : ''} {client.city || ''} {client.province ? `(${client.province})` : ''}
                                 </div>
                             </div>
@@ -120,8 +120,8 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
 
                         {client.notes && (
                             <div style={{ marginTop: 8, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                                <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>Notas Internas</div>
-                                <div style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.5 }}>
+                                <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>Notas Internas</div>
+                                <div style={{ fontSize: 13, color: '#000000', lineHeight: 1.5 }}>
                                     {client.notes}
                                 </div>
                             </div>
@@ -135,13 +135,13 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                         <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc' }}>
                             Timeline 360° de Actividad
                         </h3>
-                        <span style={{ fontSize: 12, color: '#64748b' }}>
+                        <span style={{ fontSize: 12, color: '#000000' }}>
                             Historial completo de interacciones comerciales
                         </span>
                     </div>
 
                     {(!client.timeline || client.timeline.length === 0) ? (
-                        <div style={{ padding: 40, textAlign: 'center', color: '#64748b' }}>
+                        <div style={{ padding: 40, textAlign: 'center', color: '#000000' }}>
                             <Clock size={32} style={{ margin: '0 auto 8px', opacity: 0.5 }} />
                             <p style={{ fontSize: 14 }}>Aún no hay actividad registrada para este cliente.</p>
                         </div>

@@ -80,7 +80,7 @@ export default function AdminVehiclesPage() {
             case 'CONSIGNMENT':
                 return <span className="badge badge-consignment">Consignación</span>;
             default:
-                return <span className="badge" style={{ background: '#1e293b', color: '#cbd5e1' }}>Propio</span>;
+                return <span className="badge" style={{ background: '#1e293b', color: '#000000' }}>Propio</span>;
         }
     };
 
@@ -174,11 +174,11 @@ export default function AdminVehiclesPage() {
 
                 {/* Loading state */}
                 {loading ? (
-                    <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>
+                    <div style={{ padding: 40, textAlign: 'center', color: '#000000' }}>
                         Cargando inventario...
                     </div>
                 ) : vehicles.length === 0 ? (
-                    <div style={{ padding: 48, textAlign: 'center', color: '#64748b' }}>
+                    <div style={{ padding: 48, textAlign: 'center', color: '#000000' }}>
                         <Car size={36} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
                         <p style={{ fontSize: 16, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>No se encontraron vehículos</p>
                         <p style={{ fontSize: 13, marginBottom: 16 }}>No hay vehículos que coincidan con los filtros seleccionados.</p>
@@ -224,7 +224,7 @@ export default function AdminVehiclesPage() {
                                                     {primaryImg?.url ? (
                                                         <img src={primaryImg.url} alt={v.brand} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                     ) : (
-                                                        <ImageIcon size={14} style={{ color: '#64748b' }} />
+                                                        <ImageIcon size={14} style={{ color: '#000000' }} />
                                                     )}
                                                 </div>
                                                 <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#60a5fa', fontSize: 12 }}>
@@ -236,7 +236,7 @@ export default function AdminVehiclesPage() {
                                             <Link href={`/admin/vehiculos/${v.id}`} style={{ fontWeight: 600, color: '#f8fafc' }}>
                                                 {v.brand} {v.model} {v.version || ''}
                                             </Link>
-                                            <div style={{ fontSize: 12, color: '#64748b' }}>
+                                            <div style={{ fontSize: 12, color: '#000000' }}>
                                                 Año {v.year} • {v.mileage?.toLocaleString('es-AR')} km
                                             </div>
                                         </td>
@@ -252,7 +252,7 @@ export default function AdminVehiclesPage() {
                                         <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#34d399' }}>
                                             {formatARS(v.sale_price)}
                                         </td>
-                                        <td style={{ fontFamily: 'var(--font-mono)', color: '#94a3b8' }}>
+                                        <td style={{ fontFamily: 'var(--font-mono)', color: '#000000' }}>
                                             {formatARS(v.real_cost)}
                                         </td>
                                         <td>
@@ -262,7 +262,7 @@ export default function AdminVehiclesPage() {
                                                     <span>Online</span>
                                                 </span>
                                             ) : (
-                                                <span style={{ color: '#64748b', fontSize: 12 }}>Off</span>
+                                                <span style={{ color: '#000000', fontSize: 12 }}>Off</span>
                                             )}
                                         </td>
                                         <td style={{ textAlign: 'right' }}>
@@ -308,7 +308,7 @@ export default function AdminVehiclesPage() {
                                         {primaryImg?.url ? (
                                             <img src={primaryImg.url} alt={v.brand} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                         ) : (
-                                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
+                                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000000' }}>
                                                 <ImageIcon size={28} />
                                             </div>
                                         )}
@@ -324,12 +324,12 @@ export default function AdminVehiclesPage() {
                                         <h3 style={{ fontSize: 16, fontWeight: 700, color: '#fff', margin: '4px 0' }}>
                                             {v.brand} {v.model}
                                         </h3>
-                                        <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 12 }}>
+                                        <div style={{ fontSize: 12, color: '#000000', marginBottom: 12 }}>
                                             {v.version || ''} • {v.year} • {v.mileage?.toLocaleString('es-AR')} km
                                         </div>
                                         <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
                                             <div>
-                                                <div style={{ fontSize: 11, color: '#64748b' }}>Precio de Venta</div>
+                                                <div style={{ fontSize: 11, color: '#000000' }}>Precio de Venta</div>
                                                 <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#34d399', fontSize: 16 }}>
                                                     {formatARS(v.sale_price)}
                                                 </div>

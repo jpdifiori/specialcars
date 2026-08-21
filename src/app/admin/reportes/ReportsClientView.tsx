@@ -163,7 +163,7 @@ export function ReportsClientView({ reports }: { reports: any }) {
                             Evolución Mensual de Ventas
                         </h3>
                         {sales.salesByMonth.length === 0 ? (
-                            <p style={{ color: '#64748b', textAlign: 'center', padding: 24 }}>No hay registros de ventas mensuales aún.</p>
+                            <p style={{ color: '#000000', textAlign: 'center', padding: 24 }}>No hay registros de ventas mensuales aún.</p>
                         ) : (
                             <table className="admin-table">
                                 <thead>
@@ -220,7 +220,7 @@ export function ReportsClientView({ reports }: { reports: any }) {
                                 Top 5 Vehículos Más Rentables
                             </h3>
                             {profitability.topProfitable.length === 0 ? (
-                                <p style={{ color: '#64748b', fontSize: 13 }}>Sin ventas registradas.</p>
+                                <p style={{ color: '#000000', fontSize: 13 }}>Sin ventas registradas.</p>
                             ) : (
                                 <table className="admin-table">
                                     <thead>
@@ -257,7 +257,7 @@ export function ReportsClientView({ reports }: { reports: any }) {
                                 Rentabilidad por Marca
                             </h3>
                             {profitability.profitByBrand.length === 0 ? (
-                                <p style={{ color: '#64748b', fontSize: 13 }}>Sin datos aún.</p>
+                                <p style={{ color: '#000000', fontSize: 13 }}>Sin datos aún.</p>
                             ) : (
                                 <table className="admin-table">
                                     <thead>

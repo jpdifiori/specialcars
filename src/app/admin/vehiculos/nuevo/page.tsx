@@ -374,7 +374,7 @@ export default function NewVehiclePage() {
                         <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 8 }}>
                             Paso 3: Información Comercial (ARS)
                         </h2>
-                        <p style={{ fontSize: 13, color: '#94a3b8', marginBottom: 20 }}>
+                        <p style={{ fontSize: 13, color: '#000000', marginBottom: 20 }}>
                             Todos los importes se manejan exclusivamente en <strong>Pesos Argentinos ($ ARS)</strong>.
                         </p>
 
@@ -433,13 +433,13 @@ export default function NewVehiclePage() {
                             gap: 16
                         }}>
                             <div>
-                                <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 700 }}>Ganancia Potencial</div>
+                                <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 700 }}>Ganancia Potencial</div>
                                 <div style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: '#fbbf24' }}>
                                     {formatARS(formData.sale_price - formData.purchase_price)}
                                 </div>
                             </div>
                             <div>
-                                <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 700 }}>Margen Proyectado</div>
+                                <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 700 }}>Margen Proyectado</div>
                                 <div style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: '#34d399' }}>
                                     {formData.purchase_price > 0 ? `${(((formData.sale_price - formData.purchase_price) / formData.purchase_price) * 100).toFixed(1)} %` : '0 %'}
                                 </div>
@@ -492,7 +492,7 @@ export default function NewVehiclePage() {
                         <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 8 }}>
                             Paso 5: Fotografías del Vehículo
                         </h2>
-                        <p style={{ fontSize: 13, color: '#94a3b8', marginBottom: 20 }}>
+                        <p style={{ fontSize: 13, color: '#000000', marginBottom: 20 }}>
                             Podrás subir fotografías directamente aquí o cargarlas desde la ficha 360° una vez guardado el vehículo.
                         </p>
 
@@ -507,7 +507,7 @@ export default function NewVehiclePage() {
                             <p style={{ fontSize: 15, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>
                                 Subida de imágenes optimizada a Supabase Storage
                             </p>
-                            <p style={{ fontSize: 12.5, color: '#64748b', maxWidth: 460, margin: '0 auto' }}>
+                            <p style={{ fontSize: 12.5, color: '#000000', maxWidth: 460, margin: '0 auto' }}>
                                 Arrastrá y soltá fotos aquí o seleccionalas desde tu computadora. Podrás definir la imagen de portada y reordenarlas con drag & drop.
                             </p>
                         </div>
@@ -603,12 +603,12 @@ export default function NewVehiclePage() {
                                     <h3 style={{ fontSize: 22, fontWeight: 800, color: '#fff' }}>
                                         {formData.commercial_title || autoTitle}
                                     </h3>
-                                    <p style={{ fontSize: 13, color: '#94a3b8' }}>
+                                    <p style={{ fontSize: 13, color: '#000000' }}>
                                         Año {formData.year} • {formData.mileage?.toLocaleString('es-AR')} km • {formData.fuel_type} • Caja {formData.transmission}
                                     </p>
                                 </div>
                                 <div style={{ textAlign: 'right' }}>
-                                    <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase' }}>Precio Publicado</div>
+                                    <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase' }}>Precio Publicado</div>
                                     <div style={{ fontFamily: 'var(--font-mono)', fontSize: 24, fontWeight: 800, color: '#34d399' }}>
                                         {formatARS(formData.sale_price)}
                                     </div>
@@ -616,7 +616,7 @@ export default function NewVehiclePage() {
                             </div>
 
                             {formData.description && (
-                                <p style={{ fontSize: 13.5, color: '#cbd5e1', lineHeight: 1.6, padding: '12px 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                                <p style={{ fontSize: 13.5, color: '#000000', lineHeight: 1.6, padding: '12px 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
                                     {formData.description}
                                 </p>
                             )}
@@ -631,7 +631,7 @@ export default function NewVehiclePage() {
                         <h2 style={{ fontSize: 22, fontWeight: 800, color: '#f8fafc', marginBottom: 8 }}>
                             ¡Vehículo Listo para Guardar!
                         </h2>
-                        <p style={{ fontSize: 14, color: '#94a3b8', maxWidth: 500, margin: '0 auto 32px' }}>
+                        <p style={{ fontSize: 14, color: '#000000', maxWidth: 500, margin: '0 auto 32px' }}>
                             Elegí cómo querés guardar este registro. El vehículo se creará con trazabilidad permanente en el sistema.
                         </p>
 

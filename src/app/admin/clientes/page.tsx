@@ -76,11 +76,11 @@ export default function AdminClientsPage() {
                 </div>
 
                 {loading ? (
-                    <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>
+                    <div style={{ padding: 40, textAlign: 'center', color: '#000000' }}>
                         Cargando clientes...
                     </div>
                 ) : clients.length === 0 ? (
-                    <div style={{ padding: 48, textAlign: 'center', color: '#64748b' }}>
+                    <div style={{ padding: 48, textAlign: 'center', color: '#000000' }}>
                         <Users size={36} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
                         <p style={{ fontSize: 16, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>No se encontraron clientes</p>
                         <p style={{ fontSize: 13, marginBottom: 16 }}>Comenzá cargando los datos de un cliente para asociarlo a ventas o compras.</p>
@@ -126,7 +126,7 @@ export default function AdminClientsPage() {
                                                     {c.first_name} {c.last_name}
                                                 </Link>
                                                 {c.notes && (
-                                                    <div style={{ fontSize: 11, color: '#64748b', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                    <div style={{ fontSize: 11, color: '#000000', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                                         {c.notes}
                                                     </div>
                                                 )}
@@ -145,17 +145,17 @@ export default function AdminClientsPage() {
                                                 </span>
                                             )}
                                             {c.email && (
-                                                <span style={{ fontSize: 12, color: '#94a3b8', display: 'flex', alignItems: 'center', gap: 4 }}>
+                                                <span style={{ fontSize: 12, color: '#000000', display: 'flex', alignItems: 'center', gap: 4 }}>
                                                     <Mail size={12} />
                                                     <span>{c.email}</span>
                                                 </span>
                                             )}
                                         </div>
                                     </td>
-                                    <td style={{ color: '#94a3b8' }}>
+                                    <td style={{ color: '#000000' }}>
                                         {c.city || c.province ? `${c.city || ''} ${c.province ? `(${c.province})` : ''}` : '-'}
                                     </td>
-                                    <td style={{ color: '#64748b', fontSize: 12 }}>
+                                    <td style={{ color: '#000000', fontSize: 12 }}>
                                         {formatDate(c.created_at)}
                                     </td>
                                     <td style={{ textAlign: 'right' }}>

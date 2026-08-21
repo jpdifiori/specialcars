@@ -87,7 +87,7 @@ export default async function AdminDashboardPage() {
 
             {/* KPIs FINANCIEROS (ARS EXCLUSIVAMENTE) */}
             <div style={{ marginBottom: 12 }}>
-                <h2 style={{ fontSize: 14, fontWeight: 700, textTransform: 'uppercase', color: '#94a3b8', letterSpacing: 0.5, marginBottom: 12 }}>
+                <h2 style={{ fontSize: 14, fontWeight: 700, textTransform: 'uppercase', color: '#000000', letterSpacing: 0.5, marginBottom: 12 }}>
                     Finanzas & Valuación de Stock (ARS)
                 </h2>
                 <div className="stats-grid">
@@ -143,7 +143,7 @@ export default async function AdminDashboardPage() {
 
             {/* KPIs DE STOCK E INVENTARIO */}
             <div style={{ marginBottom: 28 }}>
-                <h2 style={{ fontSize: 14, fontWeight: 700, textTransform: 'uppercase', color: '#94a3b8', letterSpacing: 0.5, marginBottom: 12 }}>
+                <h2 style={{ fontSize: 14, fontWeight: 700, textTransform: 'uppercase', color: '#000000', letterSpacing: 0.5, marginBottom: 12 }}>
                     Estado del Inventario
                 </h2>
                 <div className="stats-grid">
@@ -174,7 +174,7 @@ export default async function AdminDashboardPage() {
                     </div>
                     <div className="stat-card">
                         <div className="stat-title">Vendidos Históricos</div>
-                        <div className="stat-value" style={{ color: '#94a3b8', marginTop: 8 }}>{stats.stock.sold}</div>
+                        <div className="stat-value" style={{ color: '#000000', marginTop: 8 }}>{stats.stock.sold}</div>
                         <div className="stat-sub">En base de datos</div>
                     </div>
                 </div>
@@ -192,7 +192,7 @@ export default async function AdminDashboardPage() {
                         </Link>
                     </div>
                     {recentOperations.length === 0 ? (
-                        <div style={{ padding: 32, textAlign: 'center', color: '#64748b' }}>
+                        <div style={{ padding: 32, textAlign: 'center', color: '#000000' }}>
                             Aún no se han registrado operaciones.
                         </div>
                     ) : (
@@ -244,7 +244,7 @@ export default async function AdminDashboardPage() {
                         </Link>
                     </div>
                     {recentClients.length === 0 ? (
-                        <div style={{ padding: 32, textAlign: 'center', color: '#64748b' }}>
+                        <div style={{ padding: 32, textAlign: 'center', color: '#000000' }}>
                             Aún no hay clientes registrados.
                         </div>
                     ) : (
@@ -264,10 +264,10 @@ export default async function AdminDashboardPage() {
                                                 {c.first_name} {c.last_name}
                                             </Link>
                                         </td>
-                                        <td style={{ color: '#94a3b8' }}>
+                                        <td style={{ color: '#000000' }}>
                                             {c.phone || c.email || '-'}
                                         </td>
-                                        <td style={{ color: '#64748b', fontSize: 12 }}>
+                                        <td style={{ color: '#000000', fontSize: 12 }}>
                                             {formatDate(c.created_at)}
                                         </td>
                                     </tr>

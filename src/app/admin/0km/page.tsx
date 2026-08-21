@@ -77,11 +77,11 @@ export default function AdminZeroKmPage() {
                 </div>
 
                 {loading ? (
-                    <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>
+                    <div style={{ padding: 40, textAlign: 'center', color: '#000000' }}>
                         Cargando operaciones 0 KM...
                     </div>
                 ) : operations.length === 0 ? (
-                    <div style={{ padding: 48, textAlign: 'center', color: '#64748b' }}>
+                    <div style={{ padding: 48, textAlign: 'center', color: '#000000' }}>
                         <Sparkles size={36} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
                         <p style={{ fontSize: 16, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>No hay operaciones 0 KM</p>
                         <p style={{ fontSize: 13, marginBottom: 16 }}>Registrá pedidos de unidades 0 KM a pedido de clientes.</p>
@@ -114,19 +114,19 @@ export default function AdminZeroKmPage() {
                                         <div style={{ fontWeight: 600, color: '#fff' }}>
                                             {op.brand} {op.model} {op.version || ''} ({op.year})
                                         </div>
-                                        {op.color && <div style={{ fontSize: 11, color: '#64748b' }}>Color: {op.color}</div>}
+                                        {op.color && <div style={{ fontSize: 11, color: '#000000' }}>Color: {op.color}</div>}
                                     </td>
                                     <td>
                                         {op.client ? (
-                                            <Link href={`/admin/clientes/${op.client.id}`} style={{ color: '#cbd5e1' }}>
+                                            <Link href={`/admin/clientes/${op.client.id}`} style={{ color: '#000000' }}>
                                                 {op.client.first_name} {op.client.last_name}
                                             </Link>
                                         ) : '-'}
                                     </td>
-                                    <td style={{ color: '#94a3b8' }}>
+                                    <td style={{ color: '#000000' }}>
                                         {op.provider || '-'}
                                     </td>
-                                    <td style={{ fontFamily: 'var(--font-mono)', color: '#94a3b8' }}>
+                                    <td style={{ fontFamily: 'var(--font-mono)', color: '#000000' }}>
                                         {formatARS(op.cost)}
                                     </td>
                                     <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#34d399' }}>

@@ -72,11 +72,11 @@ export default function AdminConsignmentsPage() {
                 </div>
 
                 {loading ? (
-                    <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>
+                    <div style={{ padding: 40, textAlign: 'center', color: '#000000' }}>
                         Cargando consignaciones...
                     </div>
                 ) : consignments.length === 0 ? (
-                    <div style={{ padding: 48, textAlign: 'center', color: '#64748b' }}>
+                    <div style={{ padding: 48, textAlign: 'center', color: '#000000' }}>
                         <FileSpreadsheet size={36} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
                         <p style={{ fontSize: 16, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>No hay consignaciones</p>
                         <p style={{ fontSize: 13, marginBottom: 16 }}>Registrá un vehículo que un cliente deja para la venta en tu agencia.</p>
@@ -114,12 +114,12 @@ export default function AdminConsignmentsPage() {
                                     </td>
                                     <td>
                                         {c.client ? (
-                                            <Link href={`/admin/clientes/${c.client.id}`} style={{ color: '#cbd5e1' }}>
+                                            <Link href={`/admin/clientes/${c.client.id}`} style={{ color: '#000000' }}>
                                                 {c.client.first_name} {c.client.last_name}
                                             </Link>
                                         ) : '-'}
                                     </td>
-                                    <td style={{ fontFamily: 'var(--font-mono)', color: '#94a3b8' }}>
+                                    <td style={{ fontFamily: 'var(--font-mono)', color: '#000000' }}>
                                         {formatARS(c.requested_price)}
                                     </td>
                                     <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#34d399' }}>
@@ -133,7 +133,7 @@ export default function AdminConsignmentsPage() {
                                             {c.status}
                                         </span>
                                     </td>
-                                    <td style={{ color: '#64748b', fontSize: 12 }}>
+                                    <td style={{ color: '#000000', fontSize: 12 }}>
                                         {formatDate(c.start_date)}
                                     </td>
                                 </tr>

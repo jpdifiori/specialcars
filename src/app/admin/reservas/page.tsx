@@ -78,11 +78,11 @@ export default function AdminReservationsPage() {
                 </div>
 
                 {loading ? (
-                    <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>
+                    <div style={{ padding: 40, textAlign: 'center', color: '#000000' }}>
                         Cargando reservas...
                     </div>
                 ) : reservations.length === 0 ? (
-                    <div style={{ padding: 48, textAlign: 'center', color: '#64748b' }}>
+                    <div style={{ padding: 48, textAlign: 'center', color: '#000000' }}>
                         <BookmarkCheck size={36} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
                         <p style={{ fontSize: 16, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>No hay reservas</p>
                         <p style={{ fontSize: 13, marginBottom: 16 }}>Registrá una seña para bloquear un vehículo del inventario.</p>
@@ -120,7 +120,7 @@ export default function AdminReservationsPage() {
                                     </td>
                                     <td>
                                         {r.client ? (
-                                            <Link href={`/admin/clientes/${r.client.id}`} style={{ color: '#cbd5e1' }}>
+                                            <Link href={`/admin/clientes/${r.client.id}`} style={{ color: '#000000' }}>
                                                 {r.client.first_name} {r.client.last_name}
                                             </Link>
                                         ) : '-'}
@@ -128,7 +128,7 @@ export default function AdminReservationsPage() {
                                     <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#fbbf24' }}>
                                         {formatARS(r.amount)}
                                     </td>
-                                    <td style={{ color: '#94a3b8', fontSize: 12 }}>
+                                    <td style={{ color: '#000000', fontSize: 12 }}>
                                         {formatDate(r.reservation_date)}
                                     </td>
                                     <td style={{ color: r.expiry_date ? '#f8fafc' : '#64748b', fontSize: 12 }}>

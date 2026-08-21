@@ -76,7 +76,7 @@ export function AdminSidebar() {
                     href="/"
                     target="_blank"
                     className="admin-nav-item"
-                    style={{ color: '#94A3B8' }}
+                    style={{ color: '#CBD5E1' }}
                 >
                     <ExternalLink size={16} />
                     <span>Ver Web Pública</span>

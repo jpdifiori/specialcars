@@ -241,7 +241,7 @@ function NewOperationWizard() {
                 {/* PASO 1: SELECCIONAR CLIENTE */}
                 {step === 1 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 16 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#000000', marginBottom: 16 }}>
                             Paso 1: Seleccionar Cliente Comprador
                         </h2>
 
@@ -262,7 +262,7 @@ function NewOperationWizard() {
                         </div>
 
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px', backgroundColor: '#F8FAFC', borderRadius: 8, border: '1px solid #E2E8F0' }}>
-                            <span style={{ fontSize: 13, color: '#64748B' }}>¿El cliente no está registrado aún?</span>
+                            <span style={{ fontSize: 13, color: '#000000' }}>¿El cliente no está registrado aún?</span>
                             <Link href="/admin/clientes/nuevo" target="_blank" className="btn-secondary" style={{ fontSize: 12, padding: '6px 12px' }}>
                                 <Plus size={14} />
                                 <span>Crear Nuevo Cliente</span>
@@ -274,7 +274,7 @@ function NewOperationWizard() {
                 {/* PASO 2: SELECCIONAR VEHÍCULO QUE COMPRA */}
                 {step === 2 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 16 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#000000', marginBottom: 16 }}>
                             Paso 2: Seleccionar Vehículo que Compra el Cliente
                         </h2>
 
@@ -300,13 +300,13 @@ function NewOperationWizard() {
 
                         {selectedVehicle && (
                             <div style={{ backgroundColor: '#F8FAFC', borderRadius: 10, padding: 20, border: '1px solid #E2E8F0' }}>
-                                <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', marginBottom: 6 }}>
+                                <h3 style={{ fontSize: 16, fontWeight: 800, color: '#000000', marginBottom: 6 }}>
                                     {selectedVehicle.brand} {selectedVehicle.model} {selectedVehicle.version || ''} ({selectedVehicle.year})
                                 </h3>
-                                <div style={{ display: 'flex', gap: 20, fontSize: 13, color: '#64748B' }}>
+                                <div style={{ display: 'flex', gap: 20, fontSize: 13, color: '#000000' }}>
                                     <span>Código: <strong style={{ color: '#EA580C' }}>{selectedVehicle.stock_code}</strong></span>
                                     <span>Km: <strong>{selectedVehicle.mileage?.toLocaleString('es-AR')}</strong></span>
-                                    <span>Precio Publicado: <strong style={{ color: '#0F172A' }}>{formatARS(selectedVehicle.sale_price)}</strong></span>
+                                    <span>Precio Publicado: <strong style={{ color: '#000000' }}>{formatARS(selectedVehicle.sale_price)}</strong></span>
                                 </div>
                             </div>
                         )}
@@ -316,10 +316,10 @@ function NewOperationWizard() {
                 {/* PASO 3: PRECIO ACORDADO */}
                 {step === 3 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 8 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#000000', marginBottom: 8 }}>
                             Paso 3: Definir Precio Final Acordado
                         </h2>
-                        <p style={{ fontSize: 13, color: '#64748B', marginBottom: 20 }}>
+                        <p style={{ fontSize: 13, color: '#000000', marginBottom: 20 }}>
                             Podés mantener el precio publicado de {formatARS(selectedVehicle?.sale_price)} o modificarlo según la negociación.
                         </p>
 
@@ -342,10 +342,10 @@ function NewOperationWizard() {
                 {/* PASO 4: PERMUTA */}
                 {step === 4 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 8 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#000000', marginBottom: 8 }}>
                             Paso 4: ¿El cliente entrega un vehículo como parte de pago?
                         </h2>
-                        <p style={{ fontSize: 13, color: '#64748B', marginBottom: 20 }}>
+                        <p style={{ fontSize: 13, color: '#000000', marginBottom: 20 }}>
                             Si el cliente entrega un auto en permuta, se creará automáticamente en el inventario de Special Cars con trazabilidad completa.
                         </p>
 
@@ -464,17 +464,17 @@ function NewOperationWizard() {
 
                                 <div style={{ marginTop: 20, padding: 16, backgroundColor: '#FFFFFF', borderRadius: 8, border: '1px solid #E2E8F0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <div>
-                                        <div style={{ fontSize: 12, color: '#64748B' }}>Precio Acordado</div>
-                                        <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#0F172A' }}>{formatARS(agreedPrice)}</div>
+                                        <div style={{ fontSize: 12, color: '#000000' }}>Precio Acordado</div>
+                                        <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#000000' }}>{formatARS(agreedPrice)}</div>
                                     </div>
-                                    <div style={{ fontSize: 18, color: '#64748B' }}>-</div>
+                                    <div style={{ fontSize: 18, color: '#000000' }}>-</div>
                                     <div>
-                                        <div style={{ fontSize: 12, color: '#64748B' }}>Valor de Toma</div>
+                                        <div style={{ fontSize: 12, color: '#000000' }}>Valor de Toma</div>
                                         <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#EA580C' }}>{formatARS(tradeInValue)}</div>
                                     </div>
-                                    <div style={{ fontSize: 18, color: '#64748B' }}>=</div>
+                                    <div style={{ fontSize: 18, color: '#000000' }}>=</div>
                                     <div>
-                                        <div style={{ fontSize: 12, color: '#64748B' }}>Saldo Restante a Cobrar</div>
+                                        <div style={{ fontSize: 12, color: '#000000' }}>Saldo Restante a Cobrar</div>
                                         <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 900, color: '#10B981', fontSize: 18 }}>
                                             {formatARS(balanceRemaining)}
                                         </div>
@@ -488,16 +488,16 @@ function NewOperationWizard() {
                 {/* PASO 5: PAGOS ADICIONALES Y RESUMEN FINAL */}
                 {step === 5 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 8 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#000000', marginBottom: 8 }}>
                             Paso 5: Componentes de Pago & Resumen de Operación
                         </h2>
-                        <p style={{ fontSize: 13, color: '#64748B', marginBottom: 20 }}>
+                        <p style={{ fontSize: 13, color: '#000000', marginBottom: 20 }}>
                             Saldo a cubrir con pagos monetarios: <strong>{formatARS(balanceRemaining)}</strong>.
                         </p>
 
                         <div style={{ marginBottom: 24 }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                                <h3 style={{ fontSize: 15, fontWeight: 800, color: '#0F172A' }}>Formas de Pago</h3>
+                                <h3 style={{ fontSize: 15, fontWeight: 800, color: '#000000' }}>Formas de Pago</h3>
                                 <button type="button" onClick={handleAddPayment} className="btn-secondary" style={{ fontSize: 12, padding: '4px 10px' }}>
                                     <Plus size={14} />
                                     <span>Agregar Pago</span>
@@ -552,28 +552,28 @@ function NewOperationWizard() {
 
                         {/* RESUMEN FINAL */}
                         <div style={{ backgroundColor: '#F8FAFC', borderRadius: 12, padding: 24, border: '1px solid #E2E8F0', marginBottom: 24 }}>
-                            <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', marginBottom: 16 }}>
+                            <h3 style={{ fontSize: 16, fontWeight: 800, color: '#000000', marginBottom: 16 }}>
                                 Resumen de la Operación
                             </h3>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, fontSize: 13.5 }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E2E8F0', paddingBottom: 8 }}>
-                                    <span style={{ color: '#64748B' }}>Cliente Comprador:</span>
-                                    <span style={{ fontWeight: 700, color: '#0F172A' }}>
+                                    <span style={{ color: '#000000' }}>Cliente Comprador:</span>
+                                    <span style={{ fontWeight: 700, color: '#000000' }}>
                                         {selectedClient?.first_name} {selectedClient?.last_name}
                                     </span>
                                 </div>
 
                                 <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E2E8F0', paddingBottom: 8 }}>
-                                    <span style={{ color: '#64748B' }}>Vehículo que Sale (Vendido):</span>
-                                    <span style={{ fontWeight: 700, color: '#0F172A' }}>
+                                    <span style={{ color: '#000000' }}>Vehículo que Sale (Vendido):</span>
+                                    <span style={{ fontWeight: 700, color: '#000000' }}>
                                         {selectedVehicle?.brand} {selectedVehicle?.model} ({selectedVehicle?.stock_code})
                                     </span>
                                 </div>
 
                                 <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E2E8F0', paddingBottom: 8 }}>
-                                    <span style={{ color: '#64748B' }}>Precio Acordado:</span>
-                                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#0F172A' }}>
+                                    <span style={{ color: '#000000' }}>Precio Acordado:</span>
+                                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#000000' }}>
                                         {formatARS(agreedPrice)}
                                     </span>
                                 </div>
@@ -588,7 +588,7 @@ function NewOperationWizard() {
                                 )}
 
                                 <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 8 }}>
-                                    <span style={{ fontWeight: 800, color: '#0F172A' }}>Total Pagos Monetarios:</span>
+                                    <span style={{ fontWeight: 800, color: '#000000' }}>Total Pagos Monetarios:</span>
                                     <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 900, color: '#10B981', fontSize: 16 }}>
                                         {formatARS(totalAdditionalPayments)}
                                     </span>
@@ -660,7 +660,7 @@ function NewOperationWizard() {
 
 export default function NewOperationPage() {
     return (
-        <Suspense fallback={<div style={{ padding: 40, textAlign: 'center', color: '#64748B' }}>Cargando asistente de operación...</div>}>
+        <Suspense fallback={<div style={{ padding: 40, textAlign: 'center', color: '#000000' }}>Cargando asistente de operación...</div>}>
             <NewOperationWizard />
         </Suspense>
     );

@@ -198,7 +198,7 @@ export default function NewZeroKmPage() {
                     alignItems: 'center',
                     border: '1px solid rgba(255,255,255,0.08)'
                 }}>
-                    <span style={{ fontSize: 13, color: '#94a3b8' }}>Comisión Proyectada de la Agencia:</span>
+                    <span style={{ fontSize: 13, color: '#000000' }}>Comisión Proyectada de la Agencia:</span>
                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 800, color: '#fbbf24' }}>
                         {formatARS(formData.commission)}
                     </span>

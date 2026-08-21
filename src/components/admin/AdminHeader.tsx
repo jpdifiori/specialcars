@@ -71,7 +71,7 @@ export function AdminHeader() {
                 {query && (
                     <button 
                         onClick={() => { setQuery(''); setIsOpen(false); }}
-                        style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', color: '#64748b' }}
+                        style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', color: '#000000' }}
                     >
                         <X size={14} />
                     </button>
@@ -81,13 +81,13 @@ export function AdminHeader() {
                 {isOpen && results && (
                     <div className="admin-search-dropdown">
                         {isLoading && (
-                            <div style={{ padding: '12px', textAlign: 'center', color: '#94a3b8', fontSize: 13 }}>
+                            <div style={{ padding: '12px', textAlign: 'center', color: '#000000', fontSize: 13 }}>
                                 Buscando...
                             </div>
                         )}
 
                         {!isLoading && results.vehicles.length === 0 && results.clients.length === 0 && results.operations.length === 0 && (
-                            <div style={{ padding: '16px', textAlign: 'center', color: '#64748b', fontSize: 13 }}>
+                            <div style={{ padding: '16px', textAlign: 'center', color: '#000000', fontSize: 13 }}>
                                 No se encontraron resultados para &quot;{query}&quot;
                             </div>
                         )}
@@ -106,7 +106,7 @@ export function AdminHeader() {
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                             <Car size={14} style={{ color: '#3b82f6' }} />
                                             <span><strong>{v.stock_code}</strong> — {v.title}</span>
-                                            {v.plate && <span style={{ color: '#94a3b8', fontSize: 11 }}>({v.plate})</span>}
+                                            {v.plate && <span style={{ color: '#000000', fontSize: 11 }}>({v.plate})</span>}
                                         </div>
                                         <span style={{ color: '#34d399', fontWeight: 600, fontSize: 12 }}>
                                             {formatARS(v.sale_price)}
@@ -130,9 +130,9 @@ export function AdminHeader() {
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                             <User size={14} style={{ color: '#10b981' }} />
                                             <span><strong>{c.name}</strong></span>
-                                            {c.dni && <span style={{ color: '#94a3b8', fontSize: 11 }}>DNI: {c.dni}</span>}
+                                            {c.dni && <span style={{ color: '#000000', fontSize: 11 }}>DNI: {c.dni}</span>}
                                         </div>
-                                        {c.phone && <span style={{ color: '#94a3b8', fontSize: 12 }}>{c.phone}</span>}
+                                        {c.phone && <span style={{ color: '#000000', fontSize: 12 }}>{c.phone}</span>}
                                     </div>
                                 ))}
                             </div>
@@ -181,7 +181,7 @@ export function AdminHeader() {
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <span style={{ fontSize: 13, fontWeight: 600, color: '#f8fafc' }}>Juan Pablo</span>
-                        <span style={{ fontSize: 11, color: '#64748b' }}>Administrador</span>
+                        <span style={{ fontSize: 11, color: '#000000' }}>Administrador</span>
                     </div>
                 </div>
             </div>

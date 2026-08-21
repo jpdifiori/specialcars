@@ -47,13 +47,13 @@ export default async function OperationDetailPage({ params }: { params: Promise<
                                 {op.type === 'SALE_WITH_TRADE_IN' ? 'Venta con Permuta' : op.type}
                             </span>
                         </div>
-                        <div style={{ fontSize: 13, color: '#94a3b8' }}>
+                        <div style={{ fontSize: 13, color: '#000000' }}>
                             Fecha de Operación: {formatDate(op.operation_date)}
                         </div>
                     </div>
 
                     <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontSize: 12, color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Monto Total Acordado</div>
+                        <div style={{ fontSize: 12, color: '#000000', textTransform: 'uppercase', fontWeight: 600 }}>Monto Total Acordado</div>
                         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 26, fontWeight: 900, color: '#34d399' }}>
                             {formatARS(op.agreed_price)}
                         </div>
@@ -77,9 +77,9 @@ export default async function OperationDetailPage({ params }: { params: Promise<
                                     {op.client.first_name} {op.client.last_name}
                                 </Link>
                             </div>
-                            {op.client.dni && <div style={{ color: '#94a3b8' }}>DNI: {op.client.dni}</div>}
-                            {op.client.phone && <div style={{ color: '#cbd5e1' }}>Tel: {op.client.phone}</div>}
-                            {op.client.email && <div style={{ color: '#94a3b8' }}>Email: {op.client.email}</div>}
+                            {op.client.dni && <div style={{ color: '#000000' }}>DNI: {op.client.dni}</div>}
+                            {op.client.phone && <div style={{ color: '#000000' }}>Tel: {op.client.phone}</div>}
+                            {op.client.email && <div style={{ color: '#000000' }}>Email: {op.client.email}</div>}
                         </div>
                     )}
                 </div>
@@ -99,8 +99,8 @@ export default async function OperationDetailPage({ params }: { params: Promise<
                             <div style={{ color: '#60a5fa', fontFamily: 'var(--font-mono)', fontSize: 12 }}>
                                 Código: {soldVeh.stock_code} {soldVeh.plate ? `• Patente: ${soldVeh.plate}` : ''}
                             </div>
-                            <div style={{ color: '#94a3b8', marginTop: 4 }}>
-                                Estado actual en inventario: <strong style={{ color: '#94a3b8' }}>VENDIDO</strong>
+                            <div style={{ color: '#000000', marginTop: 4 }}>
+                                Estado actual en inventario: <strong style={{ color: '#000000' }}>VENDIDO</strong>
                             </div>
                         </div>
                     </div>
@@ -120,13 +120,13 @@ export default async function OperationDetailPage({ params }: { params: Promise<
                             <Link href={`/admin/vehiculos/${tradeInVeh.id}`} style={{ fontWeight: 700, color: '#fff', fontSize: 16 }}>
                                 {tradeInVeh.brand} {tradeInVeh.model} {tradeInVeh.version || ''} ({tradeInVeh.year})
                             </Link>
-                            <div style={{ color: '#94a3b8', fontSize: 13, marginTop: 4 }}>
+                            <div style={{ color: '#000000', fontSize: 13, marginTop: 4 }}>
                                 Ingresó como <strong style={{ color: '#60a5fa' }}>{tradeInVeh.stock_code}</strong> • En Preparación para reventa
                             </div>
                         </div>
 
                         <div style={{ textAlign: 'right' }}>
-                            <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase' }}>Valor de Toma Reconocido</div>
+                            <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase' }}>Valor de Toma Reconocido</div>
                             <div style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 800, color: '#fbbf24' }}>
                                 {formatARS(op.trade_in_value)}
                             </div>
@@ -158,10 +158,10 @@ export default async function OperationDetailPage({ params }: { params: Promise<
                                         {p.payment_type === 'TRADE_IN' ? 'TOMA DE PERMUTA' : p.payment_type}
                                     </span>
                                 </td>
-                                <td style={{ color: '#cbd5e1' }}>
+                                <td style={{ color: '#000000' }}>
                                     {p.reference || '-'}
                                 </td>
-                                <td style={{ color: '#94a3b8', fontSize: 12 }}>
+                                <td style={{ color: '#000000', fontSize: 12 }}>
                                     {formatDate(p.payment_date)}
                                 </td>
                                 <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#34d399' }}>
@@ -177,7 +177,7 @@ export default async function OperationDetailPage({ params }: { params: Promise<
             {op.notes && (
                 <div className="table-container" style={{ padding: 24 }}>
                     <h3 style={{ fontSize: 15, fontWeight: 700, color: '#f8fafc', marginBottom: 8 }}>Observaciones</h3>
-                    <p style={{ fontSize: 13.5, color: '#94a3b8', lineHeight: 1.6 }}>{op.notes}</p>
+                    <p style={{ fontSize: 13.5, color: '#000000', lineHeight: 1.6 }}>{op.notes}</p>
                 </div>
             )}
         </div>

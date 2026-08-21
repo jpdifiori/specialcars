@@ -53,7 +53,7 @@ export default function AdminOperationsPage() {
             case 'CONSIGNMENT':
                 return <span className="badge badge-consignment">Venta Consignación</span>;
             case 'PURCHASE':
-                return <span className="badge" style={{ background: '#1e293b', color: '#cbd5e1' }}>Compra Directa</span>;
+                return <span className="badge" style={{ background: '#1e293b', color: '#000000' }}>Compra Directa</span>;
             default:
                 return <span className="badge">{opType}</span>;
         }
@@ -106,11 +106,11 @@ export default function AdminOperationsPage() {
                 </div>
 
                 {loading ? (
-                    <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>
+                    <div style={{ padding: 40, textAlign: 'center', color: '#000000' }}>
                         Cargando operaciones...
                     </div>
                 ) : operations.length === 0 ? (
-                    <div style={{ padding: 48, textAlign: 'center', color: '#64748b' }}>
+                    <div style={{ padding: 48, textAlign: 'center', color: '#000000' }}>
                         <ArrowLeftRight size={36} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
                         <p style={{ fontSize: 16, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>No hay operaciones registradas</p>
                         <p style={{ fontSize: 13, marginBottom: 16 }}>Iniciá una venta simple o venta con permuta para comenzar.</p>
@@ -161,7 +161,7 @@ export default function AdminOperationsPage() {
                                                     <Link href={`/admin/vehiculos/${soldVeh.id}`} style={{ color: '#e2e8f0', fontWeight: 500 }}>
                                                         {soldVeh.brand} {soldVeh.model} ({soldVeh.year})
                                                     </Link>
-                                                    <div style={{ fontSize: 11, color: '#64748b' }}>{soldVeh.stock_code}</div>
+                                                    <div style={{ fontSize: 11, color: '#000000' }}>{soldVeh.stock_code}</div>
                                                 </div>
                                             ) : '-'}
                                         </td>
@@ -174,13 +174,13 @@ export default function AdminOperationsPage() {
                                                     <div style={{ fontSize: 11, color: '#34d399' }}>Toma: {formatARS(op.trade_in_value)}</div>
                                                 </div>
                                             ) : (
-                                                <span style={{ color: '#64748b', fontSize: 12 }}>Sin permuta</span>
+                                                <span style={{ color: '#000000', fontSize: 12 }}>Sin permuta</span>
                                             )}
                                         </td>
                                         <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#34d399' }}>
                                             {formatARS(op.agreed_price)}
                                         </td>
-                                        <td style={{ color: '#94a3b8', fontSize: 12 }}>
+                                        <td style={{ color: '#000000', fontSize: 12 }}>
                                             {formatDate(op.operation_date)}
                                         </td>
                                         <td style={{ textAlign: 'right' }}>
