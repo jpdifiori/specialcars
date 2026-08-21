@@ -50,51 +50,51 @@ function LoginForm() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#07090e',
-            backgroundImage: 'radial-gradient(circle at 50% 30%, rgba(59, 130, 246, 0.12) 0%, transparent 60%)',
+            backgroundColor: '#F8FAFC',
+            backgroundImage: 'radial-gradient(circle at 50% 30%, rgba(234, 88, 12, 0.08) 0%, transparent 60%)',
             padding: 24
         }}>
             <div style={{
                 width: '100%',
                 maxWidth: 440,
-                backgroundColor: '#0f1420',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #E2E8F0',
                 borderRadius: 16,
                 padding: '40px 32px',
-                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6)'
+                boxShadow: '0 10px 30px rgba(15, 23, 42, 0.08)'
             }}>
                 <div style={{ textAlign: 'center', marginBottom: 32 }}>
                     <div style={{
                         width: 48,
                         height: 48,
                         borderRadius: 12,
-                        background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+                        background: 'linear-gradient(135deg, #FF6B00 0%, #EA580C 100%)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         margin: '0 auto 16px',
                         color: '#fff',
-                        fontWeight: 800,
-                        fontSize: 22,
-                        boxShadow: '0 4px 16px rgba(59, 130, 246, 0.4)'
+                        fontWeight: 900,
+                        fontSize: 20,
+                        boxShadow: '0 4px 16px rgba(234, 88, 12, 0.35)'
                     }}>
                         SC
                     </div>
-                    <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 24, fontWeight: 700, color: '#f8fafc', marginBottom: 6 }}>
+                    <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 24, fontWeight: 800, color: '#0F172A', marginBottom: 4 }}>
                         Special Cars
                     </h1>
-                    <p style={{ fontSize: 13.5, color: '#64748b' }}>
+                    <p style={{ fontSize: 13.5, color: '#64748B' }}>
                         Acceso exclusivo al panel administrativo
                     </p>
                 </div>
 
                 {error && (
                     <div style={{
-                        backgroundColor: 'rgba(244, 63, 94, 0.12)',
-                        border: '1px solid rgba(244, 63, 94, 0.3)',
+                        backgroundColor: '#FEF2F2',
+                        border: '1px solid #FECACA',
                         borderRadius: 8,
                         padding: '12px 16px',
-                        color: '#fda4af',
+                        color: '#991B1B',
                         fontSize: 13.5,
                         marginBottom: 20
                     }}>
@@ -104,11 +104,11 @@ function LoginForm() {
 
                 <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                        <label style={{ fontSize: 13, fontWeight: 600, color: '#cbd5e1' }}>
+                        <label style={{ fontSize: 13, fontWeight: 700, color: '#334155' }}>
                             Email de Administrador
                         </label>
                         <div style={{ position: 'relative' }}>
-                            <Mail size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#64748b' }} />
+                            <Mail size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#64748B' }} />
                             <input
                                 type="email"
                                 required
@@ -117,11 +117,11 @@ function LoginForm() {
                                 placeholder="tu-email@gmail.com"
                                 style={{
                                     width: '100%',
-                                    backgroundColor: '#151b2a',
-                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                    backgroundColor: '#FFFFFF',
+                                    border: '1px solid #CBD5E1',
                                     borderRadius: 8,
-                                    padding: '12px 14px 12px 42px',
-                                    color: '#f8fafc',
+                                    padding: '11px 14px 11px 42px',
+                                    color: '#0F172A',
                                     fontSize: 14
                                 }}
                             />
@@ -129,11 +129,11 @@ function LoginForm() {
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                        <label style={{ fontSize: 13, fontWeight: 600, color: '#cbd5e1' }}>
+                        <label style={{ fontSize: 13, fontWeight: 700, color: '#334155' }}>
                             Contraseña
                         </label>
                         <div style={{ position: 'relative' }}>
-                            <Lock size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#64748b' }} />
+                            <Lock size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#64748B' }} />
                             <input
                                 type="password"
                                 required
@@ -142,11 +142,11 @@ function LoginForm() {
                                 placeholder="••••••••••••"
                                 style={{
                                     width: '100%',
-                                    backgroundColor: '#151b2a',
-                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                    backgroundColor: '#FFFFFF',
+                                    border: '1px solid #CBD5E1',
                                     borderRadius: 8,
-                                    padding: '12px 14px 12px 42px',
-                                    color: '#f8fafc',
+                                    padding: '11px 14px 11px 42px',
+                                    color: '#0F172A',
                                     fontSize: 14
                                 }}
                             />
@@ -161,16 +161,16 @@ function LoginForm() {
                             alignItems: 'center',
                             justifyContent: 'center',
                             gap: 10,
-                            backgroundColor: '#3b82f6',
+                            background: 'linear-gradient(135deg, #FF6B00 0%, #EA580C 100%)',
                             color: '#fff',
                             padding: '13px',
                             borderRadius: 8,
                             fontSize: 14.5,
                             fontWeight: 700,
-                            marginTop: 10,
+                            marginTop: 8,
                             cursor: loading ? 'not-allowed' : 'pointer',
                             opacity: loading ? 0.7 : 1,
-                            boxShadow: '0 4px 16px rgba(59, 130, 246, 0.35)',
+                            boxShadow: '0 4px 16px rgba(234, 88, 12, 0.35)',
                             transition: 'all 0.15s ease'
                         }}
                     >
@@ -186,9 +186,9 @@ function LoginForm() {
                     gap: 6,
                     marginTop: 28,
                     fontSize: 12,
-                    color: '#64748b'
+                    color: '#64748B'
                 }}>
-                    <ShieldCheck size={14} style={{ color: '#10b981' }} />
+                    <ShieldCheck size={14} style={{ color: '#10B981' }} />
                     <span>Conexión segura cifrada con Supabase Auth</span>
                 </div>
             </div>
@@ -198,7 +198,7 @@ function LoginForm() {
 
 export default function LoginPage() {
     return (
-        <Suspense fallback={<div style={{ minHeight: '100vh', backgroundColor: '#07090e' }} />}>
+        <Suspense fallback={<div style={{ minHeight: '100vh', backgroundColor: '#F8FAFC' }} />}>
             <LoginForm />
         </Suspense>
     );

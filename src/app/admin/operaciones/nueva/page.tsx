@@ -31,26 +31,16 @@ function NewOperationWizard() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Listas cargadas
     const [clients, setClients] = useState<Client[]>([]);
     const [availableVehicles, setAvailableVehicles] = useState<Vehicle[]>([]);
 
-    // Estados del wizard
     const [step, setStep] = useState(1);
 
-    // PASO 1: Cliente
     const [selectedClientId, setSelectedClientId] = useState(preselectedClientId || '');
-
-    // PASO 2: Vehículo que compra
     const [selectedVehicleId, setSelectedVehicleId] = useState('');
-
-    // PASO 3: Precio Acordado
     const [agreedPrice, setAgreedPrice] = useState<number>(0);
-
-    // PASO 4: ¿Tiene permuta?
     const [hasTradeIn, setHasTradeIn] = useState<boolean>(false);
 
-    // PASO 5 y 6: Datos del Vehículo Recibido en Permuta
     const [tradeInBrand, setTradeInBrand] = useState('');
     const [tradeInModel, setTradeInModel] = useState('');
     const [tradeInVersion, setTradeInVersion] = useState('');
@@ -64,14 +54,12 @@ function NewOperationWizard() {
     const [tradeInVin, setTradeInVin] = useState('');
     const [tradeInValue, setTradeInValue] = useState<number>(0);
 
-    // PASO 7: Pagos adicionales
     const [payments, setPayments] = useState<{ payment_type: PaymentType; amount: number; reference?: string; notes?: string }[]>([
         { payment_type: 'TRANSFER', amount: 0, reference: '', notes: '' }
     ]);
 
     const [notes, setNotes] = useState('');
 
-    // Cargar clientes y vehículos disponibles
     useEffect(() => {
         const loadInitialData = async () => {
             try {
@@ -91,14 +79,12 @@ function NewOperationWizard() {
     const selectedVehicle = availableVehicles.find(v => v.id === selectedVehicleId);
     const selectedClient = clients.find(c => c.id === selectedClientId);
 
-    // Sincronizar precio de venta cuando se selecciona el vehículo
     useEffect(() => {
         if (selectedVehicle && agreedPrice === 0) {
             setAgreedPrice(selectedVehicle.sale_price);
         }
     }, [selectedVehicle]);
 
-    // Cálculo de saldo restante a pagar
     const balanceRemaining = agreedPrice - (hasTradeIn ? tradeInValue : 0);
     const totalAdditionalPayments = payments.reduce((sum, p) => sum + (p.amount || 0), 0);
     const difference = balanceRemaining - totalAdditionalPayments;
@@ -153,7 +139,6 @@ function NewOperationWizard() {
 
         try {
             if (hasTradeIn) {
-                // Venta con Permuta
                 const res = await processTradeInSaleAction({
                     client_id: selectedClientId,
                     sold_vehicle_id: selectedVehicleId,
@@ -187,7 +172,6 @@ function NewOperationWizard() {
 
                 router.push(`/admin/operaciones/${res.operation_id}`);
             } else {
-                // Venta Simple
                 const res = await processSimpleSaleAction({
                     client_id: selectedClientId,
                     vehicle_id: selectedVehicleId,
@@ -213,7 +197,7 @@ function NewOperationWizard() {
     return (
         <div style={{ maxWidth: 940, margin: '0 auto' }}>
             <div style={{ marginBottom: 20 }}>
-                <Link href="/admin/operaciones" style={{ fontSize: 13, color: '#60a5fa', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                <Link href="/admin/operaciones" style={{ fontSize: 13, color: '#EA580C', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, fontWeight: 700 }}>
                     <ArrowLeft size={14} />
                     <span>Volver a Operaciones</span>
                 </Link>
@@ -257,7 +241,7 @@ function NewOperationWizard() {
                 {/* PASO 1: SELECCIONAR CLIENTE */}
                 {step === 1 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 16 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 16 }}>
                             Paso 1: Seleccionar Cliente Comprador
                         </h2>
 
@@ -277,8 +261,8 @@ function NewOperationWizard() {
                             </select>
                         </div>
 
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px', backgroundColor: '#151b2a', borderRadius: 8 }}>
-                            <span style={{ fontSize: 13, color: '#94a3b8' }}>¿El cliente no está registrado aún?</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px', backgroundColor: '#F8FAFC', borderRadius: 8, border: '1px solid #E2E8F0' }}>
+                            <span style={{ fontSize: 13, color: '#64748B' }}>¿El cliente no está registrado aún?</span>
                             <Link href="/admin/clientes/nuevo" target="_blank" className="btn-secondary" style={{ fontSize: 12, padding: '6px 12px' }}>
                                 <Plus size={14} />
                                 <span>Crear Nuevo Cliente</span>
@@ -290,7 +274,7 @@ function NewOperationWizard() {
                 {/* PASO 2: SELECCIONAR VEHÍCULO QUE COMPRA */}
                 {step === 2 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 16 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 16 }}>
                             Paso 2: Seleccionar Vehículo que Compra el Cliente
                         </h2>
 
@@ -315,14 +299,14 @@ function NewOperationWizard() {
                         </div>
 
                         {selectedVehicle && (
-                            <div style={{ backgroundColor: '#151b2a', borderRadius: 10, padding: 20, border: '1px solid rgba(255,255,255,0.08)' }}>
-                                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 6 }}>
+                            <div style={{ backgroundColor: '#F8FAFC', borderRadius: 10, padding: 20, border: '1px solid #E2E8F0' }}>
+                                <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', marginBottom: 6 }}>
                                     {selectedVehicle.brand} {selectedVehicle.model} {selectedVehicle.version || ''} ({selectedVehicle.year})
                                 </h3>
-                                <div style={{ display: 'flex', gap: 20, fontSize: 13, color: '#94a3b8' }}>
-                                    <span>Código: <strong style={{ color: '#60a5fa' }}>{selectedVehicle.stock_code}</strong></span>
+                                <div style={{ display: 'flex', gap: 20, fontSize: 13, color: '#64748B' }}>
+                                    <span>Código: <strong style={{ color: '#EA580C' }}>{selectedVehicle.stock_code}</strong></span>
                                     <span>Km: <strong>{selectedVehicle.mileage?.toLocaleString('es-AR')}</strong></span>
-                                    <span>Precio Publicado: <strong style={{ color: '#34d399' }}>{formatARS(selectedVehicle.sale_price)}</strong></span>
+                                    <span>Precio Publicado: <strong style={{ color: '#0F172A' }}>{formatARS(selectedVehicle.sale_price)}</strong></span>
                                 </div>
                             </div>
                         )}
@@ -332,10 +316,10 @@ function NewOperationWizard() {
                 {/* PASO 3: PRECIO ACORDADO */}
                 {step === 3 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 8 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 8 }}>
                             Paso 3: Definir Precio Final Acordado
                         </h2>
-                        <p style={{ fontSize: 13, color: '#94a3b8', marginBottom: 20 }}>
+                        <p style={{ fontSize: 13, color: '#64748B', marginBottom: 20 }}>
                             Podés mantener el precio publicado de {formatARS(selectedVehicle?.sale_price)} o modificarlo según la negociación.
                         </p>
 
@@ -348,7 +332,7 @@ function NewOperationWizard() {
                                 onChange={(e) => setAgreedPrice(parseInt(e.target.value, 10) || 0)}
                                 required
                             />
-                            <span className="form-help" style={{ color: '#34d399', fontWeight: 700, fontSize: 15 }}>
+                            <span className="form-help" style={{ color: '#EA580C', fontWeight: 800, fontSize: 15 }}>
                                 Total a abonar: {formatARS(agreedPrice)}
                             </span>
                         </div>
@@ -358,10 +342,10 @@ function NewOperationWizard() {
                 {/* PASO 4: PERMUTA */}
                 {step === 4 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 8 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 8 }}>
                             Paso 4: ¿El cliente entrega un vehículo como parte de pago?
                         </h2>
-                        <p style={{ fontSize: 13, color: '#94a3b8', marginBottom: 20 }}>
+                        <p style={{ fontSize: 13, color: '#64748B', marginBottom: 20 }}>
                             Si el cliente entrega un auto en permuta, se creará automáticamente en el inventario de Special Cars con trazabilidad completa.
                         </p>
 
@@ -386,8 +370,8 @@ function NewOperationWizard() {
                         </div>
 
                         {hasTradeIn && (
-                            <div style={{ backgroundColor: '#131926', border: '1px solid rgba(59, 130, 246, 0.3)', borderRadius: 12, padding: 24 }}>
-                                <h3 style={{ fontSize: 15, fontWeight: 700, color: '#60a5fa', marginBottom: 16 }}>
+                            <div style={{ backgroundColor: '#F8FAFC', border: '1px solid #FFEDD5', borderRadius: 12, padding: 24 }}>
+                                <h3 style={{ fontSize: 15, fontWeight: 800, color: '#EA580C', marginBottom: 16 }}>
                                     Datos del Vehículo Recibido en Permuta
                                 </h3>
 
@@ -460,14 +444,14 @@ function NewOperationWizard() {
                                     </div>
 
                                     <div className="form-group" style={{ gridColumn: 'span 2' }}>
-                                        <label className="form-label" style={{ color: '#fbbf24', fontSize: 14 }}>
+                                        <label className="form-label" style={{ color: '#EA580C', fontSize: 14 }}>
                                             Valor de Toma Reconocido ($ ARS) *
                                         </label>
                                         <input
                                             type="number"
                                             className="form-input"
                                             placeholder="Ej: 15000000"
-                                            style={{ fontSize: 16, fontWeight: 700, color: '#fbbf24' }}
+                                            style={{ fontSize: 16, fontWeight: 800, color: '#EA580C' }}
                                             value={tradeInValue}
                                             onChange={(e) => setTradeInValue(parseInt(e.target.value, 10) || 0)}
                                             required
@@ -478,21 +462,20 @@ function NewOperationWizard() {
                                     </div>
                                 </div>
 
-                                {/* Cálculo instantáneo de saldo */}
-                                <div style={{ marginTop: 20, padding: 16, backgroundColor: '#0f1420', borderRadius: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div style={{ marginTop: 20, padding: 16, backgroundColor: '#FFFFFF', borderRadius: 8, border: '1px solid #E2E8F0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <div>
-                                        <div style={{ fontSize: 12, color: '#64748b' }}>Precio Acordado</div>
-                                        <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#fff' }}>{formatARS(agreedPrice)}</div>
+                                        <div style={{ fontSize: 12, color: '#64748B' }}>Precio Acordado</div>
+                                        <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#0F172A' }}>{formatARS(agreedPrice)}</div>
                                     </div>
-                                    <div style={{ fontSize: 18, color: '#64748b' }}>-</div>
+                                    <div style={{ fontSize: 18, color: '#64748B' }}>-</div>
                                     <div>
-                                        <div style={{ fontSize: 12, color: '#64748b' }}>Valor de Toma</div>
-                                        <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#fbbf24' }}>{formatARS(tradeInValue)}</div>
+                                        <div style={{ fontSize: 12, color: '#64748B' }}>Valor de Toma</div>
+                                        <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#EA580C' }}>{formatARS(tradeInValue)}</div>
                                     </div>
-                                    <div style={{ fontSize: 18, color: '#64748b' }}>=</div>
+                                    <div style={{ fontSize: 18, color: '#64748B' }}>=</div>
                                     <div>
-                                        <div style={{ fontSize: 12, color: '#64748b' }}>Saldo Restante a Cobrar</div>
-                                        <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#34d399', fontSize: 18 }}>
+                                        <div style={{ fontSize: 12, color: '#64748B' }}>Saldo Restante a Cobrar</div>
+                                        <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 900, color: '#10B981', fontSize: 18 }}>
                                             {formatARS(balanceRemaining)}
                                         </div>
                                     </div>
@@ -505,17 +488,16 @@ function NewOperationWizard() {
                 {/* PASO 5: PAGOS ADICIONALES Y RESUMEN FINAL */}
                 {step === 5 && (
                     <div>
-                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 8 }}>
+                        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 8 }}>
                             Paso 5: Componentes de Pago & Resumen de Operación
                         </h2>
-                        <p style={{ fontSize: 13, color: '#94a3b8', marginBottom: 20 }}>
+                        <p style={{ fontSize: 13, color: '#64748B', marginBottom: 20 }}>
                             Saldo a cubrir con pagos monetarios: <strong>{formatARS(balanceRemaining)}</strong>.
                         </p>
 
-                        {/* Desglose de Pagos */}
                         <div style={{ marginBottom: 24 }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                                <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff' }}>Formas de Pago</h3>
+                                <h3 style={{ fontSize: 15, fontWeight: 800, color: '#0F172A' }}>Formas de Pago</h3>
                                 <button type="button" onClick={handleAddPayment} className="btn-secondary" style={{ fontSize: 12, padding: '4px 10px' }}>
                                     <Plus size={14} />
                                     <span>Agregar Pago</span>
@@ -558,7 +540,7 @@ function NewOperationWizard() {
                                             <button
                                                 type="button"
                                                 onClick={() => handleRemovePayment(idx)}
-                                                style={{ color: '#f43f5e', padding: 8 }}
+                                                style={{ color: '#EF4444', padding: 8 }}
                                             >
                                                 <Trash2 size={16} />
                                             </button>
@@ -569,45 +551,45 @@ function NewOperationWizard() {
                         </div>
 
                         {/* RESUMEN FINAL */}
-                        <div style={{ backgroundColor: '#121826', borderRadius: 12, padding: 24, border: '1px solid rgba(255,255,255,0.08)', marginBottom: 24 }}>
-                            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', marginBottom: 16 }}>
+                        <div style={{ backgroundColor: '#F8FAFC', borderRadius: 12, padding: 24, border: '1px solid #E2E8F0', marginBottom: 24 }}>
+                            <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', marginBottom: 16 }}>
                                 Resumen de la Operación
                             </h3>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, fontSize: 13.5 }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                    <span style={{ color: '#64748b' }}>Cliente Comprador:</span>
-                                    <span style={{ fontWeight: 600, color: '#f8fafc' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E2E8F0', paddingBottom: 8 }}>
+                                    <span style={{ color: '#64748B' }}>Cliente Comprador:</span>
+                                    <span style={{ fontWeight: 700, color: '#0F172A' }}>
                                         {selectedClient?.first_name} {selectedClient?.last_name}
                                     </span>
                                 </div>
 
-                                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                    <span style={{ color: '#64748b' }}>Vehículo que Sale (Vendido):</span>
-                                    <span style={{ fontWeight: 600, color: '#f8fafc' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E2E8F0', paddingBottom: 8 }}>
+                                    <span style={{ color: '#64748B' }}>Vehículo que Sale (Vendido):</span>
+                                    <span style={{ fontWeight: 700, color: '#0F172A' }}>
                                         {selectedVehicle?.brand} {selectedVehicle?.model} ({selectedVehicle?.stock_code})
                                     </span>
                                 </div>
 
-                                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                    <span style={{ color: '#64748b' }}>Precio Acordado:</span>
-                                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#fff' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E2E8F0', paddingBottom: 8 }}>
+                                    <span style={{ color: '#64748B' }}>Precio Acordado:</span>
+                                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#0F172A' }}>
                                         {formatARS(agreedPrice)}
                                     </span>
                                 </div>
 
                                 {hasTradeIn && (
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                        <span style={{ color: '#60a5fa' }}>Vehículo que Entra (Permuta):</span>
-                                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#fbbf24' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E2E8F0', paddingBottom: 8 }}>
+                                        <span style={{ color: '#EA580C', fontWeight: 700 }}>Vehículo que Entra (Permuta):</span>
+                                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#EA580C' }}>
                                             {tradeInBrand} {tradeInModel} ({formatARS(tradeInValue)})
                                         </span>
                                     </div>
                                 )}
 
                                 <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 8 }}>
-                                    <span style={{ fontWeight: 700, color: '#fff' }}>Total Pagos Monetarios:</span>
-                                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#34d399', fontSize: 16 }}>
+                                    <span style={{ fontWeight: 800, color: '#0F172A' }}>Total Pagos Monetarios:</span>
+                                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 900, color: '#10B981', fontSize: 16 }}>
                                         {formatARS(totalAdditionalPayments)}
                                     </span>
                                 </div>
@@ -631,7 +613,7 @@ function NewOperationWizard() {
                                 onClick={handleConfirmOperation}
                                 disabled={loading}
                                 className="btn-primary"
-                                style={{ padding: '14px 36px', fontSize: 16, fontWeight: 800, boxShadow: '0 4px 20px rgba(59, 130, 246, 0.5)' }}
+                                style={{ padding: '14px 36px', fontSize: 16, fontWeight: 800, boxShadow: '0 4px 20px rgba(234, 88, 12, 0.4)' }}
                             >
                                 <Check size={18} />
                                 <span>{loading ? 'Procesando Operación...' : 'Confirmar y Cerrar Operación'}</span>
@@ -648,7 +630,7 @@ function NewOperationWizard() {
                         justifyContent: 'space-between',
                         marginTop: 32,
                         paddingTop: 20,
-                        borderTop: '1px solid rgba(255, 255, 255, 0.08)'
+                        borderTop: '1px solid #E2E8F0'
                     }}>
                         <button
                             type="button"
@@ -678,7 +660,7 @@ function NewOperationWizard() {
 
 export default function NewOperationPage() {
     return (
-        <Suspense fallback={<div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>Cargando asistente de operación...</div>}>
+        <Suspense fallback={<div style={{ padding: 40, textAlign: 'center', color: '#64748B' }}>Cargando asistente de operación...</div>}>
             <NewOperationWizard />
         </Suspense>
     );

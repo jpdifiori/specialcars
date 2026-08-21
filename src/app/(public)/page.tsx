@@ -30,11 +30,9 @@ export default async function PublicHomePage() {
         <div>
             {/* HERO SECTION */}
             <section className="hero-section">
-                <div className="hero-backdrop-glow" />
-
                 <div className="hero-content">
                     <div className="hero-badge">
-                        <Sparkles size={14} style={{ color: '#fbbf24' }} />
+                        <Sparkles size={14} style={{ color: '#EA580C' }} />
                         <span>Autos Seleccionados • Seminuevos • 0 KM</span>
                     </div>
 
@@ -67,35 +65,35 @@ export default async function PublicHomePage() {
             </section>
 
             {/* BENEFICIOS / PROPUESTA DE VALOR */}
-            <section style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', backgroundColor: '#090c14', padding: '40px 24px' }}>
-                <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 24 }}>
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                        <div style={{ width: 42, height: 42, borderRadius: 10, backgroundColor: 'rgba(59, 130, 246, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#60a5fa', flexShrink: 0 }}>
+            <section style={{ borderBottom: '1px solid #E2E8F0', backgroundColor: '#FFFFFF', padding: '48px 24px' }}>
+                <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 32 }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+                        <div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: '#FFF7ED', border: '1px solid #FFEDD5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#EA580C', flexShrink: 0 }}>
                             <ShieldCheck size={22} />
                         </div>
                         <div>
-                            <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginBottom: 4 }}>Garantía y Trazabilidad</h3>
-                            <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.5 }}>Unidades chequeadas mecánicamente con documentación 100% al día.</p>
+                            <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', marginBottom: 4 }}>Garantía y Trazabilidad</h3>
+                            <p style={{ fontSize: 13.5, color: '#64748B', lineHeight: 1.5 }}>Unidades chequeadas mecánicamente con documentación 100% al día.</p>
                         </div>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                        <div style={{ width: 42, height: 42, borderRadius: 10, backgroundColor: 'rgba(16, 185, 129, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#34d399', flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+                        <div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0F172A', flexShrink: 0 }}>
                             <ArrowLeftRight size={22} />
                         </div>
                         <div>
-                            <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginBottom: 4 }}>Tomamos tu Usado en Permuta</h3>
-                            <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.5 }}>Cotización justa e inmediata de tu vehículo como parte de pago.</p>
+                            <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', marginBottom: 4 }}>Tomamos tu Usado en Permuta</h3>
+                            <p style={{ fontSize: 13.5, color: '#64748B', lineHeight: 1.5 }}>Cotización justa e inmediata de tu vehículo como parte de pago.</p>
                         </div>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                        <div style={{ width: 42, height: 42, borderRadius: 10, backgroundColor: 'rgba(245, 158, 11, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fbbf24', flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+                        <div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: '#FFF7ED', border: '1px solid #FFEDD5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#EA580C', flexShrink: 0 }}>
                             <Award size={22} />
                         </div>
                         <div>
-                            <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginBottom: 4 }}>Gestoría Integral</h3>
-                            <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.5 }}>Nos encargamos de toda la transferencia y trámites registrales.</p>
+                            <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', marginBottom: 4 }}>Gestoría Integral</h3>
+                            <p style={{ fontSize: 13.5, color: '#64748B', lineHeight: 1.5 }}>Nos encargamos de toda la transferencia y trámites registrales.</p>
                         </div>
                     </div>
                 </div>
@@ -109,7 +107,7 @@ export default async function PublicHomePage() {
                             <div className="section-subtitle">Selección Especial</div>
                             <h2 className="section-title">Vehículos Destacados</h2>
                         </div>
-                        <Link href="/vehiculos" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#3b82f6', fontWeight: 600, fontSize: 14 }}>
+                        <Link href="/vehiculos" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#EA580C', fontWeight: 700, fontSize: 14 }}>
                             <span>Ver todo el catálogo</span>
                             <ArrowRight size={15} />
                         </Link>
@@ -124,23 +122,23 @@ export default async function PublicHomePage() {
             )}
 
             {/* SECCIÓN ÚLTIMOS INGRESOS */}
-            <section className="public-section" style={{ paddingTop: featuredVehicles.length > 0 ? 0 : 80 }}>
+            <section className="public-section" style={{ paddingTop: featuredVehicles.length > 0 ? 0 : 70 }}>
                 <div className="section-header">
                     <div>
                         <div className="section-subtitle">Novedades en Stock</div>
                         <h2 className="section-title">Últimos Ingresos</h2>
                     </div>
-                    <Link href="/vehiculos" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#3b82f6', fontWeight: 600, fontSize: 14 }}>
+                    <Link href="/vehiculos" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#EA580C', fontWeight: 700, fontSize: 14 }}>
                         <span>Ver catálogo completo ({vehicles.length} disponibles)</span>
                         <ArrowRight size={15} />
                     </Link>
                 </div>
 
                 {latestVehicles.length === 0 ? (
-                    <div style={{ padding: 60, textAlign: 'center', backgroundColor: '#0e121c', borderRadius: 16, border: '1px solid rgba(255,255,255,0.08)' }}>
-                        <Car size={44} style={{ color: '#64748b', margin: '0 auto 12px' }} />
-                        <h3 style={{ fontSize: 18, fontWeight: 700, color: '#fff', marginBottom: 6 }}>Próximamente nuevos ingresos</h3>
-                        <p style={{ fontSize: 14, color: '#94a3b8', maxWidth: 460, margin: '0 auto 20px' }}>
+                    <div style={{ padding: 60, textAlign: 'center', backgroundColor: '#F8FAFC', borderRadius: 16, border: '1px solid #E2E8F0' }}>
+                        <Car size={44} style={{ color: '#94A3B8', margin: '0 auto 12px' }} />
+                        <h3 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 6 }}>Próximamente nuevos ingresos</h3>
+                        <p style={{ fontSize: 14, color: '#64748B', maxWidth: 460, margin: '0 auto 20px' }}>
                             Estamos preparando nuevas unidades seleccionadas. Contactanos por WhatsApp para consultar vehículos en ingreso.
                         </p>
                         <a
@@ -163,17 +161,17 @@ export default async function PublicHomePage() {
             </section>
 
             {/* PRESENTACIÓN DE LA AGENCIA */}
-            <section style={{ backgroundColor: '#0a0d16', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '80px 24px' }}>
+            <section style={{ backgroundColor: '#F8FAFC', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: '80px 24px' }}>
                 <div style={{ maxWidth: 1100, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 48, alignItems: 'center' }}>
                     <div>
                         <div className="section-subtitle">Sobre Nosotros</div>
                         <h2 className="section-title" style={{ marginBottom: 20 }}>
                             {settings.name || 'Special Cars'}
                         </h2>
-                        <p style={{ fontSize: 15, color: '#cbd5e1', lineHeight: 1.7, marginBottom: 16 }}>
+                        <p style={{ fontSize: 15, color: '#334155', lineHeight: 1.7, marginBottom: 16 }}>
                             {settings.description || 'Somos una agencia dedicada a brindar la mejor experiencia en la compra y venta de automóviles seleccionados, seminuevos y 0 KM en Argentina.'}
                         </p>
-                        <p style={{ fontSize: 14, color: '#94a3b8', lineHeight: 1.6, marginBottom: 24 }}>
+                        <p style={{ fontSize: 14, color: '#64748B', lineHeight: 1.6, marginBottom: 24 }}>
                             Nuestro compromiso es la transparencia absoluta en cada operación: te mostramos el estado real del vehículo, verificamos la documentación legal y te brindamos asesoramiento personalizado.
                         </p>
 
@@ -190,22 +188,22 @@ export default async function PublicHomePage() {
                         </div>
                     </div>
 
-                    <div style={{ backgroundColor: '#101522', borderRadius: 16, border: '1px solid rgba(255,255,255,0.08)', padding: 32 }}>
-                        <h3 style={{ fontSize: 18, fontWeight: 700, color: '#fff', marginBottom: 20 }}>
+                    <div style={{ backgroundColor: '#FFFFFF', borderRadius: 16, border: '1px solid #E2E8F0', padding: 32, boxShadow: '0 4px 20px rgba(15, 23, 42, 0.05)' }}>
+                        <h3 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 20 }}>
                             Información de la Concesionaria
                         </h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontSize: 14 }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontSize: 14 }}>
                             <div>
-                                <span style={{ color: '#64748b', fontSize: 12, textTransform: 'uppercase', fontWeight: 600 }}>Dirección</span>
-                                <div style={{ fontWeight: 600, color: '#f8fafc', marginTop: 2 }}>{settings.address || 'Av. del Libertador 4500'}, {settings.city || 'Palermo'}, {settings.province || 'CABA'}</div>
+                                <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>Dirección</span>
+                                <div style={{ fontWeight: 700, color: '#0F172A', marginTop: 2 }}>{settings.address || 'Av. del Libertador 4500'}, {settings.city || 'Palermo'}, {settings.province || 'CABA'}</div>
                             </div>
                             <div>
-                                <span style={{ color: '#64748b', fontSize: 12, textTransform: 'uppercase', fontWeight: 600 }}>Horarios de Atención</span>
-                                <div style={{ color: '#cbd5e1', marginTop: 2 }}>{settings.business_hours || 'Lunes a Viernes de 9 a 19 hs. Sábados de 10 a 14 hs.'}</div>
+                                <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>Horarios de Atención</span>
+                                <div style={{ color: '#334155', marginTop: 2 }}>{settings.business_hours || 'Lunes a Viernes de 9 a 19 hs. Sábados de 10 a 14 hs.'}</div>
                             </div>
                             <div>
-                                <span style={{ color: '#64748b', fontSize: 12, textTransform: 'uppercase', fontWeight: 600 }}>WhatsApp Directo</span>
-                                <div style={{ color: '#34d399', fontWeight: 700, marginTop: 2 }}>+{settings.whatsapp || '5491140980758'}</div>
+                                <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>WhatsApp Directo</span>
+                                <div style={{ color: '#EA580C', fontWeight: 800, marginTop: 2 }}>+{settings.whatsapp || '5491140980758'}</div>
                             </div>
                         </div>
                     </div>

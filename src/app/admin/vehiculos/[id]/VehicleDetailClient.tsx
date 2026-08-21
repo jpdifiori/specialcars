@@ -113,7 +113,6 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
             setUploadProgress(`Procesando foto ${i + 1} de ${files.length}...`);
 
             try {
-                // Comprimir en browser
                 const options = {
                     maxSizeMB: 1.2,
                     maxWidthOrHeight: 1920,
@@ -124,7 +123,6 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                 const ext = file.name.split('.').pop() || 'jpg';
                 const fileName = `${vehicle.id}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${ext}`;
 
-                // Subir a bucket vehicle-images
                 const { data: uploadData, error: uploadErr } = await supabase.storage
                     .from('vehicle-images')
                     .upload(fileName, compressedFile, {
@@ -137,12 +135,10 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                     continue;
                 }
 
-                // Obtener URL pública
                 const { data: publicUrlData } = supabase.storage
                     .from('vehicle-images')
                     .getPublicUrl(fileName);
 
-                // Registrar en DB
                 await registerVehicleImage({
                     vehicle_id: vehicle.id,
                     storage_path: fileName,
@@ -161,13 +157,11 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
         router.refresh();
     };
 
-    // Fijar como Portada
     const handleSetPrimary = async (imageId: string) => {
         await setPrimaryVehicleImage(vehicle.id, imageId);
         router.refresh();
     };
 
-    // Eliminar Foto
     const handleDeleteImage = async (imageId: string, storagePath: string) => {
         if (!confirm('¿Eliminar esta fotografía?')) return;
         await deleteVehicleImage(imageId, vehicle.id, storagePath);
@@ -178,8 +172,8 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
         <div>
             {/* Panel Superior de Acciones de Estado y Publicación */}
             <div style={{
-                backgroundColor: '#121826',
-                border: '1px solid rgba(255,255,255,0.08)',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #E2E8F0',
                 borderRadius: 12,
                 padding: '16px 20px',
                 display: 'flex',
@@ -187,10 +181,11 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
                 gap: 16,
-                marginBottom: 24
+                marginBottom: 24,
+                boxShadow: 'var(--shadow-sm)'
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: '#94a3b8' }}>Estado del Vehículo:</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: '#334155' }}>Estado del Vehículo:</span>
                     <select
                         className="admin-select"
                         value={statusVal}
@@ -219,7 +214,7 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
             </div>
 
             {/* Tabs de Navegación */}
-            <div style={{ display: 'flex', gap: 8, borderBottom: '1px solid rgba(255,255,255,0.08)', marginBottom: 20 }}>
+            <div style={{ display: 'flex', gap: 8, borderBottom: '1px solid #E2E8F0', marginBottom: 20 }}>
                 <button
                     onClick={() => setActiveTab('photos')}
                     className={`admin-nav-item ${activeTab === 'photos' ? 'active' : ''}`}
@@ -253,8 +248,8 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                 <div className="table-container" style={{ padding: 24 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
                         <div>
-                            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc' }}>Galería de Fotografías</h3>
-                            <p style={{ fontSize: 13, color: '#64748b' }}>
+                            <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A' }}>Galería de Fotografías</h3>
+                            <p style={{ fontSize: 13, color: '#64748B' }}>
                                 La imagen con la estrella será la <strong>portada principal</strong> en la página web.
                             </p>
                         </div>
@@ -276,18 +271,18 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                     </div>
 
                     {uploadProgress && (
-                        <div style={{ backgroundColor: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)', padding: 12, borderRadius: 8, color: '#60a5fa', fontSize: 13, marginBottom: 16 }}>
+                        <div style={{ backgroundColor: '#FFF7ED', border: '1px solid #FFEDD5', padding: 12, borderRadius: 8, color: '#C2410C', fontSize: 13, marginBottom: 16 }}>
                             {uploadProgress}
                         </div>
                     )}
 
                     {(!vehicle.images || vehicle.images.length === 0) ? (
-                        <div style={{ padding: 48, textAlign: 'center', backgroundColor: '#121826', borderRadius: 12, border: '2px dashed rgba(255,255,255,0.1)' }}>
-                            <ImageIcon size={40} style={{ color: '#64748b', margin: '0 auto 12px' }} />
-                            <p style={{ fontSize: 15, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>
+                        <div style={{ padding: 48, textAlign: 'center', backgroundColor: '#F8FAFC', borderRadius: 12, border: '2px dashed #CBD5E1' }}>
+                            <ImageIcon size={40} style={{ color: '#94A3B8', margin: '0 auto 12px' }} />
+                            <p style={{ fontSize: 15, fontWeight: 700, color: '#0F172A', marginBottom: 4 }}>
                                 Aún no hay fotografías cargadas
                             </p>
-                            <p style={{ fontSize: 13, color: '#64748b' }}>
+                            <p style={{ fontSize: 13, color: '#64748B' }}>
                                 Subí imágenes para que el vehículo se visualice en la web pública.
                             </p>
                         </div>
@@ -299,30 +294,28 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                                     style={{
                                         position: 'relative',
                                         aspectRatio: '16/10',
-                                        backgroundColor: '#171f2e',
+                                        backgroundColor: '#F1F5F9',
                                         borderRadius: 10,
                                         overflow: 'hidden',
-                                        border: img.is_primary ? '2px solid #3b82f6' : '1px solid rgba(255,255,255,0.1)',
-                                        boxShadow: img.is_primary ? '0 0 15px rgba(59, 130, 246, 0.3)' : 'none'
+                                        border: img.is_primary ? '2px solid #EA580C' : '1px solid #E2E8F0',
+                                        boxShadow: img.is_primary ? '0 0 12px rgba(234, 88, 12, 0.3)' : 'none'
                                     }}
                                 >
                                     <img src={img.url} alt={vehicle.brand} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                     
-                                    {/* Badge Portada */}
                                     {img.is_primary && (
-                                        <div style={{ position: 'absolute', top: 8, left: 8, backgroundColor: '#3b82f6', color: '#fff', fontSize: 10, fontWeight: 800, padding: '2px 6px', borderRadius: 4, textTransform: 'uppercase' }}>
+                                        <div style={{ position: 'absolute', top: 8, left: 8, backgroundColor: '#EA580C', color: '#fff', fontSize: 10, fontWeight: 800, padding: '2px 6px', borderRadius: 4, textTransform: 'uppercase' }}>
                                             Portada
                                         </div>
                                     )}
 
-                                    {/* Acciones Hover */}
                                     <div style={{
                                         position: 'absolute',
                                         bottom: 0,
                                         left: 0,
                                         right: 0,
                                         padding: '8px',
-                                        background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)',
+                                        background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)',
                                         display: 'flex',
                                         justifyContent: 'space-between',
                                         alignItems: 'center'
@@ -331,7 +324,7 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                                             <button
                                                 onClick={() => handleSetPrimary(img.id)}
                                                 className="btn-secondary"
-                                                style={{ padding: '4px 8px', fontSize: 11, background: 'rgba(0,0,0,0.6)' }}
+                                                style={{ padding: '3px 8px', fontSize: 11, background: '#FFFFFF' }}
                                                 title="Hacer Portada Principal"
                                             >
                                                 <Star size={12} />
@@ -340,7 +333,7 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                                         )}
                                         <button
                                             onClick={() => handleDeleteImage(img.id, img.storage_path)}
-                                            style={{ color: '#f43f5e', padding: 4, marginLeft: 'auto', background: 'rgba(0,0,0,0.6)', borderRadius: 4 }}
+                                            style={{ color: '#EF4444', padding: 4, marginLeft: 'auto', background: '#FFFFFF', borderRadius: 4 }}
                                             title="Eliminar fotografía"
                                         >
                                             <Trash2 size={14} />
@@ -358,9 +351,9 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                 <div className="table-container" style={{ padding: 24 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
                         <div>
-                            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc' }}>Registro de Gastos del Vehículo</h3>
-                            <p style={{ fontSize: 13, color: '#64748b' }}>
-                                Total acumulado: <strong style={{ color: '#c084fc' }}>{formatARS(vehicle.total_expenses)}</strong>. Aumenta automáticamente el Costo Real.
+                            <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A' }}>Registro de Gastos del Vehículo</h3>
+                            <p style={{ fontSize: 13, color: '#64748B' }}>
+                                Total acumulado: <strong style={{ color: '#EA580C' }}>{formatARS(vehicle.total_expenses)}</strong>. Aumenta automáticamente el Costo Real.
                             </p>
                         </div>
 
@@ -370,16 +363,15 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                         </button>
                     </div>
 
-                    {/* Modal / Formulario de Gasto */}
                     {showExpenseModal && (
                         <div style={{
-                            backgroundColor: '#151b2a',
-                            border: '1px solid rgba(255,255,255,0.12)',
+                            backgroundColor: '#F8FAFC',
+                            border: '1px solid #E2E8F0',
                             borderRadius: 12,
                             padding: 20,
                             marginBottom: 24
                         }}>
-                            <h4 style={{ fontSize: 14, fontWeight: 700, color: '#fff', marginBottom: 16 }}>Nuevo Gasto</h4>
+                            <h4 style={{ fontSize: 14, fontWeight: 800, color: '#0F172A', marginBottom: 16 }}>Nuevo Gasto</h4>
                             <form onSubmit={handleAddExpense}>
                                 <div className="form-grid">
                                     <div className="form-group">
@@ -408,7 +400,7 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                                         <input
                                             type="text"
                                             className="form-input"
-                                            placeholder="Ej: Cambio de aceite, filtros y pastillas de freno"
+                                            placeholder="Ej: Cambio de aceite, filtros y pastillas"
                                             value={expenseDesc}
                                             onChange={(e) => setExpenseDesc(e.target.value)}
                                             required
@@ -451,9 +443,8 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                         </div>
                     )}
 
-                    {/* Tabla de Gastos */}
                     {(!vehicle.expenses || vehicle.expenses.length === 0) ? (
-                        <div style={{ padding: 32, textAlign: 'center', color: '#64748b' }}>
+                        <div style={{ padding: 32, textAlign: 'center', color: '#64748B' }}>
                             No hay gastos registrados para este vehículo.
                         </div>
                     ) : (
@@ -471,27 +462,27 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                             <tbody>
                                 {vehicle.expenses.map((exp) => (
                                     <tr key={exp.id}>
-                                        <td style={{ color: '#94a3b8', fontSize: 12.5 }}>
+                                        <td style={{ color: '#64748B', fontSize: 12.5 }}>
                                             {formatDate(exp.expense_date)}
                                         </td>
                                         <td>
-                                            <span className="badge" style={{ background: '#1e293b', color: '#e2e8f0' }}>
+                                            <span className="badge" style={{ background: '#F1F5F9', color: '#334155' }}>
                                                 {exp.category}
                                             </span>
                                         </td>
-                                        <td style={{ fontWeight: 500 }}>
+                                        <td style={{ fontWeight: 600, color: '#0F172A' }}>
                                             {exp.description}
                                         </td>
-                                        <td style={{ color: '#94a3b8' }}>
+                                        <td style={{ color: '#64748B' }}>
                                             {exp.provider || '-'}
                                         </td>
-                                        <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#f8fafc' }}>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#0F172A' }}>
                                             {formatARS(exp.amount)}
                                         </td>
                                         <td style={{ textAlign: 'right' }}>
                                             <button
                                                 onClick={() => handleDeleteExpense(exp.id)}
-                                                style={{ color: '#f43f5e', padding: 4 }}
+                                                style={{ color: '#EF4444', padding: 4 }}
                                                 title="Eliminar gasto"
                                             >
                                                 <Trash2 size={15} />
@@ -508,84 +499,82 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
             {/* TAB: INFORMACIÓN TÉCNICA Y COMERCIAL */}
             {activeTab === 'info' && (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24 }}>
-                    {/* Tarjeta Técnica */}
                     <div className="table-container" style={{ padding: 24 }}>
-                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', marginBottom: 16 }}>
+                        <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', marginBottom: 16 }}>
                             Especificaciones Técnicas
                         </h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontSize: 13.5 }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>Marca y Modelo:</span>
-                                <span style={{ fontWeight: 600, color: '#f8fafc' }}>{vehicle.brand} {vehicle.model}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>Marca y Modelo:</span>
+                                <span style={{ fontWeight: 700, color: '#0F172A' }}>{vehicle.brand} {vehicle.model}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>Versión:</span>
-                                <span style={{ fontWeight: 600, color: '#f8fafc' }}>{vehicle.version || '-'}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>Versión:</span>
+                                <span style={{ fontWeight: 600, color: '#334155' }}>{vehicle.version || '-'}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>Año:</span>
-                                <span style={{ fontWeight: 600, color: '#f8fafc' }}>{vehicle.year}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>Año:</span>
+                                <span style={{ fontWeight: 700, color: '#0F172A' }}>{vehicle.year}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>Kilometraje:</span>
-                                <span style={{ fontWeight: 600, color: '#f8fafc' }}>{vehicle.mileage?.toLocaleString('es-AR')} km</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>Kilometraje:</span>
+                                <span style={{ fontWeight: 700, color: '#0F172A' }}>{vehicle.mileage?.toLocaleString('es-AR')} km</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>Combustible:</span>
-                                <span style={{ fontWeight: 600, color: '#f8fafc' }}>{vehicle.fuel_type}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>Combustible:</span>
+                                <span style={{ fontWeight: 600, color: '#334155' }}>{vehicle.fuel_type}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>Transmisión:</span>
-                                <span style={{ fontWeight: 600, color: '#f8fafc' }}>{vehicle.transmission}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>Transmisión:</span>
+                                <span style={{ fontWeight: 600, color: '#334155' }}>{vehicle.transmission}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>Color Exterior:</span>
-                                <span style={{ fontWeight: 600, color: '#f8fafc' }}>{vehicle.exterior_color || '-'}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>Color Exterior:</span>
+                                <span style={{ fontWeight: 600, color: '#334155' }}>{vehicle.exterior_color || '-'}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>VIN / Chasis:</span>
-                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#60a5fa' }}>{vehicle.vin || '-'}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>VIN / Chasis:</span>
+                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#EA580C' }}>{vehicle.vin || '-'}</span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span style={{ color: '#64748b' }}>Nro. de Motor:</span>
-                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#cbd5e1' }}>{vehicle.engine_number || '-'}</span>
+                                <span style={{ color: '#64748B' }}>Nro. de Motor:</span>
+                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#334155' }}>{vehicle.engine_number || '-'}</span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Tarjeta Comercial */}
                     <div className="table-container" style={{ padding: 24 }}>
-                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', marginBottom: 16 }}>
+                        <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', marginBottom: 16 }}>
                             Valores Comerciales & Rentabilidad
                         </h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontSize: 13.5 }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>Valor de Compra:</span>
-                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#f8fafc' }}>{formatARS(vehicle.purchase_price)}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>Valor de Compra:</span>
+                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#0F172A' }}>{formatARS(vehicle.purchase_price)}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>Gastos Invertidos:</span>
-                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#c084fc' }}>{formatARS(vehicle.total_expenses)}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>Gastos Invertidos:</span>
+                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#64748B' }}>{formatARS(vehicle.total_expenses)}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>Costo Real Total:</span>
-                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#60a5fa' }}>{formatARS(vehicle.real_cost)}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>Costo Real Total:</span>
+                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#0F172A' }}>{formatARS(vehicle.real_cost)}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>Precio de Venta:</span>
-                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#34d399', fontSize: 16 }}>{formatARS(vehicle.sale_price)}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>Precio de Venta:</span>
+                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 900, color: '#EA580C', fontSize: 16 }}>{formatARS(vehicle.sale_price)}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>Precio Mínimo:</span>
-                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#94a3b8' }}>{formatARS(vehicle.minimum_price)}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>Precio Mínimo:</span>
+                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#64748B' }}>{formatARS(vehicle.minimum_price)}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 8 }}>
-                                <span style={{ color: '#64748b' }}>Ganancia Estimada:</span>
-                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#fbbf24' }}>{formatARS(vehicle.potential_profit)}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#64748B' }}>Ganancia Estimada:</span>
+                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#10B981' }}>{formatARS(vehicle.potential_profit)}</span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span style={{ color: '#64748b' }}>Días en Stock:</span>
-                                <span style={{ fontWeight: 700, color: '#f8fafc' }}>{vehicle.days_in_stock} días</span>
+                                <span style={{ color: '#64748B' }}>Días en Stock:</span>
+                                <span style={{ fontWeight: 700, color: '#0F172A' }}>{vehicle.days_in_stock} días</span>
                             </div>
                         </div>
                     </div>

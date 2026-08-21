@@ -15,17 +15,17 @@ export function PublicNavbar({ whatsappNumber, agencyName }: { whatsappNumber?: 
                 {/* Logo */}
                 <Link href="/" className="public-logo">
                     <div style={{
-                        width: 38,
-                        height: 38,
+                        width: 40,
+                        height: 40,
                         borderRadius: 10,
-                        background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+                        background: 'linear-gradient(135deg, #FF6B00 0%, #EA580C 100%)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         color: '#fff',
                         fontWeight: 900,
                         fontSize: 18,
-                        boxShadow: '0 4px 14px rgba(59, 130, 246, 0.4)'
+                        boxShadow: '0 4px 14px rgba(234, 88, 12, 0.35)'
                     }}>
                         SC
                     </div>
@@ -39,14 +39,14 @@ export function PublicNavbar({ whatsappNumber, agencyName }: { whatsappNumber?: 
                     <Link 
                         href="/" 
                         className="public-nav-link"
-                        style={{ color: pathname === '/' ? '#60a5fa' : undefined, fontWeight: pathname === '/' ? 700 : undefined }}
+                        style={{ color: pathname === '/' ? '#EA580C' : undefined, fontWeight: pathname === '/' ? 700 : undefined }}
                     >
                         Inicio
                     </Link>
                     <Link 
                         href="/vehiculos" 
                         className="public-nav-link"
-                        style={{ color: pathname.startsWith('/vehiculos') ? '#60a5fa' : undefined, fontWeight: pathname.startsWith('/vehiculos') ? 700 : undefined }}
+                        style={{ color: pathname.startsWith('/vehiculos') ? '#EA580C' : undefined, fontWeight: pathname.startsWith('/vehiculos') ? 700 : undefined }}
                     >
                         Catálogo de Vehículos
                     </Link>
@@ -69,7 +69,7 @@ export function PublicNavbar({ whatsappNumber, agencyName }: { whatsappNumber?: 
 
                     <Link
                         href="/login"
-                        style={{ color: '#64748b', display: 'flex', alignItems: 'center', padding: 8 }}
+                        style={{ color: '#94A3B8', display: 'flex', alignItems: 'center', padding: 8 }}
                         title="Acceso Administración"
                     >
                         <Lock size={15} />
