@@ -1,9 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createVehicle } from '@/lib/actions/vehicles';
+import { registerVehicleImage } from '@/lib/actions/images';
+import { createClient } from '@/lib/supabase/client';
+import imageCompression from 'browser-image-compression';
 import { formatARS } from '@/lib/utils/currency';
 import { 
     Car, 
@@ -18,7 +21,9 @@ import {
     ArrowRight, 
     ArrowLeft,
     UploadCloud,
-    AlertCircle
+    AlertCircle,
+    X,
+    Star
 } from 'lucide-react';
 
 const STEPS = [
@@ -34,9 +39,13 @@ const STEPS = [
 
 export default function NewVehiclePage() {
     const router = useRouter();
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const [currentStep, setCurrentStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+    const [previews, setPreviews] = useState<string[]>([]);
+    const [uploadStatus, setUploadStatus] = useState<string | null>(null);
 
     // Estado del formulario
     const [formData, setFormData] = useState({
@@ -102,6 +111,75 @@ export default function NewVehiclePage() {
         }
     };
 
+    // Seleccionar archivos
+    const handleFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files) return;
+        const newFiles = Array.from(files);
+        setSelectedFiles(prev => [...prev, ...newFiles]);
+        newFiles.forEach(file => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviews(prev => [...prev, reader.result as string]);
+            };
+            reader.readAsDataURL(file);
+        });
+        // Reset input so same file can be selected again
+        e.target.value = '';
+    };
+
+    const removeFile = (index: number) => {
+        setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+        setPreviews(prev => prev.filter((_, i) => i !== index));
+    };
+
+    // Subir fotos a Supabase después de crear el vehículo
+    const uploadPhotos = async (vehicleId: string) => {
+        if (selectedFiles.length === 0) return;
+        const supabase = createClient();
+
+        for (let i = 0; i < selectedFiles.length; i++) {
+            const file = selectedFiles[i];
+            setUploadStatus(`Subiendo foto ${i + 1} de ${selectedFiles.length}...`);
+
+            try {
+                const compressed = await imageCompression(file, {
+                    maxSizeMB: 1.2,
+                    maxWidthOrHeight: 1920,
+                    useWebWorker: true
+                });
+
+                const ext = file.name.split('.').pop() || 'jpg';
+                const fileName = `${vehicleId}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${ext}`;
+
+                const { error: uploadErr } = await supabase.storage
+                    .from('vehicle-images')
+                    .upload(fileName, compressed, { cacheControl: '3600', upsert: true });
+
+                if (uploadErr) {
+                    console.error('Error subiendo foto:', uploadErr);
+                    continue;
+                }
+
+                const { data: publicUrlData } = supabase.storage
+                    .from('vehicle-images')
+                    .getPublicUrl(fileName);
+
+                await registerVehicleImage({
+                    vehicle_id: vehicleId,
+                    storage_path: fileName,
+                    url: publicUrlData.publicUrl,
+                    file_name: file.name,
+                    file_size: compressed.size,
+                    mime_type: compressed.type
+                });
+            } catch (err) {
+                console.error('Error procesando imagen:', err);
+            }
+        }
+        setUploadStatus(null);
+    };
+
     const handleSave = async (shouldPublish: boolean) => {
         setLoading(true);
         setError(null);
@@ -121,6 +199,10 @@ export default function NewVehiclePage() {
             }
 
             if (res.vehicle) {
+                // Subir fotos seleccionadas
+                if (selectedFiles.length > 0) {
+                    await uploadPhotos(res.vehicle.id);
+                }
                 router.push(`/admin/vehiculos/${res.vehicle.id}`);
             }
         } catch (err: any) {
@@ -494,24 +576,91 @@ export default function NewVehiclePage() {
                             Paso 5: Fotografías del Vehículo
                         </h2>
                         <p style={{ fontSize: 13, color: '#000000', marginBottom: 20 }}>
-                            Podrás subir fotografías directamente aquí o cargarlas desde la ficha 360° una vez guardado el vehículo.
+                            Seleccioná las fotos del vehículo. Se subirán automáticamente al guardar.
                         </p>
 
-                        <div style={{
-                            border: '2px dashed #CBD5E1',
-                            borderRadius: 12,
-                            padding: '40px 24px',
-                            textAlign: 'center',
-                            backgroundColor: '#F8FAFC'
-                        }}>
-                            <UploadCloud size={40} style={{ color: '#EA580C', margin: '0 auto 12px' }} />
-                            <p style={{ fontSize: 15, fontWeight: 600, color: '#000000', marginBottom: 4 }}>
-                                Subida de imágenes optimizada a Supabase Storage
-                            </p>
-                            <p style={{ fontSize: 12.5, color: '#334155', maxWidth: 460, margin: '0 auto' }}>
-                                Arrastrá y soltá fotos aquí o seleccionalas desde tu computadora. Podrás definir la imagen de portada y reordenarlas con drag & drop.
-                            </p>
-                        </div>
+                        {/* Input oculto */}
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            multiple
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            onChange={handleFilesSelected}
+                        />
+
+                        {/* Botón de selección */}
+                        <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="btn-primary"
+                            style={{ marginBottom: 20, padding: '12px 24px', fontSize: 14 }}
+                        >
+                            <UploadCloud size={18} />
+                            <span>Seleccionar Imágenes</span>
+                        </button>
+
+                        {/* Previews */}
+                        {previews.length > 0 ? (
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 12 }}>
+                                {previews.map((src, idx) => (
+                                    <div key={idx} style={{
+                                        position: 'relative',
+                                        borderRadius: 10,
+                                        overflow: 'hidden',
+                                        border: '1px solid #E2E8F0',
+                                        aspectRatio: '16/10',
+                                        backgroundColor: '#F8FAFC'
+                                    }}>
+                                        <img src={src} alt={`Preview ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <button
+                                            type="button"
+                                            onClick={() => removeFile(idx)}
+                                            style={{
+                                                position: 'absolute', top: 6, right: 6,
+                                                width: 24, height: 24, borderRadius: '50%',
+                                                backgroundColor: 'rgba(0,0,0,0.6)', color: '#fff',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                border: 'none', cursor: 'pointer', padding: 0
+                                            }}
+                                        >
+                                            <X size={14} />
+                                        </button>
+                                        {idx === 0 && (
+                                            <div style={{
+                                                position: 'absolute', bottom: 6, left: 6,
+                                                backgroundColor: '#EA580C', color: '#fff',
+                                                fontSize: 10, fontWeight: 700, padding: '2px 8px',
+                                                borderRadius: 20, display: 'flex', alignItems: 'center', gap: 4
+                                            }}>
+                                                <Star size={10} /> Portada
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div style={{
+                                border: '2px dashed #CBD5E1',
+                                borderRadius: 12,
+                                padding: '40px 24px',
+                                textAlign: 'center',
+                                backgroundColor: '#F8FAFC'
+                            }}>
+                                <UploadCloud size={40} style={{ color: '#EA580C', margin: '0 auto 12px' }} />
+                                <p style={{ fontSize: 15, fontWeight: 600, color: '#000000', marginBottom: 4 }}>
+                                    No hay imágenes seleccionadas
+                                </p>
+                                <p style={{ fontSize: 12.5, color: '#334155', maxWidth: 460, margin: '0 auto' }}>
+                                    Hacé click en "Seleccionar Imágenes" para elegir fotos desde tu dispositivo.
+                                    La primera imagen será la portada principal.
+                                </p>
+                            </div>
+                        )}
+
+                        <p style={{ fontSize: 12, color: '#334155', marginTop: 12 }}>
+                            {selectedFiles.length} {selectedFiles.length === 1 ? 'imagen seleccionada' : 'imágenes seleccionadas'}
+                        </p>
                     </div>
                 )}
 
@@ -644,7 +793,7 @@ export default function NewVehiclePage() {
                                 style={{ padding: '12px 24px', fontSize: 14 }}
                             >
                                 <Save size={16} />
-                                <span>Guardar como Borrador</span>
+                                <span>{loading ? (uploadStatus || 'Guardando...') : 'Guardar como Borrador'}</span>
                             </button>
 
                             <button
@@ -654,9 +803,15 @@ export default function NewVehiclePage() {
                                 style={{ padding: '12px 28px', fontSize: 14 }}
                             >
                                 <Globe size={16} />
-                                <span>Guardar y Publicar en Web</span>
+                                <span>{loading ? (uploadStatus || 'Guardando...') : 'Guardar y Publicar en Web'}</span>
                             </button>
                         </div>
+
+                        {selectedFiles.length > 0 && !loading && (
+                            <p style={{ fontSize: 12, color: '#334155', textAlign: 'center', marginTop: 12 }}>
+                                📷 {selectedFiles.length} {selectedFiles.length === 1 ? 'imagen' : 'imágenes'} se subirán al guardar
+                            </p>
+                        )}
                     </div>
                 )}
 
