@@ -210,11 +210,13 @@ export default async function PublicHomePage() {
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontSize: 14 }}>
                                 <div>
                                     <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>Dirección</span>
-                                    <div style={{ fontWeight: 700, color: '#0F172A', marginTop: 2 }}>{settings.address || 'Av. del Libertador 4500'}, {settings.city || 'Palermo'}, {settings.province || 'CABA'}</div>
+                                    <div style={{ fontWeight: 700, color: '#0F172A', marginTop: 2 }}>
+                                        {[settings.address || 'Calle 48 2350', settings.city, settings.province].filter(Boolean).join(', ')}
+                                    </div>
                                 </div>
                                 <div>
                                     <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>Horarios de Atención</span>
-                                    <div style={{ color: '#334155', marginTop: 2 }}>{settings.business_hours || 'Lunes a Viernes de 9 a 19 hs. Sábados de 10 a 14 hs.'}</div>
+                                    <div style={{ color: '#334155', marginTop: 2 }}>{settings.business_hours || 'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 08:00 a 12:30 hs.'}</div>
                                 </div>
                                 <div>
                                     <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>WhatsApp Directo</span>

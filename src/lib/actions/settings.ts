@@ -23,9 +23,9 @@ export async function getAgencySettings(): Promise<AgencySettings> {
             id: 'default',
             name: 'Special Cars',
             description: 'Concesionaria líder en vehículos premium, usados y 0 KM. Más de 15 años brindando transparencia, calidad y confianza en cada operación.',
-            address: 'Av. del Libertador 4500',
-            city: 'Buenos Aires',
-            province: 'CABA',
+            address: 'Calle 48 2350',
+            city: '',
+            province: '',
             phone: '+54 11 4098-0758',
             whatsapp: '5491140980758',
             email: 'juanpablo.difiori@gmail.com',
@@ -33,7 +33,7 @@ export async function getAgencySettings(): Promise<AgencySettings> {
             facebook: 'https://facebook.com/specialcars',
             tiktok: 'https://tiktok.com/@specialcars',
             google_maps_url: null,
-            business_hours: 'Lunes a Viernes de 9:00 a 19:00 hs. Sábados de 10:00 a 14:00 hs.',
+            business_hours: 'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 08:00 a 12:30 hs.',
             legal_info: 'Special Cars S.R.L. — CUIT 30-71234567-8',
             updated_at: new Date().toISOString()
         };

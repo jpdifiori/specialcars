@@ -97,11 +97,11 @@ export function PublicFooter({ settings }: { settings: AgencySettings }) {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontSize: 13.5, color: '#94A3B8' }}>
                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
                             <MapPin size={16} style={{ color: '#EA580C', flexShrink: 0, marginTop: 3 }} />
-                            <span>{settings.address || 'Av. del Libertador 4500'}, {settings.city || 'Palermo'}, {settings.province || 'CABA'}</span>
+                            <span>{[settings.address || 'Calle 48 2350', settings.city, settings.province].filter(Boolean).join(', ')}</span>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
                             <Clock size={16} style={{ color: '#EA580C', flexShrink: 0, marginTop: 3 }} />
-                            <span>{settings.business_hours || 'Lunes a Viernes de 9:00 a 19:00 hs. Sábados de 10:00 a 14:00 hs.'}</span>
+                            <span>{settings.business_hours || 'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 08:00 a 12:30 hs.'}</span>
                         </div>
                     </div>
                 </div>

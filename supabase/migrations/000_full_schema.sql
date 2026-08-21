@@ -1206,15 +1206,15 @@ INSERT INTO agency_settings (
 ) VALUES (
     'Special Cars',
     'Concesionaria líder en vehículos premium, usados y 0 KM. Más de 15 años brindando transparencia, calidad y confianza en cada operación.',
-    'Av. del Libertador 4500',
-    'Palermo',
-    'CABA',
+    'Calle 48 2350',
+    '',
+    '',
     '+54 11 4098-0758',
     '5491140980758',
     'juanpablo.difiori@gmail.com',
     'https://instagram.com/specialcars',
     'https://facebook.com/specialcars',
     'https://tiktok.com/@specialcars',
-    'Lunes a Viernes de 9:00 a 19:00 hs. Sábados de 10:00 a 14:00 hs.',
+    'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 08:00 a 12:30 hs.',
     'Special Cars S.R.L. — CUIT 30-71234567-8'
 ) ON CONFLICT DO NOTHING;
