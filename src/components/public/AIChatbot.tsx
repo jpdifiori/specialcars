@@ -44,7 +44,7 @@ export function AIChatbot({
         {
             id: 'welcome',
             role: 'assistant',
-            content: `¡Hola! 👋 Soy **Special Bot**, tu asistente virtual con Inteligencia Artificial de **Special Cars**.\n\n¿En qué te puedo asesorar hoy? Podés consultarme sobre los vehículos en stock, precios, financiación, permutas o nuestra ubicación en Necochea.`,
+            content: `¡Hola! 👋 Soy **Franco**, de **Special Cars**. ¿Cómo estás?\n\nContame, ¿en qué te puedo ayudar?`,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
     ]);
@@ -129,7 +129,7 @@ export function AIChatbot({
             {
                 id: 'welcome',
                 role: 'assistant',
-                content: `¡Hola de nuevo! 👋 Soy **Special Bot**.\n\n¿Qué vehículo te gustaría consultar o qué duda tenés sobre nuestros servicios?`,
+                content: `¡Hola! 👋 Soy **Franco**, de **Special Cars**. ¿Cómo estás?\n\nContame, ¿en qué te puedo ayudar?`,
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             }
         ]);
@@ -245,7 +245,7 @@ export function AIChatbot({
                     }}
                 >
                     <Sparkles size={16} style={{ color: '#EA580C', flexShrink: 0 }} />
-                    <span>¿Buscás un auto? ¡Preguntale a nuestra IA!</span>
+                    <span>¡Hola! Soy Franco. ¿En qué te puedo ayudar?</span>
                     <button 
                         onClick={(e) => { e.stopPropagation(); setShowBubbleTip(false); }} 
                         style={{ marginLeft: 'auto', color: '#94A3B8', padding: 2 }}
@@ -342,7 +342,7 @@ export function AIChatbot({
                             </div>
                             <div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: -0.2 }}>Special Bot</span>
+                                    <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: -0.2 }}>Franco</span>
                                     <span style={{
                                         fontSize: 10,
                                         fontWeight: 700,
@@ -350,11 +350,11 @@ export function AIChatbot({
                                         color: '#F97316',
                                         padding: '1px 6px',
                                         borderRadius: 10
-                                    }}>IA</span>
+                                    }}>Asesor</span>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, color: '#94A3B8' }}>
                                     <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#22C55E', display: 'inline-block' }} />
-                                    <span>En línea • DeepSeek AI</span>
+                                    <span>En línea • Special Cars</span>
                                 </div>
                             </div>
                         </div>
@@ -440,7 +440,7 @@ export function AIChatbot({
                         {isLoading && (
                             <div style={{ display: 'flex', alignItems: 'center', gap: 6, alignSelf: 'flex-start', backgroundColor: '#FFFFFF', padding: '10px 16px', borderRadius: '18px 18px 18px 4px', border: '1px solid #E2E8F0' }}>
                                 <Bot size={14} style={{ color: '#EA580C' }} />
-                                <span style={{ fontSize: 12, color: '#64748B' }}>Special Bot está pensando...</span>
+                                <span style={{ fontSize: 12, color: '#64748B' }}>Franco está escribiendo...</span>
                                 <div style={{ display: 'flex', gap: 3, marginLeft: 4 }}>
                                     <span className="dot-pulse" style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: '#EA580C' }} />
                                     <span className="dot-pulse" style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: '#EA580C', animationDelay: '0.2s' }} />
@@ -517,7 +517,7 @@ export function AIChatbot({
                                     handleSend();
                                 }
                             }}
-                            placeholder="Consultá sobre un auto o servicio..."
+                            placeholder="Escribile a Franco tu consulta..."
                             disabled={isLoading}
                             style={{
                                 flex: 1,
