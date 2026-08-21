@@ -598,6 +598,12 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                                 <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 900, color: '#EA580C', fontSize: 16 }}>{formatARS(vehicle.sale_price)}</span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                <span style={{ color: '#000000' }}>Visualización en Web:</span>
+                                <span style={{ fontWeight: 700, color: vehicle.hide_price ? '#EA580C' : '#059669', fontSize: 12.5 }}>
+                                    {vehicle.hide_price ? 'Consultar precio! (Oculto)' : 'Precio Visible'}
+                                </span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
                                 <span style={{ color: '#000000' }}>Precio Mínimo:</span>
                                 <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#000000' }}>{formatARS(vehicle.minimum_price)}</span>
                             </div>

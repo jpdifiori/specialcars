@@ -72,6 +72,7 @@ export default function NewVehiclePage() {
         status: 'AVAILABLE',
         published: true,
         featured: false,
+        hide_price: true,
         commercial_title: '',
         description: '',
         equipment: '',
@@ -748,28 +749,47 @@ export default function NewVehiclePage() {
                                 />
                             </div>
 
-                            <div style={{ display: 'flex', gap: 20, marginTop: 10 }}>
-                                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 10 }}>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', backgroundColor: '#F8FAFC', padding: '12px 16px', borderRadius: 8, border: '1px solid #E2E8F0' }}>
                                     <input
                                         type="checkbox"
-                                        checked={formData.published}
-                                        onChange={(e) => updateField('published', e.target.checked)}
+                                        checked={formData.hide_price}
+                                        onChange={(e) => updateField('hide_price', e.target.checked)}
+                                        style={{ width: 18, height: 18, accentColor: '#EA580C', cursor: 'pointer' }}
                                     />
-                                    <span style={{ fontSize: 13.5, fontWeight: 600, color: '#000000' }}>
-                                        Publicar en el Catálogo Web
-                                    </span>
+                                    <div>
+                                        <span style={{ fontSize: 14, fontWeight: 700, color: '#000000' }}>
+                                            Ocultar precio en la web pública (Mostrar &quot;Consultar precio!&quot;)
+                                        </span>
+                                        <div style={{ fontSize: 12, color: '#64748B' }}>
+                                            Por defecto activado. En lugar del monto numérico, el público verá &quot;Consultar precio!&quot;.
+                                        </div>
+                                    </div>
                                 </label>
 
-                                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                                    <input
-                                        type="checkbox"
-                                        checked={formData.featured}
-                                        onChange={(e) => updateField('featured', e.target.checked)}
-                                    />
-                                    <span style={{ fontSize: 13.5, fontWeight: 600, color: '#fbbf24' }}>
-                                        Destacar en Portada (Home)
-                                    </span>
-                                </label>
+                                <div style={{ display: 'flex', gap: 20 }}>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={formData.published}
+                                            onChange={(e) => updateField('published', e.target.checked)}
+                                        />
+                                        <span style={{ fontSize: 13.5, fontWeight: 600, color: '#000000' }}>
+                                            Publicar en el Catálogo Web
+                                        </span>
+                                    </label>
+
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={formData.featured}
+                                            onChange={(e) => updateField('featured', e.target.checked)}
+                                        />
+                                        <span style={{ fontSize: 13.5, fontWeight: 600, color: '#D97706' }}>
+                                            Destacar en Portada (Home)
+                                        </span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>

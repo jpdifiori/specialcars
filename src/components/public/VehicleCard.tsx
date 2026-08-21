@@ -70,9 +70,11 @@ export function VehicleCard({ vehicle }: { vehicle: PublicVehicleItem }) {
                 {/* Footer: Precio ARS y Link */}
                 <div className="vehicle-card-footer">
                     <div>
-                        <div className="vehicle-card-price-label">Precio Final</div>
-                        <div className="vehicle-card-price">
-                            {formatARS(vehicle.price)}
+                        <div className="vehicle-card-price-label">
+                            {vehicle.hide_price ? 'Precio' : 'Precio Final'}
+                        </div>
+                        <div className="vehicle-card-price" style={{ color: '#EA580C', fontSize: vehicle.hide_price ? 17 : 20, fontWeight: 800 }}>
+                            {vehicle.hide_price ? 'Consultar precio!' : formatARS(vehicle.price)}
                         </div>
                     </div>
 

@@ -67,11 +67,11 @@ export default async function PublicVehicleDetailPage({ params }: { params: Prom
         <div className="public-section" style={{ paddingTop: 30 }}>
             {/* Breadcrumbs */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: '#64748b', marginBottom: 20 }}>
-                <Link href="/" style={{ color: '#94a3b8' }}>Inicio</Link>
+                <Link href="/" style={{ color: '#EA580C', fontWeight: 600 }}>Inicio</Link>
                 <span>/</span>
-                <Link href="/vehiculos" style={{ color: '#94a3b8' }}>Catálogo</Link>
+                <Link href="/vehiculos" style={{ color: '#EA580C', fontWeight: 600 }}>Catálogo</Link>
                 <span>/</span>
-                <span style={{ color: '#f8fafc', fontWeight: 600 }}>{vehicle.brand} {vehicle.model}</span>
+                <span style={{ color: '#000000', fontWeight: 700 }}>{vehicle.brand} {vehicle.model}</span>
             </div>
 
             {/* Grid Principal: Galería + Ficha Comercial */}
@@ -87,22 +87,22 @@ export default async function PublicVehicleDetailPage({ params }: { params: Prom
                     {/* Descripción y Equipamiento */}
                     <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 24 }}>
                         {vehicle.description && (
-                            <div style={{ backgroundColor: '#0e121c', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: 24 }}>
-                                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', marginBottom: 12 }}>
+                            <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: 16, padding: 24, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+                                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', marginBottom: 12 }}>
                                     Descripción del Vehículo
                                 </h3>
-                                <p style={{ fontSize: 14, color: '#cbd5e1', lineHeight: 1.7, whiteSpace: 'pre-line' }}>
+                                <p style={{ fontSize: 14, color: '#334155', lineHeight: 1.7, whiteSpace: 'pre-line' }}>
                                     {vehicle.description}
                                 </p>
                             </div>
                         )}
 
                         {vehicle.equipment && (
-                            <div style={{ backgroundColor: '#0e121c', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: 24 }}>
-                                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', marginBottom: 12 }}>
+                            <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: 16, padding: 24, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+                                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', marginBottom: 12 }}>
                                     Equipamiento & Confort
                                 </h3>
-                                <p style={{ fontSize: 14, color: '#cbd5e1', lineHeight: 1.7, whiteSpace: 'pre-line' }}>
+                                <p style={{ fontSize: 14, color: '#334155', lineHeight: 1.7, whiteSpace: 'pre-line' }}>
                                     {vehicle.equipment}
                                 </p>
                             </div>
@@ -123,10 +123,10 @@ export default async function PublicVehicleDetailPage({ params }: { params: Prom
                                 </span>
                             </div>
 
-                            <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 26, fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>
+                            <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 26, fontWeight: 800, color: '#000000', lineHeight: 1.2 }}>
                                 {vehicle.commercial_title || `${vehicle.brand} ${vehicle.model} ${vehicle.version || ''}`}
                             </h1>
-                            <div style={{ fontSize: 14, color: '#94a3b8', marginTop: 4 }}>
+                            <div style={{ fontSize: 14, color: '#475569', marginTop: 4 }}>
                                 Año {vehicle.year} • {vehicle.mileage?.toLocaleString('es-AR')} km
                             </div>
                         </div>
@@ -134,12 +134,12 @@ export default async function PublicVehicleDetailPage({ params }: { params: Prom
                         {/* Caja de Precio */}
                         <div className="detail-price-box">
                             <div style={{ fontSize: 12, color: '#64748b', textTransform: 'uppercase', fontWeight: 600, marginBottom: 2 }}>
-                                Precio Final al Contado / Permuta
+                                {vehicle.hide_price ? 'Condición Comercial' : 'Precio Final al Contado / Permuta'}
                             </div>
-                            <div className="detail-price">
-                                {formatARS(vehicle.price)}
+                            <div className="detail-price" style={{ color: '#EA580C', fontSize: vehicle.hide_price ? 26 : 32, fontWeight: 900 }}>
+                                {vehicle.hide_price ? 'Consultar precio!' : formatARS(vehicle.price)}
                             </div>
-                            <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 6 }}>
+                            <div style={{ fontSize: 12, color: '#64748b', marginTop: 6 }}>
                                 Aceptamos permutas al mejor valor del mercado.
                             </div>
                         </div>

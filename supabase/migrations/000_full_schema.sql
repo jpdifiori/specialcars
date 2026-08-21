@@ -159,6 +159,7 @@ CREATE TABLE IF NOT EXISTS vehicles (
     -- Publicación y Web
     published BOOLEAN DEFAULT FALSE,
     featured BOOLEAN DEFAULT FALSE,
+    hide_price BOOLEAN DEFAULT TRUE,
     commercial_title TEXT,
     description TEXT,
     equipment TEXT,

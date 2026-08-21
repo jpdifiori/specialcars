@@ -6,6 +6,23 @@ import { Vehicle, PublicVehicleItem } from '@/lib/types';
 import { generateVehicleSlug } from '@/lib/utils/slug';
 import { revalidatePath } from 'next/cache';
 
+function parseHidePrice(v: any): boolean {
+    if (v.hide_price !== undefined && v.hide_price !== null) {
+        return Boolean(v.hide_price);
+    }
+    if (v.features) {
+        try {
+            const parsed = JSON.parse(v.features);
+            if (typeof parsed.hide_price === 'boolean') {
+                return parsed.hide_price;
+            }
+        } catch {
+            // not json
+        }
+    }
+    return true; // default true (Consultar precio!)
+}
+
 export interface VehicleFilterParams {
     search?: string;
     status?: string;
@@ -118,6 +135,7 @@ export async function getAdminVehicles(params: VehicleFilterParams = {}) {
 
         return {
             ...v,
+            hide_price: parseHidePrice(v),
             total_expenses: totalExpenses,
             real_cost: realCost,
             potential_profit: potentialProfit,
@@ -177,6 +195,7 @@ export async function getVehicleById(id: string): Promise<Vehicle | null> {
 
     return {
         ...data,
+        hide_price: parseHidePrice(data),
         total_expenses: totalExpenses,
         real_cost: realCost,
         potential_profit: potentialProfit,
@@ -244,6 +263,16 @@ export async function createVehicle(formData: Partial<Vehicle>) {
         `${formData.brand?.toUpperCase()} ${formData.model?.toUpperCase()} ${formData.version ? formData.version.toUpperCase() : ''} ${formData.year}`.trim();
 
     // 4. Inserción
+    const hidePriceValue = formData.hide_price !== undefined ? Boolean(formData.hide_price) : true;
+    let featuresData = formData.features?.trim() || null;
+    try {
+        const obj = featuresData ? JSON.parse(featuresData) : {};
+        obj.hide_price = hidePriceValue;
+        featuresData = JSON.stringify(obj);
+    } catch {
+        featuresData = JSON.stringify({ raw: featuresData, hide_price: hidePriceValue });
+    }
+
     const payload = {
         brand: formData.brand?.trim() || '',
         model: formData.model?.trim() || '',
@@ -270,7 +299,7 @@ export async function createVehicle(formData: Partial<Vehicle>) {
         commercial_title: commercialTitle,
         description: formData.description?.trim() || null,
         equipment: formData.equipment?.trim() || null,
-        features: formData.features?.trim() || null,
+        features: featuresData,
         slug: finalSlug,
         meta_title: formData.meta_title?.trim() || `${commercialTitle} | Special Cars`,
         meta_description: formData.meta_description?.trim() || `Comprá tu ${commercialTitle} en Special Cars. Excelente estado y garantía.`,
@@ -331,6 +360,18 @@ export async function updateVehicle(id: string, formData: Partial<Vehicle>) {
     delete payload.potential_profit;
     delete payload.profitability_pct;
     delete payload.days_in_stock;
+
+    if (formData.hide_price !== undefined) {
+        let featuresData = payload.features || null;
+        try {
+            const obj = featuresData ? JSON.parse(featuresData) : {};
+            obj.hide_price = Boolean(formData.hide_price);
+            payload.features = JSON.stringify(obj);
+        } catch {
+            payload.features = JSON.stringify({ raw: featuresData, hide_price: Boolean(formData.hide_price) });
+        }
+        delete payload.hide_price;
+    }
 
     if (payload.plate) payload.plate = payload.plate.trim().toUpperCase();
     if (payload.vin) payload.vin = payload.vin.trim().toUpperCase();
@@ -539,6 +580,7 @@ export async function getPublicVehicles(params: VehicleFilterParams = {}) {
 
         return {
             ...item,
+            hide_price: parseHidePrice(item),
             primary_image_url: primaryImg?.url || null,
             images: sortedImages
         };
@@ -587,6 +629,7 @@ export async function getPublicVehicleBySlug(slugOrId: string): Promise<PublicVe
 
     return {
         ...data,
+        hide_price: parseHidePrice(data),
         primary_image_url: primaryImg?.url || null,
         images: sortedImages
     };

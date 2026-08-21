@@ -34,6 +34,7 @@ export function EditVehicleForm({ vehicle }: { vehicle: Vehicle }) {
         status: vehicle.status || 'AVAILABLE',
         published: vehicle.published,
         featured: vehicle.featured,
+        hide_price: vehicle.hide_price !== undefined ? vehicle.hide_price : true,
         commercial_title: vehicle.commercial_title || '',
         description: vehicle.description || '',
         equipment: vehicle.equipment || '',
@@ -204,6 +205,23 @@ export function EditVehicleForm({ vehicle }: { vehicle: Vehicle }) {
                         onChange={(e) => updateField('description', e.target.value)}
                     />
                 </div>
+
+                <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', backgroundColor: '#F8FAFC', padding: '12px 16px', borderRadius: 8, border: '1px solid #E2E8F0', marginBottom: 12 }}>
+                    <input
+                        type="checkbox"
+                        checked={formData.hide_price}
+                        onChange={(e) => updateField('hide_price', e.target.checked)}
+                        style={{ width: 18, height: 18, accentColor: '#EA580C', cursor: 'pointer' }}
+                    />
+                    <div>
+                        <span style={{ fontSize: 14, fontWeight: 700, color: '#000000' }}>
+                            Ocultar precio en la web pública (Mostrar &quot;Consultar precio!&quot;)
+                        </span>
+                        <div style={{ fontSize: 12, color: '#64748B' }}>
+                            Al estar activado, en la web pública se mostrará &quot;Consultar precio!&quot; en lugar del valor numérico.
+                        </div>
+                    </div>
+                </label>
 
                 <div style={{ display: 'flex', gap: 24, marginTop: 8 }}>
                     <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>

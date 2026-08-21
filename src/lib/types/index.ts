@@ -48,6 +48,7 @@ export interface Vehicle {
     // Web Publishing
     published: boolean;
     featured: boolean;
+    hide_price?: boolean;
     commercial_title?: string | null;
     description?: string | null;
     equipment?: string | null;
@@ -289,6 +290,7 @@ export interface PublicVehicleItem {
     equipment?: string | null;
     features?: string | null;
     featured: boolean;
+    hide_price?: boolean;
     status: VehicleStatus;
     meta_title?: string | null;
     meta_description?: string | null;
