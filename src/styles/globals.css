@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap');
 
 :root {
-  /* Brand Typography */
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-heading: 'Outfit', var(--font-sans);
+  /* Brand Typography — Inter como tipografía principal */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Inter', var(--font-sans);
   --font-mono: 'Space Grotesk', monospace;
 
   /* Palette: Fondo Blanco, Naranja, Gris, Negro */
@@ -18,9 +18,10 @@
   --border-strong: #94A3B8;
   --border-focus: #EA580C;
 
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
+  /* Text — Alto contraste: negro para primario, gris oscuro para secundario */
+  --text-primary: #000000;
+  --text-secondary: #1E293B;
+  --text-muted: #334155;
   --text-inverse: #FFFFFF;
 
   /* Brand Accents - Naranja Deportivo Automotriz */
@@ -36,11 +37,11 @@
   --accent-gray-dark: #1E293B;
 
   /* Functional Accents */
-  --accent-emerald: #10B981;
+  --accent-emerald: #059669;
   --accent-emerald-bg: #ECFDF5;
-  --accent-rose: #EF4444;
+  --accent-rose: #DC2626;
   --accent-rose-bg: #FEF2F2;
-  --accent-gold: #F59E0B;
+  --accent-gold: #D97706;
   --accent-gold-bg: #FFFBEB;
   --accent-blue: #2563EB;
   --accent-blue-bg: #EFF6FF;
@@ -57,9 +58,9 @@
   --radius-full: 9999px;
 
   /* Shadows Suaves y Limpias */
-  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
-  --shadow-lg: 0 10px 30px rgba(15, 23, 42, 0.1), 0 4px 10px rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
   --shadow-orange: 0 6px 20px rgba(234, 88, 12, 0.25);
 
   /* Transitions */
@@ -124,4 +125,54 @@ img, video {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
+}
+
+/* =============================================
+   GLOBAL CONTRAST OVERRIDES
+   Forces high-contrast black text across the app,
+   including inline styles in TSX components.
+   ============================================= */
+
+/* All headings: force black */
+h1, h2, h3, h4, h5, h6 {
+  color: #000000;
+}
+
+/* Paragraphs and list items: near-black */
+p, li, span, label, td, th, dd, dt {
+  color: inherit;
+}
+
+/* Ensure table text is dark */
+table {
+  color: #000000;
+}
+
+/* Links in body should be dark */
+main a, section a, article a {
+  color: inherit;
+}
+
+/* Override common inline grays used in components */
+[style*="color: rgb(100, 116, 139)"],
+[style*="color: #64748B"],
+[style*="color: #64748b"] {
+  color: #334155 !important;
+}
+
+[style*="color: rgb(71, 85, 105)"],
+[style*="color: #475569"] {
+  color: #1E293B !important;
+}
+
+[style*="color: rgb(148, 163, 184)"],
+[style*="color: #94A3B8"],
+[style*="color: #94a3b8"] {
+  color: #475569 !important;
+}
+
+[style*="color: rgb(203, 213, 225)"],
+[style*="color: #CBD5E1"],
+[style*="color: #cbd5e1"] {
+  color: #64748B !important;
 }
