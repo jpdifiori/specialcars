@@ -207,19 +207,27 @@ function NewOperationWizard() {
 
             {/* Stepper */}
             <div className="wizard-steps">
-                <div className={`wizard-step-item ${step === 1 ? 'active' : ''} ${step > 1 ? 'completed' : ''}`}>
+                <div className={`wizard-step-item ${step === 1 ? 'active' : ''} ${step > 1 ? 'completed' : ''}`}
+                     style={{ cursor: step > 1 ? 'pointer' : 'default' }}
+                     onClick={() => step > 1 && setStep(1)}>
                     <div className="wizard-step-num">{step > 1 ? <Check size={14} /> : 1}</div>
                     <span>1. Cliente</span>
                 </div>
-                <div className={`wizard-step-item ${step === 2 ? 'active' : ''} ${step > 2 ? 'completed' : ''}`}>
+                <div className={`wizard-step-item ${step === 2 ? 'active' : ''} ${step > 2 ? 'completed' : ''}`}
+                     style={{ cursor: step > 2 ? 'pointer' : 'default' }}
+                     onClick={() => step > 2 && setStep(2)}>
                     <div className="wizard-step-num">{step > 2 ? <Check size={14} /> : 2}</div>
                     <span>2. Vehículo a Comprar</span>
                 </div>
-                <div className={`wizard-step-item ${step === 3 ? 'active' : ''} ${step > 3 ? 'completed' : ''}`}>
+                <div className={`wizard-step-item ${step === 3 ? 'active' : ''} ${step > 3 ? 'completed' : ''}`}
+                     style={{ cursor: step > 3 ? 'pointer' : 'default' }}
+                     onClick={() => step > 3 && setStep(3)}>
                     <div className="wizard-step-num">{step > 3 ? <Check size={14} /> : 3}</div>
                     <span>3. Precio Acordado</span>
                 </div>
-                <div className={`wizard-step-item ${step === 4 ? 'active' : ''} ${step > 4 ? 'completed' : ''}`}>
+                <div className={`wizard-step-item ${step === 4 ? 'active' : ''} ${step > 4 ? 'completed' : ''}`}
+                     style={{ cursor: step > 4 ? 'pointer' : 'default' }}
+                     onClick={() => step > 4 && setStep(4)}>
                     <div className="wizard-step-num">{step > 4 ? <Check size={14} /> : 4}</div>
                     <span>4. Permuta</span>
                 </div>
@@ -607,7 +615,17 @@ function NewOperationWizard() {
                             />
                         </div>
 
-                        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0' }}>
+                            <button
+                                type="button"
+                                onClick={() => setStep(prev => Math.max(1, prev - 1))}
+                                disabled={loading}
+                                className="btn-secondary"
+                            >
+                                <ArrowLeft size={16} />
+                                <span>Anterior</span>
+                            </button>
+
                             <button
                                 type="button"
                                 onClick={handleConfirmOperation}

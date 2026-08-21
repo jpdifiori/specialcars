@@ -155,6 +155,7 @@ export default function NewVehiclePage() {
                         <div
                             key={step.id}
                             className={`wizard-step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`}
+                            style={{ cursor: isCompleted ? 'pointer' : 'default' }}
                             onClick={() => step.id < currentStep && setCurrentStep(step.id)}
                         >
                             <div className="wizard-step-num">
