@@ -23,6 +23,32 @@ function parseHidePrice(v: any): boolean {
     return true; // default true (Consultar precio!)
 }
 
+function shouldSkipPlateValidation(plate: string | null | undefined, mileage?: number): boolean {
+    if (mileage === 0) return true;
+    if (!plate || plate.trim() === '') return true;
+    const clean = plate.trim().toUpperCase();
+    const commonPlaceholders = [
+        'N/A',
+        'NA',
+        'S/P',
+        'SP',
+        'SIN PATENTE',
+        'SIN DOMINIO',
+        '0KM',
+        '0 KM',
+        '0-KM',
+        '-',
+        '--',
+        '---',
+        'S/D',
+        'SD',
+        'NINGUNA',
+        'PENDIENTE',
+        'NO TIENE'
+    ];
+    return commonPlaceholders.includes(clean);
+}
+
 export interface VehicleFilterParams {
     search?: string;
     status?: string;
@@ -210,12 +236,12 @@ export async function getVehicleById(id: string): Promise<Vehicle | null> {
 export async function createVehicle(formData: Partial<Vehicle>) {
     const adminClient = createAdminClient();
 
-    // 1. Control de duplicados por Patente y VIN
-    if (formData.plate && formData.plate.trim() !== '') {
+    // 1. Control de duplicados por Patente (excepto para 0KM o patentes provisorias/N/A) y VIN
+    if (!shouldSkipPlateValidation(formData.plate, Number(formData.mileage))) {
         const { data: existingPlate } = await adminClient
             .from('vehicles')
             .select('id, stock_code, brand, model')
-            .eq('plate', formData.plate.trim().toUpperCase())
+            .eq('plate', formData.plate!.trim().toUpperCase())
             .eq('is_deleted', false)
             .maybeSingle();
 
@@ -330,12 +356,12 @@ export async function createVehicle(formData: Partial<Vehicle>) {
 export async function updateVehicle(id: string, formData: Partial<Vehicle>) {
     const adminClient = createAdminClient();
 
-    // Validar patente única si cambió
-    if (formData.plate && formData.plate.trim() !== '') {
+    // Validar patente única si cambió (excepto para 0KM o patentes provisorias/N/A)
+    if (!shouldSkipPlateValidation(formData.plate, Number(formData.mileage))) {
         const { data: existingPlate } = await adminClient
             .from('vehicles')
             .select('id, stock_code')
-            .eq('plate', formData.plate.trim().toUpperCase())
+            .eq('plate', formData.plate!.trim().toUpperCase())
             .neq('id', id)
             .eq('is_deleted', false)
             .maybeSingle();

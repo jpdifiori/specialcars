@@ -136,10 +136,12 @@ export function EditVehicleForm({ vehicle }: { vehicle: Vehicle }) {
                     <input
                         type="text"
                         className="form-input"
+                        placeholder="Ej: AF123CD o N/A para 0 KM"
                         style={{ textTransform: 'uppercase' }}
                         value={formData.plate}
                         onChange={(e) => updateField('plate', e.target.value.toUpperCase())}
                     />
+                    <span className="form-help">Para 0 KM podés ingresar N/A o dejarlo vacío.</span>
                 </div>
             </div>
 
