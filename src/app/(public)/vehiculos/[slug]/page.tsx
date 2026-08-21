@@ -55,7 +55,7 @@ export default async function PublicVehicleDetailPage({ params }: { params: Prom
     }
 
     const relatedVehicles = relatedRes.data.filter(v => v.id !== vehicle.id).slice(0, 3);
-    const wp = settings.whatsapp || '5491140980758';
+    const wp = settings.whatsapp || '5492262574254';
 
     // Generar mensaje preconfigurado de WhatsApp según la especificación exacta
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://specialcars.vercel.app';

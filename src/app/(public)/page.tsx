@@ -22,7 +22,7 @@ export default async function PublicHomePage() {
     const featuredVehicles = vehicles.filter(v => v.featured);
     const latestVehicles = vehicles.slice(0, 6);
 
-    const wp = settings.whatsapp || '5491140980758';
+    const wp = settings.whatsapp || '5492262574254';
 
     return (
         <div>
@@ -220,7 +220,11 @@ export default async function PublicHomePage() {
                                 </div>
                                 <div>
                                     <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>WhatsApp Directo</span>
-                                    <div style={{ color: '#EA580C', fontWeight: 800, marginTop: 2 }}>+{settings.whatsapp || '5491140980758'}</div>
+                                    <div style={{ color: '#EA580C', fontWeight: 800, marginTop: 2 }}>
+                                        <a href={`https://wa.me/${wp}`} target="_blank" rel="noopener noreferrer" style={{ color: '#EA580C' }}>
+                                            +54 9 2262 57-4254
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

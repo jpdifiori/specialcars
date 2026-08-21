@@ -7,7 +7,7 @@ import { MessageCircle, Lock } from 'lucide-react';
 
 export function PublicNavbar({ whatsappNumber }: { whatsappNumber?: string; agencyName?: string }) {
     const pathname = usePathname();
-    const wp = whatsappNumber || '5491140980758';
+    const wp = whatsappNumber || '5492262574254';
 
     return (
         <header className="public-navbar">
