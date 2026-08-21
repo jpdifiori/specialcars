@@ -192,7 +192,7 @@ export function SettingsForm({ initialSettings }: { initialSettings: AgencySetti
                     <input
                         type="text"
                         className="form-input"
-                        placeholder="https://instagram.com/specialcars"
+                        placeholder="https://instagram.com/specialcarsneceochea"
                         value={formData.instagram}
                         onChange={(e) => updateField('instagram', e.target.value)}
                     />
@@ -214,7 +214,7 @@ export function SettingsForm({ initialSettings }: { initialSettings: AgencySetti
                     <input
                         type="text"
                         className="form-input"
-                        placeholder="https://tiktok.com/@specialcars"
+                        placeholder="https://tiktok.com/@specialcars_neceochea"
                         value={formData.tiktok}
                         onChange={(e) => updateField('tiktok', e.target.value)}
                     />
