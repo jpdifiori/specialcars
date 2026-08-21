@@ -31,7 +31,7 @@ export default async function PublicHomePage() {
                 <div className="hero-content">
                     <div className="hero-badge">
                         <Sparkles size={14} style={{ color: '#EA580C' }} />
-                        <span>Autos Seleccionados • Seminuevos • 0 KM</span>
+                        <span>Vehículos Seleccionados • Usados • 0 KM</span>
                     </div>
 
                     <h1 className="hero-title">
@@ -39,7 +39,7 @@ export default async function PublicHomePage() {
                     </h1>
 
                     <p className="hero-subtitle">
-                        En <strong>{settings.name || 'Special Cars'}</strong> seleccionamos cada unidad con rigurosos controles mecánicos y de documentación. Compramos tu usado y aceptamos permutas al mejor valor.
+                        En <strong>{settings.name || 'Special Cars'}</strong> encontrá vehículos seleccionados y verificados. Elegí tu próximo auto y entregá el tuyo en parte de pago con una excelente tasación.
                     </p>
 
                     <div className="hero-actions">
