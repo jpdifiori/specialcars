@@ -1218,3 +1218,15 @@ INSERT INTO agency_settings (
     'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 08:00 a 12:30 hs.',
     'Special Cars S.R.L. — CUIT 30-71234567-8'
 ) ON CONFLICT DO NOTHING;
+
+-- 14. POLÍTICAS DE STORAGE (storage.objects)
+DO $$
+BEGIN
+    -- Permitir lectura pública de imágenes de vehículos
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE tablename = 'objects' AND policyname = 'Public Access vehicle-images'
+    ) THEN
+        CREATE POLICY "Public Access vehicle-images" ON storage.objects FOR SELECT USING (bucket_id = 'vehicle-images');
+    END IF;
+END $$;
+

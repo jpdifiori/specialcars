@@ -5,10 +5,9 @@ import { useRouter } from 'next/navigation';
 import { Vehicle, ExpenseCategory } from '@/lib/types';
 import { toggleVehiclePublish, updateVehicleStatus, deleteVehicle } from '@/lib/actions/vehicles';
 import { addVehicleExpense, deleteVehicleExpense } from '@/lib/actions/expenses';
-import { registerVehicleImage, setPrimaryVehicleImage, deleteVehicleImage } from '@/lib/actions/images';
+import { uploadVehicleImageAction, setPrimaryVehicleImage, deleteVehicleImage } from '@/lib/actions/images';
 import { formatARS } from '@/lib/utils/currency';
 import { formatDate } from '@/lib/utils/dates';
-import { createClient } from '@/lib/supabase/client';
 import imageCompression from 'browser-image-compression';
 import { 
     Info, 
@@ -106,11 +105,10 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
         if (!files || files.length === 0) return;
 
         setUploading(true);
-        const supabase = createClient();
 
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            setUploadProgress(`Procesando foto ${i + 1} de ${files.length}...`);
+            setUploadProgress(`Procesando y subiendo foto ${i + 1} de ${files.length}...`);
 
             try {
                 const options = {
@@ -120,33 +118,15 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                 };
                 const compressedFile = await imageCompression(file, options);
 
-                const ext = file.name.split('.').pop() || 'jpg';
-                const fileName = `${vehicle.id}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${ext}`;
+                const uploadData = new FormData();
+                uploadData.append('vehicle_id', vehicle.id);
+                uploadData.append('file', compressedFile, file.name);
+                uploadData.append('is_primary', (!vehicle.images || vehicle.images.length === 0) && i === 0 ? 'true' : 'false');
 
-                const { data: uploadData, error: uploadErr } = await supabase.storage
-                    .from('vehicle-images')
-                    .upload(fileName, compressedFile, {
-                        cacheControl: '3600',
-                        upsert: true
-                    });
-
-                if (uploadErr) {
-                    console.error('Error subiendo foto:', uploadErr);
-                    continue;
+                const res = await uploadVehicleImageAction(uploadData);
+                if (!res.success) {
+                    console.error('Error subiendo foto:', res.error);
                 }
-
-                const { data: publicUrlData } = supabase.storage
-                    .from('vehicle-images')
-                    .getPublicUrl(fileName);
-
-                await registerVehicleImage({
-                    vehicle_id: vehicle.id,
-                    storage_path: fileName,
-                    url: publicUrlData.publicUrl,
-                    file_name: file.name,
-                    file_size: compressedFile.size,
-                    mime_type: compressedFile.type
-                });
             } catch (err) {
                 console.error('Error procesando imagen:', err);
             }

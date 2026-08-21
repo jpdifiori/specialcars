@@ -4,8 +4,7 @@ import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createVehicle } from '@/lib/actions/vehicles';
-import { registerVehicleImage } from '@/lib/actions/images';
-import { createClient } from '@/lib/supabase/client';
+import { uploadVehicleImageAction } from '@/lib/actions/images';
 import imageCompression from 'browser-image-compression';
 import { formatARS } from '@/lib/utils/currency';
 import { 
@@ -136,7 +135,6 @@ export default function NewVehiclePage() {
     // Subir fotos a Supabase después de crear el vehículo
     const uploadPhotos = async (vehicleId: string) => {
         if (selectedFiles.length === 0) return;
-        const supabase = createClient();
 
         for (let i = 0; i < selectedFiles.length; i++) {
             const file = selectedFiles[i];
@@ -149,30 +147,15 @@ export default function NewVehiclePage() {
                     useWebWorker: true
                 });
 
-                const ext = file.name.split('.').pop() || 'jpg';
-                const fileName = `${vehicleId}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${ext}`;
+                const uploadData = new FormData();
+                uploadData.append('vehicle_id', vehicleId);
+                uploadData.append('file', compressed, file.name);
+                uploadData.append('is_primary', i === 0 ? 'true' : 'false');
 
-                const { error: uploadErr } = await supabase.storage
-                    .from('vehicle-images')
-                    .upload(fileName, compressed, { cacheControl: '3600', upsert: true });
-
-                if (uploadErr) {
-                    console.error('Error subiendo foto:', uploadErr);
-                    continue;
+                const res = await uploadVehicleImageAction(uploadData);
+                if (!res.success) {
+                    console.error('Error subiendo foto:', res.error);
                 }
-
-                const { data: publicUrlData } = supabase.storage
-                    .from('vehicle-images')
-                    .getPublicUrl(fileName);
-
-                await registerVehicleImage({
-                    vehicle_id: vehicleId,
-                    storage_path: fileName,
-                    url: publicUrlData.publicUrl,
-                    file_name: file.name,
-                    file_size: compressed.size,
-                    mime_type: compressed.type
-                });
             } catch (err) {
                 console.error('Error procesando imagen:', err);
             }

@@ -4,6 +4,60 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
 
 /**
+ * Sube una imagen a Supabase Storage con permisos de administrador (bypasseando RLS)
+ * y la registra automáticamente en la tabla `vehicle_images`.
+ */
+export async function uploadVehicleImageAction(formData: FormData) {
+    const adminClient = createAdminClient();
+    const vehicleId = formData.get('vehicle_id') as string;
+    const file = formData.get('file') as File;
+    const isPrimary = formData.get('is_primary') === 'true';
+
+    if (!vehicleId || !file) {
+        return { success: false, error: 'Vehículo o archivo no especificado.' };
+    }
+
+    try {
+        const bytes = await file.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        const ext = file.name.split('.').pop() || 'jpg';
+        const fileName = `${vehicleId}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${ext}`;
+
+        const { error: uploadErr } = await adminClient.storage
+            .from('vehicle-images')
+            .upload(fileName, buffer, {
+                contentType: file.type || 'image/jpeg',
+                cacheControl: '3600',
+                upsert: true
+            });
+
+        if (uploadErr) {
+            console.error('Error subiendo a Storage:', uploadErr);
+            return { success: false, error: uploadErr.message };
+        }
+
+        const { data: publicUrlData } = adminClient.storage
+            .from('vehicle-images')
+            .getPublicUrl(fileName);
+
+        const registerRes = await registerVehicleImage({
+            vehicle_id: vehicleId,
+            storage_path: fileName,
+            url: publicUrlData.publicUrl,
+            file_name: file.name,
+            file_size: file.size,
+            mime_type: file.type,
+            is_primary: isPrimary
+        });
+
+        return registerRes;
+    } catch (err: any) {
+        console.error('Error en uploadVehicleImageAction:', err);
+        return { success: false, error: err.message || 'Error al procesar la imagen.' };
+    }
+}
+
+/**
  * Registra una imagen de vehículo en la base de datos tras subirse a Storage.
  */
 export async function registerVehicleImage(payload: {
