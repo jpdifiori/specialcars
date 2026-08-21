@@ -1,10 +1,13 @@
 import Link from 'next/link';
 import { PublicVehicleItem } from '@/lib/types';
 import { formatARS } from '@/lib/utils/currency';
-import { Gauge, Fuel, Cog, Calendar, ArrowRight, Image as ImageIcon } from 'lucide-react';
+import { Gauge, Fuel, Cog, Calendar, ArrowRight, Image as ImageIcon, MessageCircle } from 'lucide-react';
 
 export function VehicleCard({ vehicle }: { vehicle: PublicVehicleItem }) {
     const slugUrl = `/vehiculos/${vehicle.slug || vehicle.id}`;
+    const wpNumber = '5492262574254';
+    const wpMsg = `Hola, necesito mas informacion sobre el vehículo ${vehicle.brand} ${vehicle.model} ${vehicle.version || ''} (${vehicle.year}). (Código: ${vehicle.stock_code})`;
+    const wpUrl = `https://wa.me/${wpNumber}?text=${encodeURIComponent(wpMsg)}`;
 
     return (
         <div className="vehicle-card">
@@ -73,9 +76,45 @@ export function VehicleCard({ vehicle }: { vehicle: PublicVehicleItem }) {
                         <div className="vehicle-card-price-label">
                             {vehicle.hide_price ? 'Precio' : 'Precio Final'}
                         </div>
-                        <div className="vehicle-card-price" style={{ color: '#EA580C', fontSize: vehicle.hide_price ? 17 : 20, fontWeight: 800 }}>
-                            {vehicle.hide_price ? 'Consultar precio!' : formatARS(vehicle.price)}
-                        </div>
+                        {vehicle.hide_price ? (
+                            <a
+                                href={wpUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: 6,
+                                    color: '#EA580C',
+                                    fontSize: 16.5,
+                                    fontWeight: 800,
+                                    textDecoration: 'none',
+                                    transition: 'all 0.2s',
+                                    cursor: 'pointer'
+                                }}
+                                title="Consultar precio por WhatsApp"
+                            >
+                                <span>Consultar precio!</span>
+                                <span style={{
+                                    width: 22,
+                                    height: 22,
+                                    borderRadius: '50%',
+                                    backgroundColor: '#25D366',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: '#FFFFFF',
+                                    flexShrink: 0,
+                                    boxShadow: '0 2px 6px rgba(37, 211, 102, 0.4)'
+                                }}>
+                                    <MessageCircle size={13} />
+                                </span>
+                            </a>
+                        ) : (
+                            <div className="vehicle-card-price" style={{ color: '#EA580C', fontSize: 20, fontWeight: 800 }}>
+                                {formatARS(vehicle.price)}
+                            </div>
+                        )}
                     </div>
 
                     <Link href={slugUrl} className="btn-primary" style={{ padding: '8px 14px', fontSize: 12.5 }}>

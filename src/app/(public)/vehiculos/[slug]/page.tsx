@@ -136,9 +136,42 @@ export default async function PublicVehicleDetailPage({ params }: { params: Prom
                             <div style={{ fontSize: 12, color: '#64748b', textTransform: 'uppercase', fontWeight: 600, marginBottom: 2 }}>
                                 {vehicle.hide_price ? 'Condición Comercial' : 'Precio Final al Contado / Permuta'}
                             </div>
-                            <div className="detail-price" style={{ color: '#EA580C', fontSize: vehicle.hide_price ? 26 : 32, fontWeight: 900 }}>
-                                {vehicle.hide_price ? 'Consultar precio!' : formatARS(vehicle.price)}
-                            </div>
+                            {vehicle.hide_price ? (
+                                <a
+                                    href={wpLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: 8,
+                                        color: '#EA580C',
+                                        fontSize: 26,
+                                        fontWeight: 900,
+                                        textDecoration: 'none'
+                                    }}
+                                >
+                                    <span>Consultar precio!</span>
+                                    <span style={{
+                                        width: 28,
+                                        height: 28,
+                                        borderRadius: '50%',
+                                        backgroundColor: '#25D366',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: '#FFFFFF',
+                                        flexShrink: 0,
+                                        boxShadow: '0 2px 6px rgba(37, 211, 102, 0.4)'
+                                    }}>
+                                        <MessageCircle size={16} />
+                                    </span>
+                                </a>
+                            ) : (
+                                <div className="detail-price" style={{ color: '#EA580C', fontSize: 32, fontWeight: 900 }}>
+                                    {formatARS(vehicle.price)}
+                                </div>
+                            )}
                             <div style={{ fontSize: 12, color: '#64748b', marginTop: 6 }}>
                                 Aceptamos permutas al mejor valor del mercado.
                             </div>
