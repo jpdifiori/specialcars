@@ -37,7 +37,7 @@ export default async function PublicCatalogPage({
                 <h1 className="section-title">
                     Catálogo de Vehículos Disponibles
                 </h1>
-                <p style={{ fontSize: 14, color: '#94a3b8', marginTop: 4 }}>
+                <p style={{ fontSize: 14, color: '#334155', marginTop: 4 }}>
                     Mostrando <strong>{res.total} unidades</strong> disponibles en stock con precios oficiales en Pesos Argentinos ($ ARS).
                 </p>
             </div>
@@ -50,12 +50,12 @@ export default async function PublicCatalogPage({
                 {/* Grid de Vehículos */}
                 <div>
                     {vehicles.length === 0 ? (
-                        <div style={{ padding: 60, textAlign: 'center', backgroundColor: '#0e121c', borderRadius: 16, border: '1px solid rgba(255,255,255,0.08)' }}>
-                            <Car size={44} style={{ color: '#64748b', margin: '0 auto 12px' }} />
-                            <h3 style={{ fontSize: 18, fontWeight: 700, color: '#fff', marginBottom: 6 }}>
+                        <div style={{ padding: 60, textAlign: 'center', backgroundColor: '#FFFFFF', borderRadius: 16, border: '1px solid #E2E8F0', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+                            <Car size={44} style={{ color: '#EA580C', margin: '0 auto 12px' }} />
+                            <h3 style={{ fontSize: 18, fontWeight: 700, color: '#000000', marginBottom: 6 }}>
                                 No se encontraron vehículos
                             </h3>
-                            <p style={{ fontSize: 13.5, color: '#94a3b8', maxWidth: 460, margin: '0 auto' }}>
+                            <p style={{ fontSize: 13.5, color: '#475569', maxWidth: 460, margin: '0 auto' }}>
                                 Probá ajustando o limpiando los filtros seleccionados para ver más unidades disponibles.
                             </p>
                         </div>

@@ -44,12 +44,12 @@ function CatalogFiltersInner() {
         <aside className="catalog-sidebar">
             <div className="catalog-sidebar-title">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <Filter size={16} style={{ color: '#3b82f6' }} />
+                    <Filter size={16} style={{ color: '#EA580C' }} />
                     <span>Filtros de Búsqueda</span>
                 </div>
                 <button 
                     onClick={resetFilters}
-                    style={{ fontSize: 11, color: '#64748b', display: 'flex', alignItems: 'center', gap: 4 }}
+                    className="btn-reset-filters"
                     title="Limpiar filtros"
                 >
                     <RotateCcw size={12} />
@@ -61,8 +61,7 @@ function CatalogFiltersInner() {
             <div className="filter-group">
                 <label className="filter-label">Ordenar Por</label>
                 <select
-                    className="admin-select"
-                    style={{ width: '100%' }}
+                    className="filter-select"
                     value={sortBy}
                     onChange={(e) => {
                         setSortBy(e.target.value);
@@ -77,12 +76,35 @@ function CatalogFiltersInner() {
                 </select>
             </div>
 
+            {/* Marca */}
+            <div className="filter-group">
+                <label className="filter-label">Marca</label>
+                <select
+                    className="filter-select"
+                    value={brand}
+                    onChange={(e) => setBrand(e.target.value)}
+                >
+                    <option value="ALL">Todas las marcas</option>
+                    <option value="Audi">Audi</option>
+                    <option value="BMW">BMW</option>
+                    <option value="Chevrolet">Chevrolet</option>
+                    <option value="Ford">Ford</option>
+                    <option value="Honda">Honda</option>
+                    <option value="Jeep">Jeep</option>
+                    <option value="Mercedes-Benz">Mercedes-Benz</option>
+                    <option value="Nissan">Nissan</option>
+                    <option value="Peugeot">Peugeot</option>
+                    <option value="Renault">Renault</option>
+                    <option value="Toyota">Toyota</option>
+                    <option value="Volkswagen">Volkswagen</option>
+                </select>
+            </div>
+
             {/* Tipo de Vehículo */}
             <div className="filter-group">
                 <label className="filter-label">Tipo de Carrocería</label>
                 <select
-                    className="admin-select"
-                    style={{ width: '100%' }}
+                    className="filter-select"
                     value={bodyType}
                     onChange={(e) => setBodyType(e.target.value)}
                 >
@@ -98,8 +120,7 @@ function CatalogFiltersInner() {
             <div className="filter-group">
                 <label className="filter-label">Combustible</label>
                 <select
-                    className="admin-select"
-                    style={{ width: '100%' }}
+                    className="filter-select"
                     value={fuelType}
                     onChange={(e) => setFuelType(e.target.value)}
                 >
@@ -115,8 +136,7 @@ function CatalogFiltersInner() {
             <div className="filter-group">
                 <label className="filter-label">Transmisión</label>
                 <select
-                    className="admin-select"
-                    style={{ width: '100%' }}
+                    className="filter-select"
                     value={transmission}
                     onChange={(e) => setTransmission(e.target.value)}
                 >
@@ -129,17 +149,17 @@ function CatalogFiltersInner() {
             {/* Rango de Precios en ARS */}
             <div className="filter-group">
                 <label className="filter-label">Rango de Precio ($ ARS)</label>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                <div className="filter-price-grid">
                     <input
                         type="number"
-                        className="admin-input"
+                        className="filter-input"
                         placeholder="Mínimo"
                         value={minPrice}
                         onChange={(e) => setMinPrice(e.target.value)}
                     />
                     <input
                         type="number"
-                        className="admin-input"
+                        className="filter-input"
                         placeholder="Máximo"
                         value={maxPrice}
                         onChange={(e) => setMaxPrice(e.target.value)}
@@ -149,10 +169,10 @@ function CatalogFiltersInner() {
 
             <button
                 onClick={applyFilters}
-                className="btn-primary"
-                style={{ width: '100%', marginTop: 12 }}
+                className="btn-apply-filters"
             >
-                Aplicar Filtros
+                <Filter size={15} />
+                <span>Aplicar Filtros</span>
             </button>
         </aside>
     );

@@ -404,6 +404,84 @@
   display: block;
 }
 
+.filter-select,
+.filter-input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  background-color: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  color: #000000;
+  font-size: 13.5px;
+  font-weight: 500;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.filter-select:focus,
+.filter-input:focus {
+  border-color: #EA580C;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15);
+}
+
+.filter-price-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.filter-price-grid input {
+  width: 100%;
+  min-width: 0;
+}
+
+.btn-apply-filters {
+  width: 100%;
+  padding: 12px 18px;
+  background-color: #EA580C;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-apply-filters:hover {
+  background-color: #C2410C;
+  box-shadow: 0 6px 20px rgba(234, 88, 12, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-reset-filters {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-reset-filters:hover {
+  color: #EA580C;
+  background-color: #FFF7ED;
+}
+
 /* VEHICLE DETAIL PAGE */
 .detail-grid {
   display: grid;
