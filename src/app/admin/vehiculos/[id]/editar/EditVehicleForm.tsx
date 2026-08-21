@@ -74,7 +74,7 @@ export function EditVehicleForm({ vehicle }: { vehicle: Vehicle }) {
                 </div>
             )}
 
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', marginBottom: 16 }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', marginBottom: 16 }}>
                 Datos Generales y Técnicos
             </h3>
             <div className="form-grid">
@@ -142,7 +142,7 @@ export function EditVehicleForm({ vehicle }: { vehicle: Vehicle }) {
                 </div>
             </div>
 
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', margin: '24px 0 16px' }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', margin: '24px 0 16px' }}>
                 Valores Comerciales (ARS)
             </h3>
             <div className="form-grid">
@@ -166,7 +166,7 @@ export function EditVehicleForm({ vehicle }: { vehicle: Vehicle }) {
                         onChange={(e) => updateField('sale_price', parseInt(e.target.value, 10) || 0)}
                         required
                     />
-                    <span className="form-help" style={{ color: '#34d399', fontWeight: 600 }}>{formatARS(formData.sale_price)}</span>
+                    <span className="form-help" style={{ color: '#059669', fontWeight: 600 }}>{formatARS(formData.sale_price)}</span>
                 </div>
 
                 <div className="form-group">
@@ -181,7 +181,7 @@ export function EditVehicleForm({ vehicle }: { vehicle: Vehicle }) {
                 </div>
             </div>
 
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', margin: '24px 0 16px' }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', margin: '24px 0 16px' }}>
                 Publicación Web & Descripción
             </h3>
             <div className="form-grid" style={{ gridTemplateColumns: '1fr' }}>
@@ -212,7 +212,7 @@ export function EditVehicleForm({ vehicle }: { vehicle: Vehicle }) {
                             checked={formData.published}
                             onChange={(e) => updateField('published', e.target.checked)}
                         />
-                        <span style={{ fontSize: 13.5, fontWeight: 600, color: '#f8fafc' }}>
+                        <span style={{ fontSize: 13.5, fontWeight: 600, color: '#000000' }}>
                             Publicado en Catálogo Web
                         </span>
                     </label>
@@ -223,14 +223,14 @@ export function EditVehicleForm({ vehicle }: { vehicle: Vehicle }) {
                             checked={formData.featured}
                             onChange={(e) => updateField('featured', e.target.checked)}
                         />
-                        <span style={{ fontSize: 13.5, fontWeight: 600, color: '#fbbf24' }}>
+                        <span style={{ fontSize: 13.5, fontWeight: 600, color: '#D97706' }}>
                             Destacado en Portada
                         </span>
                     </label>
                 </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 32, paddingTop: 20, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 32, paddingTop: 20, borderTop: '1px solid #E2E8F0' }}>
                 <button
                     type="button"
                     onClick={() => router.back()}

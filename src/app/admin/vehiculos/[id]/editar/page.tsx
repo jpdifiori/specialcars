@@ -15,7 +15,7 @@ export default async function EditVehiclePage({ params }: { params: Promise<{ id
     return (
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
             <div style={{ marginBottom: 20 }}>
-                <Link href={`/admin/vehiculos/${vehicle.id}`} style={{ fontSize: 13, color: '#60a5fa', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                <Link href={`/admin/vehiculos/${vehicle.id}`} style={{ fontSize: 13, color: '#EA580C', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
                     <ArrowLeft size={14} />
                     <span>Volver a la Ficha</span>
                 </Link>

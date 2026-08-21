@@ -180,7 +180,7 @@ export default function AdminVehiclesPage() {
                 ) : vehicles.length === 0 ? (
                     <div style={{ padding: 48, textAlign: 'center', color: '#000000' }}>
                         <Car size={36} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
-                        <p style={{ fontSize: 16, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>No se encontraron vehículos</p>
+                        <p style={{ fontSize: 16, fontWeight: 600, color: '#000000', marginBottom: 4 }}>No se encontraron vehículos</p>
                         <p style={{ fontSize: 13, marginBottom: 16 }}>No hay vehículos que coincidan con los filtros seleccionados.</p>
                         <Link href="/admin/vehiculos/nuevo" className="btn-primary">
                             <Plus size={15} />
@@ -214,26 +214,26 @@ export default function AdminVehiclesPage() {
                                                     width: 44,
                                                     height: 34,
                                                     borderRadius: 6,
-                                                    backgroundColor: '#171f2e',
+                                                    backgroundColor: '#F1F5F9',
                                                     overflow: 'hidden',
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
-                                                    border: '1px solid rgba(255,255,255,0.08)'
+                                                    border: '1px solid #E2E8F0'
                                                 }}>
                                                     {primaryImg?.url ? (
                                                         <img src={primaryImg.url} alt={v.brand} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                     ) : (
-                                                        <ImageIcon size={14} style={{ color: '#000000' }} />
+                                                        <ImageIcon size={14} style={{ color: '#94A3B8' }} />
                                                     )}
                                                 </div>
-                                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#60a5fa', fontSize: 12 }}>
+                                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#EA580C', fontSize: 12 }}>
                                                     {v.stock_code}
                                                 </span>
                                             </div>
                                         </td>
                                         <td>
-                                            <Link href={`/admin/vehiculos/${v.id}`} style={{ fontWeight: 600, color: '#f8fafc' }}>
+                                            <Link href={`/admin/vehiculos/${v.id}`} style={{ fontWeight: 600, color: '#000000' }}>
                                                 {v.brand} {v.model} {v.version || ''}
                                             </Link>
                                             <div style={{ fontSize: 12, color: '#000000' }}>

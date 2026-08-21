@@ -185,8 +185,8 @@ export default async function AdminDashboardPage() {
                 {/* Últimas Operaciones */}
                 <div className="table-container">
                     <div className="table-toolbar">
-                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc' }}>Últimas Operaciones</h3>
-                        <Link href="/admin/operaciones" style={{ fontSize: 13, color: '#3b82f6', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000' }}>Últimas Operaciones</h3>
+                        <Link href="/admin/operaciones" style={{ fontSize: 13, color: '#EA580C', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
                             <span>Ver todas</span>
                             <ArrowUpRight size={14} />
                         </Link>
@@ -209,14 +209,14 @@ export default async function AdminDashboardPage() {
                                 {recentOperations.map((op) => (
                                     <tr key={op.id}>
                                         <td>
-                                            <Link href={`/admin/operaciones/${op.id}`} style={{ fontWeight: 700, color: '#60a5fa' }}>
+                                            <Link href={`/admin/operaciones/${op.id}`} style={{ fontWeight: 700, color: '#EA580C' }}>
                                                 {op.operation_code}
                                             </Link>
                                         </td>
                                         <td>
                                             <span className="badge" style={{
-                                                backgroundColor: op.type === 'SALE_WITH_TRADE_IN' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(16, 185, 129, 0.15)',
-                                                color: op.type === 'SALE_WITH_TRADE_IN' ? '#60a5fa' : '#34d399'
+                                                backgroundColor: op.type === 'SALE_WITH_TRADE_IN' ? '#EFF6FF' : '#ECFDF5',
+                                                color: op.type === 'SALE_WITH_TRADE_IN' ? '#1D4ED8' : '#059669'
                                             }}>
                                                 {op.type === 'SALE_WITH_TRADE_IN' ? 'Permuta' : (op.type === 'SALE' ? 'Venta' : op.type)}
                                             </span>
@@ -224,7 +224,7 @@ export default async function AdminDashboardPage() {
                                         <td>
                                             {op.client ? `${op.client.first_name} ${op.client.last_name}` : '-'}
                                         </td>
-                                        <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#f8fafc' }}>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#059669' }}>
                                             {formatARS(op.agreed_price)}
                                         </td>
                                     </tr>
@@ -237,8 +237,8 @@ export default async function AdminDashboardPage() {
                 {/* Últimos Clientes */}
                 <div className="table-container">
                     <div className="table-toolbar">
-                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc' }}>Últimos Clientes Cargados</h3>
-                        <Link href="/admin/clientes" style={{ fontSize: 13, color: '#3b82f6', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000' }}>Últimos Clientes Cargados</h3>
+                        <Link href="/admin/clientes" style={{ fontSize: 13, color: '#EA580C', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
                             <span>Ver todos</span>
                             <ArrowUpRight size={14} />
                         </Link>
@@ -260,7 +260,7 @@ export default async function AdminDashboardPage() {
                                 {recentClients.map((c) => (
                                     <tr key={c.id}>
                                         <td>
-                                            <Link href={`/admin/clientes/${c.id}`} style={{ fontWeight: 600, color: '#f8fafc' }}>
+                                            <Link href={`/admin/clientes/${c.id}`} style={{ fontWeight: 600, color: '#000000' }}>
                                                 {c.first_name} {c.last_name}
                                             </Link>
                                         </td>

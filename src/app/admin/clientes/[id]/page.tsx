@@ -73,29 +73,29 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
             <div style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: 24, alignItems: 'start' }}>
                 {/* Columna Izquierda: Ficha de Contacto */}
                 <div className="table-container" style={{ padding: 24 }}>
-                    <h3 style={{ fontSize: 15, fontWeight: 700, color: '#f8fafc', marginBottom: 16 }}>
+                    <h3 style={{ fontSize: 15, fontWeight: 700, color: '#000000', marginBottom: 16 }}>
                         Datos de Contacto & Documentación
                     </h3>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontSize: 13.5 }}>
                         {client.dni && (
                             <div>
-                                <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 600 }}>DNI</div>
-                                <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#f8fafc' }}>{client.dni}</div>
+                                <div style={{ fontSize: 11, color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>DNI</div>
+                                <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#000000' }}>{client.dni}</div>
                             </div>
                         )}
 
                         {client.cuit_cuil && (
                             <div>
-                                <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 600 }}>CUIT / CUIL</div>
-                                <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#f8fafc' }}>{client.cuit_cuil}</div>
+                                <div style={{ fontSize: 11, color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>CUIT / CUIL</div>
+                                <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#000000' }}>{client.cuit_cuil}</div>
                             </div>
                         )}
 
                         {client.phone && (
                             <div>
-                                <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 600 }}>Teléfono / WhatsApp</div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#34d399', fontWeight: 600 }}>
+                                <div style={{ fontSize: 11, color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>Teléfono / WhatsApp</div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#059669', fontWeight: 700 }}>
                                     <Phone size={14} />
                                     <span>{client.phone}</span>
                                 </div>
@@ -104,8 +104,8 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
 
                         {client.email && (
                             <div>
-                                <div style={{ fontSize: 11, color: '#000000', textTransform: 'uppercase', fontWeight: 600 }}>Email</div>
-                                <div style={{ color: '#60a5fa' }}>{client.email}</div>
+                                <div style={{ fontSize: 11, color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>Email</div>
+                                <div style={{ color: '#EA580C', fontWeight: 600 }}>{client.email}</div>
                             </div>
                         )}
 
@@ -132,7 +132,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                 {/* Columna Derecha: Timeline 360° de Actividad */}
                 <div className="table-container" style={{ padding: 28 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc' }}>
+                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000' }}>
                             Timeline 360° de Actividad
                         </h3>
                         <span style={{ fontSize: 12, color: '#000000' }}>

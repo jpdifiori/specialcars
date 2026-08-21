@@ -112,7 +112,7 @@ export default function AdminOperationsPage() {
                 ) : operations.length === 0 ? (
                     <div style={{ padding: 48, textAlign: 'center', color: '#000000' }}>
                         <ArrowLeftRight size={36} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
-                        <p style={{ fontSize: 16, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>No hay operaciones registradas</p>
+                        <p style={{ fontSize: 16, fontWeight: 600, color: '#000000', marginBottom: 4 }}>No hay operaciones registradas</p>
                         <p style={{ fontSize: 13, marginBottom: 16 }}>Iniciá una venta simple o venta con permuta para comenzar.</p>
                         <Link href="/admin/operaciones/nueva" className="btn-primary">
                             <Plus size={15} />
@@ -141,7 +141,7 @@ export default function AdminOperationsPage() {
                                 return (
                                     <tr key={op.id}>
                                         <td>
-                                            <Link href={`/admin/operaciones/${op.id}`} style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#60a5fa' }}>
+                                            <Link href={`/admin/operaciones/${op.id}`} style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#EA580C' }}>
                                                 {op.operation_code}
                                             </Link>
                                         </td>
@@ -150,7 +150,7 @@ export default function AdminOperationsPage() {
                                         </td>
                                         <td>
                                             {op.client ? (
-                                                <Link href={`/admin/clientes/${op.client.id}`} style={{ fontWeight: 600, color: '#f8fafc' }}>
+                                                <Link href={`/admin/clientes/${op.client.id}`} style={{ fontWeight: 600, color: '#000000' }}>
                                                     {op.client.first_name} {op.client.last_name}
                                                 </Link>
                                             ) : '-'}
@@ -158,7 +158,7 @@ export default function AdminOperationsPage() {
                                         <td>
                                             {soldVeh ? (
                                                 <div>
-                                                    <Link href={`/admin/vehiculos/${soldVeh.id}`} style={{ color: '#e2e8f0', fontWeight: 500 }}>
+                                                    <Link href={`/admin/vehiculos/${soldVeh.id}`} style={{ color: '#000000', fontWeight: 600 }}>
                                                         {soldVeh.brand} {soldVeh.model} ({soldVeh.year})
                                                     </Link>
                                                     <div style={{ fontSize: 11, color: '#000000' }}>{soldVeh.stock_code}</div>

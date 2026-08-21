@@ -78,7 +78,7 @@ export default function AdminConsignmentsPage() {
                 ) : consignments.length === 0 ? (
                     <div style={{ padding: 48, textAlign: 'center', color: '#000000' }}>
                         <FileSpreadsheet size={36} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
-                        <p style={{ fontSize: 16, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>No hay consignaciones</p>
+                        <p style={{ fontSize: 16, fontWeight: 600, color: '#000000', marginBottom: 4 }}>No hay consignaciones</p>
                         <p style={{ fontSize: 13, marginBottom: 16 }}>Registrá un vehículo que un cliente deja para la venta en tu agencia.</p>
                         <Link href="/admin/consignaciones/nueva" className="btn-primary">
                             <Plus size={15} />
@@ -102,12 +102,12 @@ export default function AdminConsignmentsPage() {
                         <tbody>
                             {consignments.map((c) => (
                                 <tr key={c.id}>
-                                    <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#60a5fa' }}>
+                                    <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#EA580C' }}>
                                         {c.consignment_code}
                                     </td>
                                     <td>
                                         {c.vehicle ? (
-                                            <Link href={`/admin/vehiculos/${c.vehicle.id}`} style={{ fontWeight: 600, color: '#f8fafc' }}>
+                                            <Link href={`/admin/vehiculos/${c.vehicle.id}`} style={{ fontWeight: 600, color: '#000000' }}>
                                                 {c.vehicle.brand} {c.vehicle.model} ({c.vehicle.year})
                                             </Link>
                                         ) : '-'}

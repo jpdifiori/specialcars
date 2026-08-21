@@ -82,7 +82,7 @@ export default function AdminClientsPage() {
                 ) : clients.length === 0 ? (
                     <div style={{ padding: 48, textAlign: 'center', color: '#000000' }}>
                         <Users size={36} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
-                        <p style={{ fontSize: 16, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>No se encontraron clientes</p>
+                        <p style={{ fontSize: 16, fontWeight: 600, color: '#000000', marginBottom: 4 }}>No se encontraron clientes</p>
                         <p style={{ fontSize: 13, marginBottom: 16 }}>Comenzá cargando los datos de un cliente para asociarlo a ventas o compras.</p>
                         <Link href="/admin/clientes/nuevo" className="btn-primary">
                             <Plus size={15} />
@@ -110,19 +110,19 @@ export default function AdminClientsPage() {
                                                 width: 34,
                                                 height: 34,
                                                 borderRadius: '50%',
-                                                backgroundColor: '#171f2e',
-                                                border: '1px solid rgba(255,255,255,0.1)',
+                                                backgroundColor: '#FFF7ED',
+                                                border: '1px solid #FFEDD5',
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
-                                                color: '#60a5fa',
+                                                color: '#EA580C',
                                                 fontWeight: 700,
                                                 fontSize: 13
                                             }}>
                                                 {c.first_name[0]}{c.last_name[0]}
                                             </div>
                                             <div>
-                                                <Link href={`/admin/clientes/${c.id}`} style={{ fontWeight: 600, color: '#f8fafc' }}>
+                                                <Link href={`/admin/clientes/${c.id}`} style={{ fontWeight: 600, color: '#000000' }}>
                                                     {c.first_name} {c.last_name}
                                                 </Link>
                                                 {c.notes && (

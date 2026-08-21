@@ -84,7 +84,7 @@ export default function AdminReservationsPage() {
                 ) : reservations.length === 0 ? (
                     <div style={{ padding: 48, textAlign: 'center', color: '#000000' }}>
                         <BookmarkCheck size={36} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
-                        <p style={{ fontSize: 16, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>No hay reservas</p>
+                        <p style={{ fontSize: 16, fontWeight: 600, color: '#000000', marginBottom: 4 }}>No hay reservas</p>
                         <p style={{ fontSize: 13, marginBottom: 16 }}>Registrá una seña para bloquear un vehículo del inventario.</p>
                         <Link href="/admin/reservas/nueva" className="btn-primary">
                             <Plus size={15} />
@@ -108,12 +108,12 @@ export default function AdminReservationsPage() {
                         <tbody>
                             {reservations.map((r) => (
                                 <tr key={r.id}>
-                                    <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#60a5fa' }}>
+                                    <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#EA580C' }}>
                                         {r.reservation_code}
                                     </td>
                                     <td>
                                         {r.vehicle ? (
-                                            <Link href={`/admin/vehiculos/${r.vehicle.id}`} style={{ fontWeight: 600, color: '#f8fafc' }}>
+                                            <Link href={`/admin/vehiculos/${r.vehicle.id}`} style={{ fontWeight: 600, color: '#000000' }}>
                                                 {r.vehicle.brand} {r.vehicle.model} ({r.vehicle.year})
                                             </Link>
                                         ) : '-'}
@@ -125,13 +125,13 @@ export default function AdminReservationsPage() {
                                             </Link>
                                         ) : '-'}
                                     </td>
-                                    <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#fbbf24' }}>
+                                    <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#D97706' }}>
                                         {formatARS(r.amount)}
                                     </td>
                                     <td style={{ color: '#000000', fontSize: 12 }}>
                                         {formatDate(r.reservation_date)}
                                     </td>
-                                    <td style={{ color: r.expiry_date ? '#f8fafc' : '#64748b', fontSize: 12 }}>
+                                    <td style={{ color: r.expiry_date ? '#000000' : '#64748b', fontSize: 12 }}>
                                         {formatDate(r.expiry_date)}
                                     </td>
                                     <td>

@@ -83,7 +83,7 @@ export default function AdminZeroKmPage() {
                 ) : operations.length === 0 ? (
                     <div style={{ padding: 48, textAlign: 'center', color: '#000000' }}>
                         <Sparkles size={36} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
-                        <p style={{ fontSize: 16, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>No hay operaciones 0 KM</p>
+                        <p style={{ fontSize: 16, fontWeight: 600, color: '#000000', marginBottom: 4 }}>No hay operaciones 0 KM</p>
                         <p style={{ fontSize: 13, marginBottom: 16 }}>Registrá pedidos de unidades 0 KM a pedido de clientes.</p>
                         <Link href="/admin/0km/nueva" className="btn-primary">
                             <Plus size={15} />

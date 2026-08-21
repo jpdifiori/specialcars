@@ -73,7 +73,7 @@ export function SettingsForm({ initialSettings }: { initialSettings: AgencySetti
                 </div>
             )}
 
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', marginBottom: 20 }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', marginBottom: 20 }}>
                 Datos Principales & Branding
             </h3>
 
@@ -135,7 +135,7 @@ export function SettingsForm({ initialSettings }: { initialSettings: AgencySetti
                 />
             </div>
 
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', margin: '28px 0 20px' }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', margin: '28px 0 20px' }}>
                 Ubicación & Horarios de Atención
             </h3>
 
@@ -182,7 +182,7 @@ export function SettingsForm({ initialSettings }: { initialSettings: AgencySetti
                 </div>
             </div>
 
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', margin: '28px 0 20px' }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', margin: '28px 0 20px' }}>
                 Redes Sociales & Legal
             </h3>
 

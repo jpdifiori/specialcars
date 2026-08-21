@@ -106,7 +106,7 @@ export default function NewClientPage() {
             )}
 
             <form onSubmit={handleSubmit} className="table-container" style={{ padding: 32 }}>
-                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', marginBottom: 20 }}>
+                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', marginBottom: 20 }}>
                     Datos Personales
                 </h3>
 
@@ -158,7 +158,7 @@ export default function NewClientPage() {
                     </div>
                 </div>
 
-                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', margin: '24px 0 20px' }}>
+                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', margin: '24px 0 20px' }}>
                     Contacto & Ubicación
                 </h3>
 

@@ -66,14 +66,14 @@ export default async function OperationDetailPage({ params }: { params: Promise<
                 {/* Cliente */}
                 <div className="table-container" style={{ padding: 24 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-                        <User size={18} style={{ color: '#3b82f6' }} />
-                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc' }}>Cliente Comprador</h3>
+                        <User size={18} style={{ color: '#EA580C' }} />
+                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000' }}>Cliente Comprador</h3>
                     </div>
 
                     {op.client && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13.5 }}>
-                            <div style={{ fontWeight: 600, color: '#fff', fontSize: 15 }}>
-                                <Link href={`/admin/clientes/${op.client.id}`} style={{ color: '#60a5fa', textDecoration: 'underline' }}>
+                            <div style={{ fontWeight: 700, color: '#000000', fontSize: 15 }}>
+                                <Link href={`/admin/clientes/${op.client.id}`} style={{ color: '#EA580C', textDecoration: 'underline' }}>
                                     {op.client.first_name} {op.client.last_name}
                                 </Link>
                             </div>
@@ -88,15 +88,15 @@ export default async function OperationDetailPage({ params }: { params: Promise<
                 {soldVeh && (
                     <div className="table-container" style={{ padding: 24 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-                            <Car size={18} style={{ color: '#34d399' }} />
-                            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc' }}>Vehículo Vendido</h3>
+                            <Car size={18} style={{ color: '#059669' }} />
+                            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000' }}>Vehículo Vendido</h3>
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: 13.5 }}>
-                            <Link href={`/admin/vehiculos/${soldVeh.id}`} style={{ fontWeight: 700, color: '#fff', fontSize: 15 }}>
+                            <Link href={`/admin/vehiculos/${soldVeh.id}`} style={{ fontWeight: 700, color: '#000000', fontSize: 15 }}>
                                 {soldVeh.brand} {soldVeh.model} {soldVeh.version || ''} ({soldVeh.year})
                             </Link>
-                            <div style={{ color: '#60a5fa', fontFamily: 'var(--font-mono)', fontSize: 12 }}>
+                            <div style={{ color: '#EA580C', fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 700 }}>
                                 Código: {soldVeh.stock_code} {soldVeh.plate ? `• Patente: ${soldVeh.plate}` : ''}
                             </div>
                             <div style={{ color: '#000000', marginTop: 4 }}>
@@ -137,7 +137,7 @@ export default async function OperationDetailPage({ params }: { params: Promise<
 
             {/* Desglose de Componentes de Pago */}
             <div className="table-container" style={{ padding: 24, marginBottom: 24 }}>
-                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', marginBottom: 16 }}>
+                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', marginBottom: 16 }}>
                     Componentes de Pago Registrados
                 </h3>
 
@@ -154,7 +154,7 @@ export default async function OperationDetailPage({ params }: { params: Promise<
                         {op.payments?.map((p) => (
                             <tr key={p.id}>
                                 <td>
-                                    <span className="badge" style={{ backgroundColor: '#1e293b', color: '#f8fafc' }}>
+                                    <span className="badge" style={{ backgroundColor: '#F1F5F9', color: '#0F172A', border: '1px solid #E2E8F0' }}>
                                         {p.payment_type === 'TRADE_IN' ? 'TOMA DE PERMUTA' : p.payment_type}
                                     </span>
                                 </td>
@@ -176,7 +176,7 @@ export default async function OperationDetailPage({ params }: { params: Promise<
             {/* Observaciones */}
             {op.notes && (
                 <div className="table-container" style={{ padding: 24 }}>
-                    <h3 style={{ fontSize: 15, fontWeight: 700, color: '#f8fafc', marginBottom: 8 }}>Observaciones</h3>
+                    <h3 style={{ fontSize: 15, fontWeight: 700, color: '#000000', marginBottom: 8 }}>Observaciones</h3>
                     <p style={{ fontSize: 13.5, color: '#000000', lineHeight: 1.6 }}>{op.notes}</p>
                 </div>
             )}

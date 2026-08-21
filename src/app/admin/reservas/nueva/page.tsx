@@ -157,7 +157,7 @@ export default function NewReservationPage() {
                             checked={showBadge}
                             onChange={(e) => setShowBadge(e.target.checked)}
                         />
-                        <span style={{ fontSize: 13.5, color: '#f8fafc', fontWeight: 600 }}>
+                        <span style={{ fontSize: 13.5, color: '#000000', fontWeight: 600 }}>
                             Mostrar badge &quot;RESERVADO&quot; en la página web pública
                         </span>
                     </label>

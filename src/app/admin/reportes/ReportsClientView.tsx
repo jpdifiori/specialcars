@@ -114,7 +114,7 @@ export function ReportsClientView({ reports }: { reports: any }) {
                     </div>
 
                     <div className="table-container" style={{ padding: 24, marginTop: 24 }}>
-                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', marginBottom: 16 }}>
+                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', marginBottom: 16 }}>
                             Distribución de Stock por Categoría de Vehículo
                         </h3>
                         <table className="admin-table">
@@ -128,7 +128,7 @@ export function ReportsClientView({ reports }: { reports: any }) {
                             <tbody>
                                 {stock.byCategory.map((cat: any) => (
                                     <tr key={cat.name}>
-                                        <td style={{ fontWeight: 600, color: '#fff' }}>{cat.name}</td>
+                                        <td style={{ fontWeight: 600, color: '#000000' }}>{cat.name}</td>
                                         <td>{cat.count} unidades</td>
                                         <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#34d399' }}>
                                             {formatARS(cat.value)}
@@ -159,7 +159,7 @@ export function ReportsClientView({ reports }: { reports: any }) {
                     </div>
 
                     <div className="table-container" style={{ padding: 24, marginTop: 24 }}>
-                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', marginBottom: 16 }}>
+                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', marginBottom: 16 }}>
                             Evolución Mensual de Ventas
                         </h3>
                         {sales.salesByMonth.length === 0 ? (
@@ -298,7 +298,7 @@ export function ReportsClientView({ reports }: { reports: any }) {
                     )}
 
                     <div className="table-container" style={{ padding: 24 }}>
-                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', marginBottom: 16 }}>
+                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#000000', marginBottom: 16 }}>
                             Segmentos de Antigüedad en Inventario
                         </h3>
 
@@ -314,7 +314,7 @@ export function ReportsClientView({ reports }: { reports: any }) {
                             <tbody>
                                 {aging.segments.map((seg: any) => (
                                     <tr key={seg.range}>
-                                        <td style={{ fontWeight: 700, color: '#fff' }}>{seg.label}</td>
+                                        <td style={{ fontWeight: 700, color: '#000000' }}>{seg.label}</td>
                                         <td style={{ fontWeight: 600 }}>{seg.count} unidades</td>
                                         <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: seg.min >= 61 ? '#f43f5e' : '#34d399' }}>
                                             {formatARS(seg.capital)}
