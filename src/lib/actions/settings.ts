@@ -1,0 +1,99 @@
+'use server';
+
+import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { AgencySettings } from '@/lib/types';
+import { revalidatePath } from 'next/cache';
+
+/**
+ * Obtiene la configuración de la agencia (datos de contacto, horarios, redes, legal).
+ */
+export async function getAgencySettings(): Promise<AgencySettings> {
+    const supabase = await createServerSupabaseClient();
+
+    const { data, error } = await supabase
+        .from('agency_settings')
+        .select('*')
+        .limit(1)
+        .maybeSingle();
+
+    if (error || !data) {
+        // Retornar defaults si aún no se inicializó la tabla
+        return {
+            id: 'default',
+            name: 'Special Cars',
+            description: 'Agencia de automóviles seleccionados, seminuevos y 0 KM.',
+            address: 'Av. del Libertador 4500',
+            city: 'Buenos Aires',
+            province: 'CABA',
+            phone: '+54 11 4098-0758',
+            whatsapp: '5491140980758',
+            email: 'juanpablo.difiori@gmail.com',
+            instagram: 'https://instagram.com/specialcars',
+            facebook: 'https://facebook.com/specialcars',
+            tiktok: 'https://tiktok.com/@specialcars',
+            google_maps_url: null,
+            business_hours: 'Lunes a Viernes de 9:00 a 19:00 hs. Sábados de 10:00 a 14:00 hs.',
+            legal_info: 'Special Cars S.R.L. — CUIT 30-71234567-8',
+            updated_at: new Date().toISOString()
+        };
+    }
+
+    return data as AgencySettings;
+}
+
+/**
+ * Actualiza la configuración de la agencia.
+ */
+export async function updateAgencySettings(payload: Partial<AgencySettings>) {
+    const adminClient = createAdminClient();
+
+    // Obtener el ID del registro actual o insertar
+    const { data: current } = await adminClient.from('agency_settings').select('id').limit(1).maybeSingle();
+
+    const updateData: any = {
+        name: payload.name?.trim() || 'Special Cars',
+        description: payload.description?.trim() || '',
+        address: payload.address?.trim() || '',
+        city: payload.city?.trim() || '',
+        province: payload.province?.trim() || '',
+        phone: payload.phone?.trim() || '',
+        whatsapp: payload.whatsapp?.trim() || '5491140980758',
+        email: payload.email?.trim() || '',
+        instagram: payload.instagram?.trim() || null,
+        facebook: payload.facebook?.trim() || null,
+        tiktok: payload.tiktok?.trim() || null,
+        google_maps_url: payload.google_maps_url?.trim() || null,
+        business_hours: payload.business_hours?.trim() || '',
+        legal_info: payload.legal_info?.trim() || null,
+        logo_url: payload.logo_url || null,
+        hero_image_url: payload.hero_image_url || null,
+        updated_at: new Date().toISOString()
+    };
+
+    let result;
+    if (current?.id) {
+        result = await adminClient
+            .from('agency_settings')
+            .update(updateData)
+            .eq('id', current.id)
+            .select()
+            .single();
+    } else {
+        result = await adminClient
+            .from('agency_settings')
+            .insert(updateData)
+            .select()
+            .single();
+    }
+
+    if (result.error) {
+        return { success: false, error: result.error.message };
+    }
+
+    revalidatePath('/admin/configuracion');
+    revalidatePath('/');
+    revalidatePath('/vehiculos');
+
+    return { success: true, settings: result.data };
+}

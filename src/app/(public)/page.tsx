@@ -1,0 +1,216 @@
+import Link from 'next/link';
+import { getPublicVehicles } from '@/lib/actions/vehicles';
+import { getAgencySettings } from '@/lib/actions/settings';
+import { VehicleCard } from '@/components/public/VehicleCard';
+import { 
+    Car, 
+    MessageCircle, 
+    ArrowRight, 
+    ShieldCheck, 
+    Sparkles, 
+    CheckCircle2, 
+    ArrowLeftRight, 
+    Award, 
+    Phone 
+} from 'lucide-react';
+
+export default async function PublicHomePage() {
+    const [vehiclesRes, settings] = await Promise.all([
+        getPublicVehicles({ limit: 12, sort_by: 'newest' }),
+        getAgencySettings()
+    ]);
+
+    const vehicles = vehiclesRes.data;
+    const featuredVehicles = vehicles.filter(v => v.featured);
+    const latestVehicles = vehicles.slice(0, 6);
+
+    const wp = settings.whatsapp || '5491140980758';
+
+    return (
+        <div>
+            {/* HERO SECTION */}
+            <section className="hero-section">
+                <div className="hero-backdrop-glow" />
+
+                <div className="hero-content">
+                    <div className="hero-badge">
+                        <Sparkles size={14} style={{ color: '#fbbf24' }} />
+                        <span>Autos Seleccionados • Seminuevos • 0 KM</span>
+                    </div>
+
+                    <h1 className="hero-title">
+                        Encontrá tu próximo auto con <span>total confianza</span> y transparencia.
+                    </h1>
+
+                    <p className="hero-subtitle">
+                        En <strong>{settings.name || 'Special Cars'}</strong> seleccionamos cada unidad con rigurosos controles mecánicos y de documentación. Compramos tu usado y aceptamos permutas al mejor valor.
+                    </p>
+
+                    <div className="hero-actions">
+                        <Link href="/vehiculos" className="btn-hero-primary">
+                            <Car size={18} />
+                            <span>Ver Todos los Vehículos</span>
+                            <ArrowRight size={16} />
+                        </Link>
+
+                        <a
+                            href={`https://wa.me/${wp}?text=${encodeURIComponent('Hola, me interesa conocer los autos disponibles en Special Cars.')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-hero-whatsapp"
+                        >
+                            <MessageCircle size={18} />
+                            <span>Consultar por WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            {/* BENEFICIOS / PROPUESTA DE VALOR */}
+            <section style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', backgroundColor: '#090c14', padding: '40px 24px' }}>
+                <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 24 }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+                        <div style={{ width: 42, height: 42, borderRadius: 10, backgroundColor: 'rgba(59, 130, 246, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#60a5fa', flexShrink: 0 }}>
+                            <ShieldCheck size={22} />
+                        </div>
+                        <div>
+                            <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginBottom: 4 }}>Garantía y Trazabilidad</h3>
+                            <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.5 }}>Unidades chequeadas mecánicamente con documentación 100% al día.</p>
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+                        <div style={{ width: 42, height: 42, borderRadius: 10, backgroundColor: 'rgba(16, 185, 129, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#34d399', flexShrink: 0 }}>
+                            <ArrowLeftRight size={22} />
+                        </div>
+                        <div>
+                            <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginBottom: 4 }}>Tomamos tu Usado en Permuta</h3>
+                            <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.5 }}>Cotización justa e inmediata de tu vehículo como parte de pago.</p>
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+                        <div style={{ width: 42, height: 42, borderRadius: 10, backgroundColor: 'rgba(245, 158, 11, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fbbf24', flexShrink: 0 }}>
+                            <Award size={22} />
+                        </div>
+                        <div>
+                            <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginBottom: 4 }}>Gestoría Integral</h3>
+                            <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.5 }}>Nos encargamos de toda la transferencia y trámites registrales.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* SECCIÓN VEHÍCULOS DESTACADOS (si hay) */}
+            {featuredVehicles.length > 0 && (
+                <section className="public-section">
+                    <div className="section-header">
+                        <div>
+                            <div className="section-subtitle">Selección Especial</div>
+                            <h2 className="section-title">Vehículos Destacados</h2>
+                        </div>
+                        <Link href="/vehiculos" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#3b82f6', fontWeight: 600, fontSize: 14 }}>
+                            <span>Ver todo el catálogo</span>
+                            <ArrowRight size={15} />
+                        </Link>
+                    </div>
+
+                    <div className="vehicles-grid">
+                        {featuredVehicles.map(v => (
+                            <VehicleCard key={v.id} vehicle={v} />
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* SECCIÓN ÚLTIMOS INGRESOS */}
+            <section className="public-section" style={{ paddingTop: featuredVehicles.length > 0 ? 0 : 80 }}>
+                <div className="section-header">
+                    <div>
+                        <div className="section-subtitle">Novedades en Stock</div>
+                        <h2 className="section-title">Últimos Ingresos</h2>
+                    </div>
+                    <Link href="/vehiculos" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#3b82f6', fontWeight: 600, fontSize: 14 }}>
+                        <span>Ver catálogo completo ({vehicles.length} disponibles)</span>
+                        <ArrowRight size={15} />
+                    </Link>
+                </div>
+
+                {latestVehicles.length === 0 ? (
+                    <div style={{ padding: 60, textAlign: 'center', backgroundColor: '#0e121c', borderRadius: 16, border: '1px solid rgba(255,255,255,0.08)' }}>
+                        <Car size={44} style={{ color: '#64748b', margin: '0 auto 12px' }} />
+                        <h3 style={{ fontSize: 18, fontWeight: 700, color: '#fff', marginBottom: 6 }}>Próximamente nuevos ingresos</h3>
+                        <p style={{ fontSize: 14, color: '#94a3b8', maxWidth: 460, margin: '0 auto 20px' }}>
+                            Estamos preparando nuevas unidades seleccionadas. Contactanos por WhatsApp para consultar vehículos en ingreso.
+                        </p>
+                        <a
+                            href={`https://wa.me/${wp}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-hero-whatsapp"
+                        >
+                            <MessageCircle size={16} />
+                            <span>Consultar por WhatsApp</span>
+                        </a>
+                    </div>
+                ) : (
+                    <div className="vehicles-grid">
+                        {latestVehicles.map(v => (
+                            <VehicleCard key={v.id} vehicle={v} />
+                        ))}
+                    </div>
+                )}
+            </section>
+
+            {/* PRESENTACIÓN DE LA AGENCIA */}
+            <section style={{ backgroundColor: '#0a0d16', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '80px 24px' }}>
+                <div style={{ maxWidth: 1100, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 48, alignItems: 'center' }}>
+                    <div>
+                        <div className="section-subtitle">Sobre Nosotros</div>
+                        <h2 className="section-title" style={{ marginBottom: 20 }}>
+                            {settings.name || 'Special Cars'}
+                        </h2>
+                        <p style={{ fontSize: 15, color: '#cbd5e1', lineHeight: 1.7, marginBottom: 16 }}>
+                            {settings.description || 'Somos una agencia dedicada a brindar la mejor experiencia en la compra y venta de automóviles seleccionados, seminuevos y 0 KM en Argentina.'}
+                        </p>
+                        <p style={{ fontSize: 14, color: '#94a3b8', lineHeight: 1.6, marginBottom: 24 }}>
+                            Nuestro compromiso es la transparencia absoluta en cada operación: te mostramos el estado real del vehículo, verificamos la documentación legal y te brindamos asesoramiento personalizado.
+                        </p>
+
+                        <div style={{ display: 'flex', gap: 14 }}>
+                            <a
+                                href={`https://wa.me/${wp}?text=${encodeURIComponent('Hola, me gustaría recibir asesoramiento para comprar o vender un auto.')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn-hero-whatsapp"
+                            >
+                                <MessageCircle size={16} />
+                                <span>Hablar con un Asesor</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div style={{ backgroundColor: '#101522', borderRadius: 16, border: '1px solid rgba(255,255,255,0.08)', padding: 32 }}>
+                        <h3 style={{ fontSize: 18, fontWeight: 700, color: '#fff', marginBottom: 20 }}>
+                            Información de la Concesionaria
+                        </h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontSize: 14 }}>
+                            <div>
+                                <span style={{ color: '#64748b', fontSize: 12, textTransform: 'uppercase', fontWeight: 600 }}>Dirección</span>
+                                <div style={{ fontWeight: 600, color: '#f8fafc', marginTop: 2 }}>{settings.address || 'Av. del Libertador 4500'}, {settings.city || 'Palermo'}, {settings.province || 'CABA'}</div>
+                            </div>
+                            <div>
+                                <span style={{ color: '#64748b', fontSize: 12, textTransform: 'uppercase', fontWeight: 600 }}>Horarios de Atención</span>
+                                <div style={{ color: '#cbd5e1', marginTop: 2 }}>{settings.business_hours || 'Lunes a Viernes de 9 a 19 hs. Sábados de 10 a 14 hs.'}</div>
+                            </div>
+                            <div>
+                                <span style={{ color: '#64748b', fontSize: 12, textTransform: 'uppercase', fontWeight: 600 }}>WhatsApp Directo</span>
+                                <div style={{ color: '#34d399', fontWeight: 700, marginTop: 2 }}>+{settings.whatsapp || '5491140980758'}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    );
+}

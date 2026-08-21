@@ -1,0 +1,694 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { createVehicle } from '@/lib/actions/vehicles';
+import { formatARS } from '@/lib/utils/currency';
+import { 
+    Car, 
+    Wrench, 
+    DollarSign, 
+    ArrowLeftRight, 
+    Image as ImageIcon, 
+    Globe, 
+    Eye, 
+    Save, 
+    Check, 
+    ArrowRight, 
+    ArrowLeft,
+    UploadCloud,
+    AlertCircle
+} from 'lucide-react';
+
+const STEPS = [
+    { id: 1, label: 'Datos Básicos', icon: Car },
+    { id: 2, label: 'Info Técnica', icon: Wrench },
+    { id: 3, label: 'Info Comercial', icon: DollarSign },
+    { id: 4, label: 'Origen', icon: ArrowLeftRight },
+    { id: 5, label: 'Fotografías', icon: ImageIcon },
+    { id: 6, label: 'Publicación', icon: Globe },
+    { id: 7, label: 'Vista Previa', icon: Eye },
+    { id: 8, label: 'Guardar', icon: Save },
+];
+
+export default function NewVehiclePage() {
+    const router = useRouter();
+    const [currentStep, setCurrentStep] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    // Estado del formulario
+    const [formData, setFormData] = useState({
+        brand: '',
+        model: '',
+        version: '',
+        year: new Date().getFullYear(),
+        mileage: 0,
+        fuel_type: 'NAFTA',
+        transmission: 'MANUAL',
+        body_type: 'AUTO',
+        doors: 4,
+        exterior_color: '',
+        interior_color: '',
+        plate: '',
+        vin: '',
+        engine_number: '',
+        purchase_price: 0,
+        sale_price: 0,
+        minimum_price: 0,
+        origin_type: 'DIRECT_PURCHASE',
+        status: 'AVAILABLE',
+        published: true,
+        featured: false,
+        commercial_title: '',
+        description: '',
+        equipment: '',
+        features: '',
+        meta_title: '',
+        meta_description: ''
+    });
+
+    const updateField = (field: string, value: any) => {
+        setFormData(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleNext = () => {
+        setError(null);
+        // Validaciones paso 1
+        if (currentStep === 1) {
+            if (!formData.brand.trim() || !formData.model.trim()) {
+                setError('Por favor completá la Marca y el Modelo del vehículo.');
+                return;
+            }
+        }
+        // Validaciones paso 3
+        if (currentStep === 3) {
+            if (formData.sale_price <= 0) {
+                setError('El precio de venta debe ser mayor a $ 0.');
+                return;
+            }
+        }
+
+        if (currentStep < 8) {
+            setCurrentStep(prev => prev + 1);
+        }
+    };
+
+    const handleBack = () => {
+        setError(null);
+        if (currentStep > 1) {
+            setCurrentStep(prev => prev - 1);
+        }
+    };
+
+    const handleSave = async (shouldPublish: boolean) => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const payload = {
+                ...formData,
+                published: shouldPublish,
+                status: (shouldPublish ? (formData.status || 'AVAILABLE') : 'IN_PREPARATION') as any
+            };
+
+            const res = await createVehicle(payload as any);
+            if (!res.success) {
+                setError(res.error || 'Error al guardar el vehículo.');
+                setLoading(false);
+                return;
+            }
+
+            if (res.vehicle) {
+                router.push(`/admin/vehiculos/${res.vehicle.id}`);
+            }
+        } catch (err: any) {
+            setError(err.message || 'Ocurrió un error inesperado.');
+            setLoading(false);
+        }
+    };
+
+    // Auto-generar título comercial si está vacío
+    const autoTitle = `${formData.brand.toUpperCase()} ${formData.model.toUpperCase()} ${formData.version ? formData.version.toUpperCase() : ''} ${formData.year}`.trim();
+
+    return (
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+            {/* Header */}
+            <div className="admin-page-header">
+                <div>
+                    <Link href="/admin/vehiculos" style={{ fontSize: 13, color: '#60a5fa', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                        <ArrowLeft size={14} />
+                        <span>Volver a Vehículos</span>
+                    </Link>
+                    <h1 className="admin-page-title">Carga de Vehículo (Paso a Paso)</h1>
+                    <p className="admin-page-desc">Completá la información del vehículo para incorporarlo al inventario y a la web.</p>
+                </div>
+            </div>
+
+            {/* Stepper Wizard */}
+            <div className="wizard-steps">
+                {STEPS.map((step) => {
+                    const isCompleted = currentStep > step.id;
+                    const isActive = currentStep === step.id;
+                    return (
+                        <div
+                            key={step.id}
+                            className={`wizard-step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`}
+                            onClick={() => step.id < currentStep && setCurrentStep(step.id)}
+                        >
+                            <div className="wizard-step-num">
+                                {isCompleted ? <Check size={14} /> : step.id}
+                            </div>
+                            <span>{step.label}</span>
+                        </div>
+                    );
+                })}
+            </div>
+
+            {error && (
+                <div className="alert-banner danger" style={{ marginBottom: 20 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <AlertCircle size={18} />
+                        <span>{error}</span>
+                    </div>
+                </div>
+            )}
+
+            {/* CONTENIDO DE CADA PASO */}
+            <div className="table-container" style={{ padding: 32, marginBottom: 24 }}>
+                {/* PASO 1: DATOS BÁSICOS */}
+                {currentStep === 1 && (
+                    <div>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 20 }}>
+                            Paso 1: Datos Básicos
+                        </h2>
+                        <div className="form-grid">
+                            <div className="form-group">
+                                <label className="form-label">Marca *</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="Ej: Toyota, Ford, Fiat, Volkswagen"
+                                    value={formData.brand}
+                                    onChange={(e) => updateField('brand', e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Modelo *</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="Ej: Hilux, Corolla, Toro, Amarok"
+                                    value={formData.model}
+                                    onChange={(e) => updateField('model', e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Versión</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="Ej: SRX 4x4, Volcano, Highline"
+                                    value={formData.version}
+                                    onChange={(e) => updateField('version', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Año de Fabricación *</label>
+                                <input
+                                    type="number"
+                                    className="form-input"
+                                    value={formData.year}
+                                    onChange={(e) => updateField('year', parseInt(e.target.value, 10))}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Kilómetros</label>
+                                <input
+                                    type="number"
+                                    className="form-input"
+                                    placeholder="0 para 0 KM"
+                                    value={formData.mileage}
+                                    onChange={(e) => updateField('mileage', parseInt(e.target.value, 10) || 0)}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Patente (Dominio)</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="Ej: AF123CD o AB123CD"
+                                    style={{ textTransform: 'uppercase' }}
+                                    value={formData.plate}
+                                    onChange={(e) => updateField('plate', e.target.value.toUpperCase())}
+                                />
+                                <span className="form-help">Se verificará automáticamente que no exista duplicada.</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* PASO 2: INFORMACIÓN TÉCNICA */}
+                {currentStep === 2 && (
+                    <div>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 20 }}>
+                            Paso 2: Información Técnica
+                        </h2>
+                        <div className="form-grid">
+                            <div className="form-group">
+                                <label className="form-label">Tipo de Vehículo</label>
+                                <select
+                                    className="form-select"
+                                    value={formData.body_type}
+                                    onChange={(e) => updateField('body_type', e.target.value)}
+                                >
+                                    <option value="AUTO">Auto / Sedán / Hatchback</option>
+                                    <option value="SUV">SUV</option>
+                                    <option value="PICKUP">Pickup</option>
+                                    <option value="UTILITY">Utilitario / Furgón</option>
+                                    <option value="TRUCK">Camión</option>
+                                    <option value="MOTORCYCLE">Moto</option>
+                                    <option value="OTHER">Otro</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Combustible</label>
+                                <select
+                                    className="form-select"
+                                    value={formData.fuel_type}
+                                    onChange={(e) => updateField('fuel_type', e.target.value)}
+                                >
+                                    <option value="NAFTA">Nafta</option>
+                                    <option value="DIESEL">Diesel</option>
+                                    <option value="GNC">Nafta / GNC</option>
+                                    <option value="HYBRID">Híbrido</option>
+                                    <option value="ELECTRIC">Eléctrico</option>
+                                    <option value="OTHER">Otro</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Transmisión</label>
+                                <select
+                                    className="form-select"
+                                    value={formData.transmission}
+                                    onChange={(e) => updateField('transmission', e.target.value)}
+                                >
+                                    <option value="MANUAL">Manual</option>
+                                    <option value="AUTOMATIC">Automática</option>
+                                    <option value="CVT">CVT</option>
+                                    <option value="OTHER">Otro</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Puertas</label>
+                                <input
+                                    type="number"
+                                    className="form-input"
+                                    value={formData.doors}
+                                    onChange={(e) => updateField('doors', parseInt(e.target.value, 10))}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Color Exterior</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="Ej: Blanco Perlado, Gris Grafito"
+                                    value={formData.exterior_color}
+                                    onChange={(e) => updateField('exterior_color', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Color Interior / Tapizado</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="Ej: Cuero Negro, Tela Gris"
+                                    value={formData.interior_color}
+                                    onChange={(e) => updateField('interior_color', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">VIN / Número de Chasis</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="Número de 17 caracteres"
+                                    style={{ textTransform: 'uppercase' }}
+                                    value={formData.vin}
+                                    onChange={(e) => updateField('vin', e.target.value.toUpperCase())}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Número de Motor</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="Nro de motor según título"
+                                    value={formData.engine_number}
+                                    onChange={(e) => updateField('engine_number', e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* PASO 3: INFORMACIÓN COMERCIAL (ARS) */}
+                {currentStep === 3 && (
+                    <div>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 8 }}>
+                            Paso 3: Información Comercial (ARS)
+                        </h2>
+                        <p style={{ fontSize: 13, color: '#94a3b8', marginBottom: 20 }}>
+                            Todos los importes se manejan exclusivamente en <strong>Pesos Argentinos ($ ARS)</strong>.
+                        </p>
+
+                        <div className="form-grid">
+                            <div className="form-group">
+                                <label className="form-label">Valor de Compra / Toma ($ ARS)</label>
+                                <input
+                                    type="number"
+                                    className="form-input"
+                                    placeholder="Ej: 20000000"
+                                    value={formData.purchase_price}
+                                    onChange={(e) => updateField('purchase_price', parseInt(e.target.value, 10) || 0)}
+                                />
+                                <span className="form-help">Monto abonado al adquirir el vehículo: {formatARS(formData.purchase_price)}</span>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Precio de Venta Publicado ($ ARS) *</label>
+                                <input
+                                    type="number"
+                                    className="form-input"
+                                    placeholder="Ej: 27000000"
+                                    value={formData.sale_price}
+                                    onChange={(e) => updateField('sale_price', parseInt(e.target.value, 10) || 0)}
+                                    required
+                                />
+                                <span className="form-help" style={{ color: '#34d399', fontWeight: 600 }}>
+                                    Precio público en web: {formatARS(formData.sale_price)}
+                                </span>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Precio Mínimo Autorizado ($ ARS)</label>
+                                <input
+                                    type="number"
+                                    className="form-input"
+                                    placeholder="Ej: 25500000"
+                                    value={formData.minimum_price}
+                                    onChange={(e) => updateField('minimum_price', parseInt(e.target.value, 10) || 0)}
+                                />
+                                <span className="form-help">Piso de negociación interna: {formatARS(formData.minimum_price)}</span>
+                            </div>
+                        </div>
+
+                        {/* Cálculo instantáneo de rentabilidad preliminar */}
+                        <div style={{
+                            backgroundColor: '#151b2a',
+                            borderRadius: 10,
+                            padding: '18px 22px',
+                            border: '1px solid rgba(255,255,255,0.08)',
+                            marginTop: 16,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            flexWrap: 'wrap',
+                            gap: 16
+                        }}>
+                            <div>
+                                <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 700 }}>Ganancia Potencial</div>
+                                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: '#fbbf24' }}>
+                                    {formatARS(formData.sale_price - formData.purchase_price)}
+                                </div>
+                            </div>
+                            <div>
+                                <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 700 }}>Margen Proyectado</div>
+                                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: '#34d399' }}>
+                                    {formData.purchase_price > 0 ? `${(((formData.sale_price - formData.purchase_price) / formData.purchase_price) * 100).toFixed(1)} %` : '0 %'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* PASO 4: ORIGEN */}
+                {currentStep === 4 && (
+                    <div>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 20 }}>
+                            Paso 4: Origen y Trazabilidad
+                        </h2>
+                        <div className="form-grid">
+                            <div className="form-group">
+                                <label className="form-label">Tipo de Origen</label>
+                                <select
+                                    className="form-select"
+                                    value={formData.origin_type}
+                                    onChange={(e) => updateField('origin_type', e.target.value)}
+                                >
+                                    <option value="DIRECT_PURCHASE">Compra Directa de la Agencia</option>
+                                    <option value="TRADE_IN">Recibido en Permuta</option>
+                                    <option value="CONSIGNMENT">Vehículo Consignado (de un cliente)</option>
+                                    <option value="OWN_VEHICLE">Vehículo Propio de la Empresa</option>
+                                    <option value="OTHER">Otro</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Estado Inicial en el Sistema</label>
+                                <select
+                                    className="form-select"
+                                    value={formData.status}
+                                    onChange={(e) => updateField('status', e.target.value)}
+                                >
+                                    <option value="AVAILABLE">Disponible para Venta</option>
+                                    <option value="IN_PREPARATION">En Preparación (Mecánica / Chapa / Detailing)</option>
+                                    <option value="DRAFT">Borrador</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* PASO 5: FOTOGRAFÍAS */}
+                {currentStep === 5 && (
+                    <div>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 8 }}>
+                            Paso 5: Fotografías del Vehículo
+                        </h2>
+                        <p style={{ fontSize: 13, color: '#94a3b8', marginBottom: 20 }}>
+                            Podrás subir fotografías directamente aquí o cargarlas desde la ficha 360° una vez guardado el vehículo.
+                        </p>
+
+                        <div style={{
+                            border: '2px dashed rgba(255, 255, 255, 0.15)',
+                            borderRadius: 12,
+                            padding: '40px 24px',
+                            textAlign: 'center',
+                            backgroundColor: '#121826'
+                        }}>
+                            <UploadCloud size={40} style={{ color: '#3b82f6', margin: '0 auto 12px' }} />
+                            <p style={{ fontSize: 15, fontWeight: 600, color: '#f8fafc', marginBottom: 4 }}>
+                                Subida de imágenes optimizada a Supabase Storage
+                            </p>
+                            <p style={{ fontSize: 12.5, color: '#64748b', maxWidth: 460, margin: '0 auto' }}>
+                                Arrastrá y soltá fotos aquí o seleccionalas desde tu computadora. Podrás definir la imagen de portada y reordenarlas con drag & drop.
+                            </p>
+                        </div>
+                    </div>
+                )}
+
+                {/* PASO 6: PUBLICACIÓN WEB */}
+                {currentStep === 6 && (
+                    <div>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 20 }}>
+                            Paso 6: Información para la Página Web
+                        </h2>
+                        <div className="form-grid" style={{ gridTemplateColumns: '1fr' }}>
+                            <div className="form-group">
+                                <label className="form-label">Título Comercial</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder={autoTitle}
+                                    value={formData.commercial_title}
+                                    onChange={(e) => updateField('commercial_title', e.target.value)}
+                                />
+                                <span className="form-help">Si lo dejás vacío se usará: &quot;{autoTitle}&quot;</span>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Descripción Comercial</label>
+                                <textarea
+                                    className="form-textarea"
+                                    rows={4}
+                                    placeholder="Detalles sobre el estado del auto, historial de servicios, si es primer dueño, equipamiento destacado..."
+                                    value={formData.description}
+                                    onChange={(e) => updateField('description', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Equipamiento y Confort</label>
+                                <textarea
+                                    className="form-textarea"
+                                    rows={3}
+                                    placeholder="Climatizador bizona, techo solar, tapizado de cuero, pantalla táctil 10'', cámara de retroceso..."
+                                    value={formData.equipment}
+                                    onChange={(e) => updateField('equipment', e.target.value)}
+                                />
+                            </div>
+
+                            <div style={{ display: 'flex', gap: 20, marginTop: 10 }}>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.published}
+                                        onChange={(e) => updateField('published', e.target.checked)}
+                                    />
+                                    <span style={{ fontSize: 13.5, fontWeight: 600, color: '#f8fafc' }}>
+                                        Publicar en el Catálogo Web
+                                    </span>
+                                </label>
+
+                                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.featured}
+                                        onChange={(e) => updateField('featured', e.target.checked)}
+                                    />
+                                    <span style={{ fontSize: 13.5, fontWeight: 600, color: '#fbbf24' }}>
+                                        Destacar en Portada (Home)
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* PASO 7: VISTA PREVIA */}
+                {currentStep === 7 && (
+                    <div>
+                        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 20 }}>
+                            Paso 7: Vista Previa de la Ficha
+                        </h2>
+                        
+                        <div style={{
+                            backgroundColor: '#0e121c',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            borderRadius: 14,
+                            padding: 24
+                        }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16, marginBottom: 16 }}>
+                                <div>
+                                    <span className="badge badge-available" style={{ marginBottom: 6 }}>
+                                        {formData.status}
+                                    </span>
+                                    <h3 style={{ fontSize: 22, fontWeight: 800, color: '#fff' }}>
+                                        {formData.commercial_title || autoTitle}
+                                    </h3>
+                                    <p style={{ fontSize: 13, color: '#94a3b8' }}>
+                                        Año {formData.year} • {formData.mileage?.toLocaleString('es-AR')} km • {formData.fuel_type} • Caja {formData.transmission}
+                                    </p>
+                                </div>
+                                <div style={{ textAlign: 'right' }}>
+                                    <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase' }}>Precio Publicado</div>
+                                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: 24, fontWeight: 800, color: '#34d399' }}>
+                                        {formatARS(formData.sale_price)}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {formData.description && (
+                                <p style={{ fontSize: 13.5, color: '#cbd5e1', lineHeight: 1.6, padding: '12px 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                                    {formData.description}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* PASO 8: GUARDAR */}
+                {currentStep === 8 && (
+                    <div style={{ textAlign: 'center', padding: '20px 0' }}>
+                        <Check size={48} style={{ color: '#34d399', margin: '0 auto 16px' }} />
+                        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#f8fafc', marginBottom: 8 }}>
+                            ¡Vehículo Listo para Guardar!
+                        </h2>
+                        <p style={{ fontSize: 14, color: '#94a3b8', maxWidth: 500, margin: '0 auto 32px' }}>
+                            Elegí cómo querés guardar este registro. El vehículo se creará con trazabilidad permanente en el sistema.
+                        </p>
+
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
+                            <button
+                                onClick={() => handleSave(false)}
+                                disabled={loading}
+                                className="btn-secondary"
+                                style={{ padding: '12px 24px', fontSize: 14 }}
+                            >
+                                <Save size={16} />
+                                <span>Guardar como Borrador</span>
+                            </button>
+
+                            <button
+                                onClick={() => handleSave(true)}
+                                disabled={loading}
+                                className="btn-primary"
+                                style={{ padding: '12px 28px', fontSize: 14 }}
+                            >
+                                <Globe size={16} />
+                                <span>Guardar y Publicar en Web</span>
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {/* BOTONES DE NAVEGACIÓN ANTERIOR / SIGUIENTE */}
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginTop: 32,
+                    paddingTop: 20,
+                    borderTop: '1px solid rgba(255, 255, 255, 0.08)'
+                }}>
+                    <button
+                        onClick={handleBack}
+                        disabled={currentStep === 1 || loading}
+                        className="btn-secondary"
+                        style={{ opacity: currentStep === 1 ? 0.4 : 1 }}
+                    >
+                        <ArrowLeft size={16} />
+                        <span>Anterior</span>
+                    </button>
+
+                    {currentStep < 8 && (
+                        <button
+                            onClick={handleNext}
+                            className="btn-primary"
+                        >
+                            <span>Siguiente</span>
+                            <ArrowRight size={16} />
+                        </button>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
