@@ -2,36 +2,19 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Car, MessageCircle, Phone, Compass, Lock } from 'lucide-react';
+import { BrandLogo } from '@/components/common/BrandLogo';
+import { MessageCircle, Lock } from 'lucide-react';
 
-export function PublicNavbar({ whatsappNumber, agencyName }: { whatsappNumber?: string; agencyName?: string }) {
+export function PublicNavbar({ whatsappNumber }: { whatsappNumber?: string; agencyName?: string }) {
     const pathname = usePathname();
     const wp = whatsappNumber || '5491140980758';
-    const brand = agencyName || 'Special Cars';
 
     return (
         <header className="public-navbar">
             <div className="public-nav-container">
-                {/* Logo */}
-                <Link href="/" className="public-logo">
-                    <div style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 10,
-                        background: 'linear-gradient(135deg, #FF6B00 0%, #EA580C 100%)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#fff',
-                        fontWeight: 900,
-                        fontSize: 18,
-                        boxShadow: '0 4px 14px rgba(234, 88, 12, 0.35)'
-                    }}>
-                        SC
-                    </div>
-                    <div className="public-logo-brand">
-                        <span>{brand}</span>
-                    </div>
+                {/* Logo con Isotipo Oficial y Tipografía Special Cars */}
+                <Link href="/">
+                    <BrandLogo variant="light" size="md" />
                 </Link>
 
                 {/* Enlaces de Navegación */}
@@ -39,14 +22,14 @@ export function PublicNavbar({ whatsappNumber, agencyName }: { whatsappNumber?: 
                     <Link 
                         href="/" 
                         className="public-nav-link"
-                        style={{ color: pathname === '/' ? '#EA580C' : undefined, fontWeight: pathname === '/' ? 700 : undefined }}
+                        style={{ color: pathname === '/' ? '#EA580C' : undefined, fontWeight: pathname === '/' ? 800 : undefined }}
                     >
                         Inicio
                     </Link>
                     <Link 
                         href="/vehiculos" 
                         className="public-nav-link"
-                        style={{ color: pathname.startsWith('/vehiculos') ? '#EA580C' : undefined, fontWeight: pathname.startsWith('/vehiculos') ? 700 : undefined }}
+                        style={{ color: pathname.startsWith('/vehiculos') ? '#EA580C' : undefined, fontWeight: pathname.startsWith('/vehiculos') ? 800 : undefined }}
                     >
                         Catálogo de Vehículos
                     </Link>

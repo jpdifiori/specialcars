@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
+import { BrandLogo } from '@/components/common/BrandLogo';
 import { 
     LayoutDashboard, 
     Car, 
@@ -15,11 +17,10 @@ import {
     LogOut,
     ExternalLink
 } from 'lucide-react';
-import { createClient } from '@/lib/supabase/client';
 
 const NAV_ITEMS = [
     { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-    { label: 'Vehículos', href: '/admin/vehiculos', icon: Car },
+    { label: 'Vehículos (Stock)', href: '/admin/vehiculos', icon: Car },
     { label: 'Clientes', href: '/admin/clientes', icon: Users },
     { label: 'Operaciones', href: '/admin/operaciones', icon: ArrowLeftRight },
     { label: 'Consignaciones', href: '/admin/consignaciones', icon: FileSpreadsheet },
@@ -47,19 +48,15 @@ export function AdminSidebar() {
     return (
         <aside className="admin-sidebar">
             <div className="admin-sidebar-header">
-                <div className="admin-logo-mark">SC</div>
-                <div>
-                    <div className="admin-logo-text">Special Cars</div>
-                    <div className="admin-logo-sub">Panel de Control</div>
-                </div>
+                <Link href="/admin">
+                    <BrandLogo variant="dark" size="sm" />
+                </Link>
             </div>
 
-            <nav className="admin-nav">
+            <nav className="admin-sidebar-nav">
                 {NAV_ITEMS.map((item) => {
                     const Icon = item.icon;
-                    const isActive = item.href === '/admin' 
-                        ? pathname === '/admin' 
-                        : pathname.startsWith(item.href);
+                    const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
 
                     return (
                         <Link
@@ -75,24 +72,23 @@ export function AdminSidebar() {
             </nav>
 
             <div className="admin-sidebar-footer">
-                <Link 
-                    href="/" 
-                    target="_blank" 
-                    className="admin-public-link"
-                    title="Ver página web pública"
+                <Link
+                    href="/"
+                    target="_blank"
+                    className="admin-nav-item"
+                    style={{ color: '#94A3B8' }}
                 >
-                    <ExternalLink size={14} />
-                    <span>Ver Web</span>
+                    <ExternalLink size={16} />
+                    <span>Ver Web Pública</span>
                 </Link>
 
-                <button 
-                    onClick={handleLogout} 
-                    className="admin-public-link"
-                    title="Cerrar sesión"
-                    style={{ color: '#f43f5e' }}
+                <button
+                    onClick={handleLogout}
+                    className="admin-nav-item"
+                    style={{ color: '#EF4444', width: '100%', textAlign: 'left' }}
                 >
-                    <LogOut size={14} />
-                    <span>Salir</span>
+                    <LogOut size={16} />
+                    <span>Cerrar Sesión</span>
                 </button>
             </div>
         </aside>

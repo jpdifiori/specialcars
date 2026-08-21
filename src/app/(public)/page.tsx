@@ -8,10 +8,8 @@ import {
     ArrowRight, 
     ShieldCheck, 
     Sparkles, 
-    CheckCircle2, 
     ArrowLeftRight, 
-    Award, 
-    Phone 
+    Award
 } from 'lucide-react';
 
 export default async function PublicHomePage() {
@@ -99,7 +97,7 @@ export default async function PublicHomePage() {
                 </div>
             </section>
 
-            {/* SECCIÓN VEHÍCULOS DESTACADOS (si hay) */}
+            {/* SECCIÓN VEHÍCULOS DESTACADOS */}
             {featuredVehicles.length > 0 && (
                 <section className="public-section">
                     <div className="section-header">
@@ -160,9 +158,9 @@ export default async function PublicHomePage() {
                 )}
             </section>
 
-            {/* PRESENTACIÓN DE LA AGENCIA */}
+            {/* PRESENTACIÓN DE LA AGENCIA CON BANNER OFICIAL */}
             <section style={{ backgroundColor: '#F8FAFC', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: '80px 24px' }}>
-                <div style={{ maxWidth: 1100, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 48, alignItems: 'center' }}>
+                <div style={{ maxWidth: 1160, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 48, alignItems: 'center' }}>
                     <div>
                         <div className="section-subtitle">Sobre Nosotros</div>
                         <h2 className="section-title" style={{ marginBottom: 20 }}>
@@ -188,22 +186,40 @@ export default async function PublicHomePage() {
                         </div>
                     </div>
 
-                    <div style={{ backgroundColor: '#FFFFFF', borderRadius: 16, border: '1px solid #E2E8F0', padding: 32, boxShadow: '0 4px 20px rgba(15, 23, 42, 0.05)' }}>
-                        <h3 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 20 }}>
-                            Información de la Concesionaria
-                        </h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontSize: 14 }}>
-                            <div>
-                                <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>Dirección</span>
-                                <div style={{ fontWeight: 700, color: '#0F172A', marginTop: 2 }}>{settings.address || 'Av. del Libertador 4500'}, {settings.city || 'Palermo'}, {settings.province || 'CABA'}</div>
-                            </div>
-                            <div>
-                                <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>Horarios de Atención</span>
-                                <div style={{ color: '#334155', marginTop: 2 }}>{settings.business_hours || 'Lunes a Viernes de 9 a 19 hs. Sábados de 10 a 14 hs.'}</div>
-                            </div>
-                            <div>
-                                <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>WhatsApp Directo</span>
-                                <div style={{ color: '#EA580C', fontWeight: 800, marginTop: 2 }}>+{settings.whatsapp || '5491140980758'}</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                        {/* Banner Oficial de Fibra de Carbono */}
+                        <div style={{
+                            borderRadius: 16,
+                            overflow: 'hidden',
+                            boxShadow: '0 8px 24px rgba(15, 23, 42, 0.12)',
+                            border: '1px solid #1E293B',
+                            backgroundColor: '#0F172A'
+                        }}>
+                            <img
+                                src="/images/specialcars-banner-carbon.png"
+                                alt="Special Cars Official Banner"
+                                style={{ width: '100%', height: 'auto', display: 'block' }}
+                            />
+                        </div>
+
+                        {/* Tarjeta de Contacto */}
+                        <div style={{ backgroundColor: '#FFFFFF', borderRadius: 16, border: '1px solid #E2E8F0', padding: 28, boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)' }}>
+                            <h3 style={{ fontSize: 17, fontWeight: 800, color: '#0F172A', marginBottom: 16 }}>
+                                Información de la Concesionaria
+                            </h3>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontSize: 14 }}>
+                                <div>
+                                    <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>Dirección</span>
+                                    <div style={{ fontWeight: 700, color: '#0F172A', marginTop: 2 }}>{settings.address || 'Av. del Libertador 4500'}, {settings.city || 'Palermo'}, {settings.province || 'CABA'}</div>
+                                </div>
+                                <div>
+                                    <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>Horarios de Atención</span>
+                                    <div style={{ color: '#334155', marginTop: 2 }}>{settings.business_hours || 'Lunes a Viernes de 9 a 19 hs. Sábados de 10 a 14 hs.'}</div>
+                                </div>
+                                <div>
+                                    <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>WhatsApp Directo</span>
+                                    <div style={{ color: '#EA580C', fontWeight: 800, marginTop: 2 }}>+{settings.whatsapp || '5491140980758'}</div>
+                                </div>
                             </div>
                         </div>
                     </div>

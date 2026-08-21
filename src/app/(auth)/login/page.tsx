@@ -3,6 +3,7 @@
 import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { BrandLogo } from '@/components/common/BrandLogo';
 import { Lock, Mail, ArrowRight, ShieldCheck } from 'lucide-react';
 
 function LoginForm() {
@@ -63,27 +64,11 @@ function LoginForm() {
                 padding: '40px 32px',
                 boxShadow: '0 10px 30px rgba(15, 23, 42, 0.08)'
             }}>
-                <div style={{ textAlign: 'center', marginBottom: 32 }}>
-                    <div style={{
-                        width: 48,
-                        height: 48,
-                        borderRadius: 12,
-                        background: 'linear-gradient(135deg, #FF6B00 0%, #EA580C 100%)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: '0 auto 16px',
-                        color: '#fff',
-                        fontWeight: 900,
-                        fontSize: 20,
-                        boxShadow: '0 4px 16px rgba(234, 88, 12, 0.35)'
-                    }}>
-                        SC
+                <div style={{ textAlign: 'center', marginBottom: 28 }}>
+                    <div style={{ display: 'inline-block', marginBottom: 12 }}>
+                        <BrandLogo variant="light" size="lg" />
                     </div>
-                    <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 24, fontWeight: 800, color: '#0F172A', marginBottom: 4 }}>
-                        Special Cars
-                    </h1>
-                    <p style={{ fontSize: 13.5, color: '#64748B' }}>
+                    <p style={{ fontSize: 13.5, color: '#64748B', marginTop: 8 }}>
                         Acceso exclusivo al panel administrativo
                     </p>
                 </div>
