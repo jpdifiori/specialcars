@@ -70,8 +70,8 @@ export default async function PublicHomePage() {
                             <ShieldCheck size={22} />
                         </div>
                         <div>
-                            <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', marginBottom: 4 }}>Garantía y Trazabilidad</h3>
-                            <p style={{ fontSize: 13.5, color: '#64748B', lineHeight: 1.5 }}>Unidades chequeadas mecánicamente con documentación 100% al día.</p>
+                            <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', marginBottom: 4 }}>Unidades Seleccionadas</h3>
+                            <p style={{ fontSize: 13.5, color: '#64748B', lineHeight: 1.5 }}>Revisamos cada vehículo y su documentación antes de ponerlo a la venta.</p>
                         </div>
                     </div>
 
