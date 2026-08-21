@@ -349,7 +349,7 @@ async function runTests() {
             .select('*, vehicles:operation_vehicles(*, vehicle:vehicles(*))')
             .eq('client_id', testClient.id);
 
-        assert(clientOps && clientOps.length >= 2, `Timeline del cliente con ${clientOps?.length} operaciones trazables`);
+        assert(Boolean(clientOps && clientOps.length >= 2), `Timeline del cliente con ${clientOps?.length} operaciones trazables`);
 
         console.log('\n=============================================');
         console.log(`🏁 RESULTADO FINAL: ${passed} PASADOS, ${failed} FALLADOS`);
