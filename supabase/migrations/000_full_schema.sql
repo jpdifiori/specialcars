@@ -350,7 +350,7 @@ CREATE TABLE IF NOT EXISTS agency_settings (
     tiktok TEXT DEFAULT 'https://tiktok.com/@specialcars_neceochea',
     google_maps_url TEXT,
     business_hours TEXT DEFAULT 'Lunes a Viernes de 9:00 a 19:00 hs. Sábados de 10:00 a 14:00 hs.',
-    legal_info TEXT DEFAULT 'Special Cars S.R.L. — CUIT 30-12345678-9',
+    legal_info TEXT,
     updated_at TIMESTAMPTZ DEFAULT now()
 );
 
@@ -1213,11 +1213,11 @@ INSERT INTO agency_settings (
     '+54 2262 57-4254',
     '5492262574254',
     'juanpablo.difiori@gmail.com',
-    'https://instagram.com/specialcars',
+    'https://instagram.com/specialcarsneceochea',
     'https://facebook.com/specialcars',
-    'https://tiktok.com/@specialcars',
+    'https://tiktok.com/@specialcars_neceochea',
     'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 08:00 a 12:30 hs.',
-    'Special Cars S.R.L. — CUIT 30-71234567-8'
+    NULL
 ) ON CONFLICT DO NOTHING;
 
 -- 14. POLÍTICAS DE STORAGE (storage.objects)

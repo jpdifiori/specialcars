@@ -112,9 +112,11 @@ export function PublicFooter({ settings }: { settings: AgencySettings }) {
                 <div>
                     © {year} Special Cars. Todos los derechos reservados.
                 </div>
-                <div>
-                    {settings.legal_info || 'Special Cars S.R.L. — CUIT 30-71234567-8'}
-                </div>
+                {settings.legal_info && (
+                    <div>
+                        {settings.legal_info}
+                    </div>
+                )}
             </div>
         </footer>
     );

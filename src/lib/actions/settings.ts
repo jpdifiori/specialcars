@@ -34,7 +34,7 @@ export async function getAgencySettings(): Promise<AgencySettings> {
             tiktok: 'https://tiktok.com/@specialcars_neceochea',
             google_maps_url: null,
             business_hours: 'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 08:00 a 12:30 hs.',
-            legal_info: 'Special Cars S.R.L. — CUIT 30-71234567-8',
+            legal_info: null,
             updated_at: new Date().toISOString()
         };
     }

@@ -221,11 +221,11 @@ export function SettingsForm({ initialSettings }: { initialSettings: AgencySetti
                 </div>
 
                 <div className="form-group">
-                    <label className="form-label">Razón Social & CUIT Legal</label>
+                    <label className="form-label">Razón Social & CUIT Legal (Opcional)</label>
                     <input
                         type="text"
                         className="form-input"
-                        placeholder="Special Cars S.R.L. — CUIT 30-71234567-8"
+                        placeholder="Opcional"
                         value={formData.legal_info}
                         onChange={(e) => updateField('legal_info', e.target.value)}
                     />
