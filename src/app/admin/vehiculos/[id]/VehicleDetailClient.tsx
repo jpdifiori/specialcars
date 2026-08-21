@@ -22,8 +22,10 @@ import {
     UploadCloud, 
     AlertCircle, 
     Check,
-    Wrench
+    Wrench,
+    Crop
 } from 'lucide-react';
+import { ImagePositionModal } from '@/components/admin/ImagePositionModal';
 
 export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
     const router = useRouter();
@@ -42,6 +44,7 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
     // Estado para upload de fotos
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState<string | null>(null);
+    const [adjustingImage, setAdjustingImage] = useState<{ id: string; url: string; fileName: string; isPrimary: boolean; storagePath: string } | null>(null);
 
     // Toggle Publicar
     const handleTogglePublish = async () => {
@@ -146,6 +149,35 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
         if (!confirm('¿Eliminar esta fotografía?')) return;
         await deleteVehicleImage(imageId, vehicle.id, storagePath);
         router.refresh();
+    };
+
+    const handleSaveAdjustedImage = async (adjustedFile: File, _newPreviewUrl: string) => {
+        if (!adjustingImage) return;
+        setUploading(true);
+        setUploadProgress('Guardando foto con el nuevo encuadre...');
+
+        try {
+            const uploadData = new FormData();
+            uploadData.append('vehicle_id', vehicle.id);
+            uploadData.append('file', adjustedFile, adjustedFile.name);
+            uploadData.append('is_primary', adjustingImage.isPrimary ? 'true' : 'false');
+
+            const res = await uploadVehicleImageAction(uploadData);
+            if (res.success) {
+                if (adjustingImage.id) {
+                    await deleteVehicleImage(adjustingImage.id, vehicle.id, adjustingImage.storagePath);
+                }
+            } else {
+                alert('Error al guardar encuadre: ' + res.error);
+            }
+        } catch (err: any) {
+            console.error('Error guardando encuadre:', err);
+        } finally {
+            setUploading(false);
+            setUploadProgress(null);
+            setAdjustingImage(null);
+            router.refresh();
+        }
     };
 
     return (
@@ -295,22 +327,43 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                                         left: 0,
                                         right: 0,
                                         padding: '8px',
-                                        background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)',
+                                        background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
                                         display: 'flex',
                                         justifyContent: 'space-between',
-                                        alignItems: 'center'
+                                        alignItems: 'center',
+                                        gap: 6
                                     }}>
-                                        {!img.is_primary && (
+                                        <div style={{ display: 'flex', gap: 6 }}>
                                             <button
-                                                onClick={() => handleSetPrimary(img.id)}
+                                                type="button"
+                                                onClick={() => setAdjustingImage({
+                                                    id: img.id,
+                                                    url: img.url,
+                                                    fileName: img.file_name || 'photo.jpg',
+                                                    isPrimary: img.is_primary,
+                                                    storagePath: img.storage_path
+                                                })}
                                                 className="btn-secondary"
-                                                style={{ padding: '3px 8px', fontSize: 11, background: '#FFFFFF' }}
-                                                title="Hacer Portada Principal"
+                                                style={{ padding: '3px 8px', fontSize: 11, background: '#FFFFFF', color: '#0F172A', display: 'flex', alignItems: 'center', gap: 4 }}
+                                                title="Ajustar Encuadre y Posición"
                                             >
-                                                <Star size={12} />
-                                                <span>Portada</span>
+                                                <Crop size={12} />
+                                                <span>Encuadre</span>
                                             </button>
-                                        )}
+
+                                            {!img.is_primary && (
+                                                <button
+                                                    onClick={() => handleSetPrimary(img.id)}
+                                                    className="btn-secondary"
+                                                    style={{ padding: '3px 8px', fontSize: 11, background: '#FFFFFF', color: '#0F172A' }}
+                                                    title="Hacer Portada Principal"
+                                                >
+                                                    <Star size={12} />
+                                                    <span>Portada</span>
+                                                </button>
+                                            )}
+                                        </div>
+
                                         <button
                                             onClick={() => handleDeleteImage(img.id, img.storage_path)}
                                             style={{ color: '#EF4444', padding: 4, marginLeft: 'auto', background: '#FFFFFF', borderRadius: 4 }}
@@ -559,6 +612,16 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                         </div>
                     </div>
                 </div>
+            )}
+            {/* Modal de Ajuste de Encuadre */}
+            {adjustingImage && (
+                <ImagePositionModal
+                    isOpen={Boolean(adjustingImage)}
+                    imageUrl={adjustingImage.url}
+                    fileName={adjustingImage.fileName}
+                    onClose={() => setAdjustingImage(null)}
+                    onSave={handleSaveAdjustedImage}
+                />
             )}
         </div>
     );

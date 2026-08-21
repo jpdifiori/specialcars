@@ -22,8 +22,10 @@ import {
     UploadCloud,
     AlertCircle,
     X,
-    Star
+    Star,
+    Crop
 } from 'lucide-react';
+import { ImagePositionModal } from '@/components/admin/ImagePositionModal';
 
 const STEPS = [
     { id: 1, label: 'Datos Básicos', icon: Car },
@@ -45,6 +47,7 @@ export default function NewVehiclePage() {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [previews, setPreviews] = useState<string[]>([]);
     const [uploadStatus, setUploadStatus] = useState<string | null>(null);
+    const [adjustingPhoto, setAdjustingPhoto] = useState<{ index: number; url: string; fileName: string } | null>(null);
 
     // Estado del formulario
     const [formData, setFormData] = useState({
@@ -130,6 +133,22 @@ export default function NewVehiclePage() {
     const removeFile = (index: number) => {
         setSelectedFiles(prev => prev.filter((_, i) => i !== index));
         setPreviews(prev => prev.filter((_, i) => i !== index));
+    };
+
+    const handleSaveAdjustedPhoto = (adjustedFile: File, newPreviewUrl: string) => {
+        if (!adjustingPhoto) return;
+        const targetIdx = adjustingPhoto.index;
+        setSelectedFiles(prev => {
+            const next = [...prev];
+            next[targetIdx] = adjustedFile;
+            return next;
+        });
+        setPreviews(prev => {
+            const next = [...prev];
+            next[targetIdx] = newPreviewUrl;
+            return next;
+        });
+        setAdjustingPhoto(null);
     };
 
     // Subir fotos a Supabase después de crear el vehículo
@@ -596,25 +615,66 @@ export default function NewVehiclePage() {
                                         backgroundColor: '#F8FAFC'
                                     }}>
                                         <img src={src} alt={`Preview ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                        <button
-                                            type="button"
-                                            onClick={() => removeFile(idx)}
-                                            style={{
-                                                position: 'absolute', top: 6, right: 6,
-                                                width: 24, height: 24, borderRadius: '50%',
-                                                backgroundColor: 'rgba(0,0,0,0.6)', color: '#fff',
-                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                                border: 'none', cursor: 'pointer', padding: 0
-                                            }}
-                                        >
-                                            <X size={14} />
-                                        </button>
+                                        
+                                        {/* Acciones sobre la miniatura */}
+                                        <div style={{ position: 'absolute', top: 6, right: 6, display: 'flex', gap: 4 }}>
+                                            <button
+                                                type="button"
+                                                onClick={() => setAdjustingPhoto({ index: idx, url: src, fileName: selectedFiles[idx]?.name || 'foto.jpg' })}
+                                                style={{
+                                                    padding: '4px 8px',
+                                                    borderRadius: 6,
+                                                    backgroundColor: 'rgba(0,0,0,0.75)',
+                                                    color: '#fff',
+                                                    fontSize: 11,
+                                                    fontWeight: 600,
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 4,
+                                                    border: 'none',
+                                                    cursor: 'pointer'
+                                                }}
+                                                title="Ajustar encuadre y posición"
+                                            >
+                                                <Crop size={12} />
+                                                <span>Ajustar</span>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => removeFile(idx)}
+                                                style={{
+                                                    width: 24,
+                                                    height: 24,
+                                                    borderRadius: '50%',
+                                                    backgroundColor: 'rgba(239,68,68,0.85)',
+                                                    color: '#fff',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    border: 'none',
+                                                    cursor: 'pointer',
+                                                    padding: 0
+                                                }}
+                                                title="Eliminar foto"
+                                            >
+                                                <X size={14} />
+                                            </button>
+                                        </div>
+
                                         {idx === 0 && (
                                             <div style={{
-                                                position: 'absolute', bottom: 6, left: 6,
-                                                backgroundColor: '#EA580C', color: '#fff',
-                                                fontSize: 10, fontWeight: 700, padding: '2px 8px',
-                                                borderRadius: 20, display: 'flex', alignItems: 'center', gap: 4
+                                                position: 'absolute',
+                                                bottom: 6,
+                                                left: 6,
+                                                backgroundColor: '#EA580C',
+                                                color: '#fff',
+                                                fontSize: 10,
+                                                fontWeight: 700,
+                                                padding: '2px 8px',
+                                                borderRadius: 20,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: 4
                                             }}>
                                                 <Star size={10} /> Portada
                                             </div>
@@ -828,6 +888,17 @@ export default function NewVehiclePage() {
                     )}
                 </div>
             </div>
+
+            {/* Modal de Ajuste de Encuadre */}
+            {adjustingPhoto && (
+                <ImagePositionModal
+                    isOpen={Boolean(adjustingPhoto)}
+                    imageUrl={adjustingPhoto.url}
+                    fileName={adjustingPhoto.fileName}
+                    onClose={() => setAdjustingPhoto(null)}
+                    onSave={handleSaveAdjustedPhoto}
+                />
+            )}
         </div>
     );
 }
