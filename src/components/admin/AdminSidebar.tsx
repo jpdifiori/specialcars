@@ -25,7 +25,6 @@ const NAV_ITEMS = [
     { label: 'Operaciones', href: '/admin/operaciones', icon: ArrowLeftRight },
     { label: 'Consignaciones', href: '/admin/consignaciones', icon: FileSpreadsheet },
     { label: 'Reservas', href: '/admin/reservas', icon: BookmarkCheck },
-    { label: '0 KM', href: '/admin/0km', icon: Sparkles },
     { label: 'Reportes', href: '/admin/reportes', icon: BarChart3 },
     { label: 'Configuración', href: '/admin/configuracion', icon: Settings },
 ];
