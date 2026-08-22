@@ -17,7 +17,7 @@ interface Testimonial {
 const TESTIMONIALS: Testimonial[] = [
     {
         id: 1,
-        name: 'Martín Echeverría',
+        name: 'Martín',
         location: 'Necochea',
         vehicle: 'Audi A1 Sportback',
         stars: 5,
@@ -27,7 +27,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 2,
-        name: "Gonzalo D'Angelo",
+        name: 'Gonzalo',
         location: 'Quequén',
         vehicle: 'Toyota Hilux 4x4 SRV',
         stars: 5,
@@ -37,7 +37,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 3,
-        name: 'Valeria Rodríguez',
+        name: 'Valeria',
         location: 'Necochea',
         vehicle: 'Peugeot 208 Feline',
         stars: 5,
@@ -47,7 +47,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 4,
-        name: 'Santiago Benítez',
+        name: 'Santiago',
         location: 'Tres Arroyos',
         vehicle: 'Volkswagen Amarok V6',
         stars: 5,
@@ -57,7 +57,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 5,
-        name: 'Carolina Méndez',
+        name: 'Carolina',
         location: 'Lobería',
         vehicle: 'Jeep Renegade Sport',
         stars: 5,
@@ -67,7 +67,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 6,
-        name: 'Facundo Rossi',
+        name: 'Facundo',
         location: 'Balcarce',
         vehicle: 'Ford Ranger XLT',
         stars: 5,
@@ -77,7 +77,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 7,
-        name: 'Marcos Etchegoyen',
+        name: 'Marcos',
         location: 'Necochea',
         vehicle: 'Toyota Corolla Cross',
         stars: 5,
@@ -87,7 +87,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 8,
-        name: 'Mariana Zubillaga',
+        name: 'Mariana',
         location: 'San Cayetano',
         vehicle: 'Honda HR-V EXL',
         stars: 5,
@@ -97,7 +97,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 9,
-        name: 'Ignacio Larrea',
+        name: 'Ignacio',
         location: 'Mar del Plata',
         vehicle: 'BMW 320i M-Sport',
         stars: 5,
@@ -107,7 +107,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 10,
-        name: 'Luciano Albarracín',
+        name: 'Luciano',
         location: 'Necochea',
         vehicle: 'Volkswagen Taos Highline',
         stars: 5,
@@ -117,7 +117,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 11,
-        name: 'Agustina Bardi',
+        name: 'Agustina',
         location: 'Necochea',
         vehicle: 'Chevrolet Cruze LTZ',
         stars: 5,
@@ -127,7 +127,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 12,
-        name: 'Diego Fernández',
+        name: 'Diego',
         location: 'Miramar',
         vehicle: 'Fiat Toro Volcano 4x4',
         stars: 5,
@@ -137,7 +137,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 13,
-        name: 'Pablo Castelli',
+        name: 'Pablo',
         location: 'Tandil',
         vehicle: 'Ford Territory Titanium',
         stars: 5,
@@ -147,7 +147,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 14,
-        name: 'Florencia Iriarte',
+        name: 'Florencia',
         location: 'Necochea',
         vehicle: 'Toyota Yaris XLS',
         stars: 5,
@@ -157,7 +157,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 15,
-        name: 'Esteban Morales',
+        name: 'Esteban',
         location: 'Quequén',
         vehicle: 'Nissan Frontier PRO-4X',
         stars: 5,
@@ -167,7 +167,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 16,
-        name: 'Matías Santillán',
+        name: 'Matías',
         location: 'Necochea',
         vehicle: 'Audi Q5 Quattro',
         stars: 5,
@@ -177,7 +177,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 17,
-        name: 'Julieta Álvarez',
+        name: 'Julieta',
         location: 'Necochea',
         vehicle: 'Renault Duster Iconic',
         stars: 5,
@@ -187,7 +187,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 18,
-        name: 'Joaquín Peralta',
+        name: 'Joaquín',
         location: 'Lobería',
         vehicle: 'Volkswagen Golf TSI',
         stars: 5,
@@ -197,7 +197,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 19,
-        name: 'Federico Quintana',
+        name: 'Federico',
         location: 'Necochea',
         vehicle: 'Mercedes-Benz C200',
         stars: 5,
@@ -207,7 +207,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         id: 20,
-        name: 'Camila Domínguez',
+        name: 'Camila',
         location: 'San Cayetano',
         vehicle: 'Citroën C4 Cactus Shine',
         stars: 5,
@@ -264,12 +264,7 @@ export function TestimonialsSection() {
     };
 
     const getInitials = (name: string) => {
-        return name
-            .split(' ')
-            .map((n) => n[0])
-            .slice(0, 2)
-            .join('')
-            .toUpperCase();
+        return name.charAt(0).toUpperCase();
     };
 
     // Paleta de gradientes para los avatares
