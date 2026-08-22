@@ -236,101 +236,156 @@ export function AIChatbot({
 
     return (
         <>
-            {/* TOOLTIP INICIAL PROMPT */}
+            {/* TOOLTIP GLOBO DE DIÁLOGO / PROMPT DE CHAT */}
             {!isOpen && showBubbleTip && (
                 <div
                     onClick={() => setIsOpen(true)}
                     style={{
                         position: 'fixed',
-                        bottom: 96,
-                        right: 28,
+                        bottom: 104,
+                        right: 24,
                         zIndex: 99,
                         backgroundColor: '#FFFFFF',
                         color: '#0F172A',
                         padding: '10px 16px',
-                        borderRadius: 14,
-                        boxShadow: '0 8px 30px rgba(0,0,0,0.18)',
+                        borderRadius: 16,
+                        boxShadow: '0 10px 30px rgba(15, 23, 42, 0.18)',
                         border: '1px solid #E2E8F0',
-                        fontSize: 13,
-                        fontWeight: 600,
                         display: 'flex',
                         alignItems: 'center',
-                        gap: 8,
+                        gap: 10,
                         cursor: 'pointer',
-                        maxWidth: 240,
+                        maxWidth: 270,
                         animation: 'fadeIn 0.3s ease-out'
                     }}
                 >
-                    <img 
-                        src="/images/franco-avatar.jpg" 
-                        alt="Hernán" 
-                        style={{ width: 28, height: 28, borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #EA580C', flexShrink: 0 }} 
-                    />
-                    <span>¡Hola! Soy Hernán. ¿En qué te puedo ayudar?</span>
+                    <div style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: '50%',
+                        overflow: 'hidden',
+                        border: '1.5px solid #EA580C',
+                        backgroundColor: '#FFFFFF',
+                        flexShrink: 0
+                    }}>
+                        <img 
+                            src="/images/franco-avatar.jpg" 
+                            alt="Hernán" 
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        />
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                        <div style={{ fontSize: 12.5, fontWeight: 800, color: '#0F172A', lineHeight: 1.15 }}>
+                            ¡Hola! 👋 Soy Hernán
+                        </div>
+                        <div style={{ fontSize: 11, color: '#64748B', lineHeight: 1.2, marginTop: 2 }}>
+                            ¿Te asesoro con algún vehículo?
+                        </div>
+                    </div>
                     <button 
                         onClick={(e) => { e.stopPropagation(); setShowBubbleTip(false); }} 
-                        style={{ marginLeft: 'auto', color: '#94A3B8', padding: 2 }}
+                        aria-label="Cerrar sugerencia"
+                        style={{
+                            marginLeft: 'auto',
+                            color: '#94A3B8',
+                            padding: 2,
+                            border: 'none',
+                            background: 'transparent',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center'
+                        }}
                     >
-                        <X size={12} />
+                        <X size={13} />
                     </button>
+                    {/* Flechita del globo */}
+                    <div className="speech-bubble-tail" />
                 </div>
             )}
 
-            {/* BOTÓN FLOTANTE TRIGGER */}
-            <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="floating-chatbot-btn"
-                style={{
-                    position: 'fixed',
-                    bottom: 24,
-                    right: 24,
-                    zIndex: 99,
-                    width: 62,
-                    height: 62,
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 60%, #EA580C 100%)',
-                    color: '#FFFFFF',
-                    border: '2.5px solid #EA580C',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    boxShadow: '0 8px 30px rgba(15, 23, 42, 0.45)',
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                    padding: 0,
-                    overflow: 'hidden'
-                }}
-                title={isOpen ? 'Cerrar Asistente' : 'Hablar con Hernán (Asesor Virtual)'}
-            >
-                {isOpen ? (
-                    <ChevronDown size={30} style={{ color: '#FFFFFF' }} />
-                ) : (
-                    <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <img 
-                            src="/images/franco-avatar.jpg" 
-                            alt="Hernán Asesor" 
-                            style={{ 
-                                width: '100%', 
-                                height: '100%', 
-                                objectFit: 'cover', 
-                                borderRadius: '50%',
-                                display: 'block'
-                            }} 
-                        />
-                        <span style={{
-                            position: 'absolute',
-                            bottom: 2,
-                            right: 2,
-                            width: 12,
-                            height: 12,
+            {/* BOTÓN FLOTANTE TRIGGER (65px, Fondo Blanco, Borde Naranja, Efecto de Chat) */}
+            <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 99 }}>
+                {!isOpen && <div className="chat-pulse-ring" />}
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="floating-chatbot-btn"
+                    style={{
+                        width: 65,
+                        height: 65,
+                        borderRadius: '50%',
+                        backgroundColor: '#FFFFFF',
+                        color: '#FFFFFF',
+                        border: '3px solid #EA580C',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        boxShadow: '0 8px 25px rgba(234, 88, 12, 0.35), 0 4px 12px rgba(0,0,0,0.12)',
+                        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                        padding: 0,
+                        position: 'relative'
+                    }}
+                    title={isOpen ? 'Cerrar Asistente' : 'Hablar con Hernán (Asesor Virtual IA)'}
+                >
+                    {isOpen ? (
+                        <div style={{
+                            width: '100%',
+                            height: '100%',
                             borderRadius: '50%',
-                            backgroundColor: '#22C55E',
-                            border: '2px solid #0F172A',
-                            boxShadow: '0 0 6px #22C55E'
-                        }} />
-                    </div>
-                )}
-            </button>
+                            backgroundColor: '#0F172A',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <ChevronDown size={30} style={{ color: '#FFFFFF' }} />
+                        </div>
+                    ) : (
+                        <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden' }}>
+                            <img 
+                                src="/images/franco-avatar.jpg" 
+                                alt="Hernán Asesor" 
+                                style={{ 
+                                    width: '100%', 
+                                    height: '100%', 
+                                    objectFit: 'cover', 
+                                    display: 'block'
+                                }} 
+                            />
+
+                            {/* Badge de Chat en la esquina superior derecha */}
+                            <div style={{
+                                position: 'absolute',
+                                top: 2,
+                                right: 2,
+                                width: 20,
+                                height: 20,
+                                borderRadius: '50%',
+                                backgroundColor: '#EA580C',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                boxShadow: '0 2px 6px rgba(0,0,0,0.25)',
+                                border: '1.5px solid #FFFFFF'
+                            }}>
+                                <MessageSquare size={10} color="#FFFFFF" fill="#FFFFFF" />
+                            </div>
+
+                            {/* Punto Verde de Estado En Línea en la esquina inferior derecha */}
+                            <span style={{
+                                position: 'absolute',
+                                bottom: 2,
+                                right: 3,
+                                width: 12,
+                                height: 12,
+                                borderRadius: '50%',
+                                backgroundColor: '#22C55E',
+                                border: '2px solid #FFFFFF',
+                                boxShadow: '0 0 6px #22C55E'
+                            }} />
+                        </div>
+                    )}
+                </button>
+            </div>
 
             {/* VENTANA DEL CHATBOT */}
             {isOpen && (
