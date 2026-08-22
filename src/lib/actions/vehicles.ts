@@ -4,6 +4,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { Vehicle, PublicVehicleItem } from '@/lib/types';
 import { generateVehicleSlug } from '@/lib/utils/slug';
+import { isOfferActive, calculateOfferSavings } from '@/lib/utils/offer';
 import { revalidatePath } from 'next/cache';
 
 function parseHidePrice(v: any): boolean {
@@ -21,6 +22,45 @@ function parseHidePrice(v: any): boolean {
         }
     }
     return true; // default true (Consultar precio!)
+}
+
+function parseOfferData(v: any) {
+    let isOffer = Boolean(v.is_offer);
+    let offerPrice = v.offer_price !== undefined && v.offer_price !== null ? Number(v.offer_price) : null;
+    let offerStartDate = v.offer_start_date || null;
+    let offerEndDate = v.offer_end_date || null;
+    let offerLabel = v.offer_label || 'OFERTA';
+
+    if (v.features) {
+        try {
+            const parsed = JSON.parse(v.features);
+            if (parsed.is_offer !== undefined && (v.is_offer === undefined || v.is_offer === null)) {
+                isOffer = Boolean(parsed.is_offer);
+            }
+            if (parsed.offer_price !== undefined && (v.offer_price === undefined || v.offer_price === null)) {
+                offerPrice = Number(parsed.offer_price);
+            }
+            if (parsed.offer_start_date !== undefined && !v.offer_start_date) {
+                offerStartDate = parsed.offer_start_date;
+            }
+            if (parsed.offer_end_date !== undefined && !v.offer_end_date) {
+                offerEndDate = parsed.offer_end_date;
+            }
+            if (parsed.offer_label !== undefined && !v.offer_label) {
+                offerLabel = parsed.offer_label;
+            }
+        } catch {
+            // not json
+        }
+    }
+
+    return {
+        is_offer: isOffer,
+        offer_price: offerPrice,
+        offer_start_date: offerStartDate,
+        offer_end_date: offerEndDate,
+        offer_label: offerLabel
+    };
 }
 
 function shouldSkipPlateValidation(plate: string | null | undefined, mileage?: number): boolean {
@@ -54,6 +94,8 @@ export interface VehicleFilterParams {
     status?: string;
     origin_type?: string;
     published?: boolean | string;
+    offer_status?: 'ALL' | 'WITH_OFFER' | 'WITHOUT_OFFER';
+    only_offers?: boolean;
     brand?: string;
     body_type?: string;
     fuel_type?: string;
@@ -145,14 +187,15 @@ export async function getAdminVehicles(params: VehicleFilterParams = {}) {
         return { data: [], total: 0, totalPages: 0 };
     }
 
-    // Calcular costos reales y márgenes
-    const enhancedData: Vehicle[] = (data || []).map((v: any) => {
+    // Calcular costos reales, márgenes y ofertas
+    let enhancedData: Vehicle[] = (data || []).map((v: any) => {
         const totalExpenses = (v.expenses || []).reduce((sum: number, e: any) => sum + (Number(e.amount) || 0), 0);
         const purchasePrice = Number(v.purchase_price) || 0;
         const salePrice = Number(v.sale_price) || 0;
         const realCost = purchasePrice + totalExpenses;
         const potentialProfit = salePrice - realCost;
         const profitabilityPct = realCost > 0 ? (potentialProfit / realCost) * 100 : 0;
+        const offerData = parseOfferData(v);
 
         // Días en stock
         const start = new Date(v.purchase_date || v.created_at);
@@ -161,6 +204,7 @@ export async function getAdminVehicles(params: VehicleFilterParams = {}) {
 
         return {
             ...v,
+            ...offerData,
             hide_price: parseHidePrice(v),
             total_expenses: totalExpenses,
             real_cost: realCost,
@@ -170,10 +214,16 @@ export async function getAdminVehicles(params: VehicleFilterParams = {}) {
         };
     });
 
+    if (params.offer_status === 'WITH_OFFER') {
+        enhancedData = enhancedData.filter(v => isOfferActive(v));
+    } else if (params.offer_status === 'WITHOUT_OFFER') {
+        enhancedData = enhancedData.filter(v => !isOfferActive(v));
+    }
+
     return {
         data: enhancedData,
-        total: count || 0,
-        totalPages: Math.ceil((count || 0) / limit)
+        total: params.offer_status && params.offer_status !== 'ALL' ? enhancedData.length : (count || 0),
+        totalPages: Math.ceil((params.offer_status && params.offer_status !== 'ALL' ? enhancedData.length : (count || 0)) / limit)
     };
 }
 
@@ -219,8 +269,11 @@ export async function getVehicleById(id: string): Promise<Vehicle | null> {
         data.images.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0));
     }
 
+    const offerData = parseOfferData(data);
+
     return {
         ...data,
+        ...offerData,
         hide_price: parseHidePrice(data),
         total_expenses: totalExpenses,
         real_cost: realCost,
@@ -284,22 +337,53 @@ export async function createVehicle(formData: Partial<Vehicle>) {
 
     const finalSlug = count && count > 0 ? `${baseSlug}-${count + 1}` : baseSlug;
 
-    // 3. Generar Título Comercial por defecto si no viene
+    // 3. Validación de Oferta si está activa
+    if (formData.is_offer) {
+        const salePrice = Number(formData.sale_price) || 0;
+        const offerPrice = Number(formData.offer_price) || 0;
+        if (offerPrice <= 0) {
+            return {
+                success: false,
+                error: 'El precio de oferta debe ser mayor a $ 0.'
+            };
+        }
+        if (offerPrice >= salePrice) {
+            return {
+                success: false,
+                error: `El precio de oferta ($ ${offerPrice.toLocaleString('es-AR')}) debe ser estrictamente menor al precio de venta normal ($ ${salePrice.toLocaleString('es-AR')}).`
+            };
+        }
+    }
+
+    // 4. Generar Título Comercial por defecto si no viene
     const commercialTitle = formData.commercial_title?.trim() || 
         `${formData.brand?.toUpperCase()} ${formData.model?.toUpperCase()} ${formData.version ? formData.version.toUpperCase() : ''} ${formData.year}`.trim();
 
-    // 4. Inserción
+    // 5. Inserción con features JSON
     const hidePriceValue = formData.hide_price !== undefined ? Boolean(formData.hide_price) : true;
     let featuresData = formData.features?.trim() || null;
     try {
         const obj = featuresData ? JSON.parse(featuresData) : {};
         obj.hide_price = hidePriceValue;
+        obj.is_offer = Boolean(formData.is_offer);
+        obj.offer_price = formData.offer_price ? Number(formData.offer_price) : null;
+        obj.offer_start_date = formData.offer_start_date || null;
+        obj.offer_end_date = formData.offer_end_date || null;
+        obj.offer_label = formData.offer_label?.trim() || 'OFERTA';
         featuresData = JSON.stringify(obj);
     } catch {
-        featuresData = JSON.stringify({ raw: featuresData, hide_price: hidePriceValue });
+        featuresData = JSON.stringify({ 
+            raw: featuresData, 
+            hide_price: hidePriceValue,
+            is_offer: Boolean(formData.is_offer),
+            offer_price: formData.offer_price ? Number(formData.offer_price) : null,
+            offer_start_date: formData.offer_start_date || null,
+            offer_end_date: formData.offer_end_date || null,
+            offer_label: formData.offer_label?.trim() || 'OFERTA'
+        });
     }
 
-    const payload = {
+    const payload: any = {
         brand: formData.brand?.trim() || '',
         model: formData.model?.trim() || '',
         version: formData.version?.trim() || null,
@@ -326,28 +410,48 @@ export async function createVehicle(formData: Partial<Vehicle>) {
         description: formData.description?.trim() || null,
         equipment: formData.equipment?.trim() || null,
         features: featuresData,
+        is_offer: Boolean(formData.is_offer),
+        offer_price: formData.offer_price ? Number(formData.offer_price) : null,
+        offer_start_date: formData.offer_start_date || null,
+        offer_end_date: formData.offer_end_date || null,
+        offer_label: formData.offer_label?.trim() || 'OFERTA',
         slug: finalSlug,
         meta_title: formData.meta_title?.trim() || `${commercialTitle} | Special Cars`,
         meta_description: formData.meta_description?.trim() || `Comprá tu ${commercialTitle} en Special Cars. Excelente estado y garantía.`,
         purchase_date: formData.purchase_date || new Date().toISOString().split('T')[0]
     };
 
-    const { data, error } = await adminClient
+    let insertRes = await adminClient
         .from('vehicles')
         .insert(payload)
         .select()
         .single();
 
-    if (error) {
-        console.error('Error creating vehicle:', error);
-        return { success: false, error: error.message };
+    if (insertRes.error && insertRes.error.message.includes('column') && insertRes.error.message.includes('offer')) {
+        const fallbackPayload = { ...payload };
+        delete fallbackPayload.is_offer;
+        delete fallbackPayload.offer_price;
+        delete fallbackPayload.offer_start_date;
+        delete fallbackPayload.offer_end_date;
+        delete fallbackPayload.offer_label;
+        insertRes = await adminClient
+            .from('vehicles')
+            .insert(fallbackPayload)
+            .select()
+            .single();
+    }
+
+    if (insertRes.error) {
+        console.error('Error creating vehicle:', insertRes.error);
+        return { success: false, error: insertRes.error.message };
     }
 
     revalidatePath('/admin/vehiculos');
     revalidatePath('/vehiculos');
+    revalidatePath('/ofertas');
     revalidatePath('/');
 
-    return { success: true, vehicle: data };
+    return { success: true, vehicle: insertRes.data };
 }
 
 /**
@@ -374,6 +478,24 @@ export async function updateVehicle(id: string, formData: Partial<Vehicle>) {
         }
     }
 
+    // Validar oferta si se activa
+    if (formData.is_offer) {
+        const salePrice = Number(formData.sale_price) || 0;
+        const offerPrice = Number(formData.offer_price) || 0;
+        if (offerPrice <= 0) {
+            return {
+                success: false,
+                error: 'El precio de oferta debe ser mayor a $ 0.'
+            };
+        }
+        if (offerPrice >= salePrice) {
+            return {
+                success: false,
+                error: `El precio de oferta ($ ${offerPrice.toLocaleString('es-AR')}) debe ser estrictamente menor al precio de venta normal ($ ${salePrice.toLocaleString('es-AR')}).`
+            };
+        }
+    }
+
     const payload: any = { ...formData, updated_at: new Date().toISOString() };
     delete payload.id;
     delete payload.created_at;
@@ -387,39 +509,78 @@ export async function updateVehicle(id: string, formData: Partial<Vehicle>) {
     delete payload.profitability_pct;
     delete payload.days_in_stock;
 
-    if (formData.hide_price !== undefined) {
-        let featuresData = payload.features || null;
-        try {
-            const obj = featuresData ? JSON.parse(featuresData) : {};
+    // Actualizar features JSON
+    let featuresData = payload.features || null;
+    try {
+        const obj = featuresData ? JSON.parse(featuresData) : {};
+        if (formData.hide_price !== undefined) {
             obj.hide_price = Boolean(formData.hide_price);
-            payload.features = JSON.stringify(obj);
-        } catch {
-            payload.features = JSON.stringify({ raw: featuresData, hide_price: Boolean(formData.hide_price) });
         }
-        delete payload.hide_price;
+        if (formData.is_offer !== undefined) {
+            obj.is_offer = Boolean(formData.is_offer);
+        }
+        if (formData.offer_price !== undefined) {
+            obj.offer_price = formData.offer_price ? Number(formData.offer_price) : null;
+        }
+        if (formData.offer_start_date !== undefined) {
+            obj.offer_start_date = formData.offer_start_date || null;
+        }
+        if (formData.offer_end_date !== undefined) {
+            obj.offer_end_date = formData.offer_end_date || null;
+        }
+        if (formData.offer_label !== undefined) {
+            obj.offer_label = formData.offer_label?.trim() || 'OFERTA';
+        }
+        payload.features = JSON.stringify(obj);
+    } catch {
+        payload.features = JSON.stringify({
+            raw: featuresData,
+            hide_price: Boolean(formData.hide_price),
+            is_offer: Boolean(formData.is_offer),
+            offer_price: formData.offer_price ? Number(formData.offer_price) : null,
+            offer_start_date: formData.offer_start_date || null,
+            offer_end_date: formData.offer_end_date || null,
+            offer_label: formData.offer_label?.trim() || 'OFERTA'
+        });
     }
 
     if (payload.plate) payload.plate = payload.plate.trim().toUpperCase();
     if (payload.vin) payload.vin = payload.vin.trim().toUpperCase();
 
-    const { data, error } = await adminClient
+    let updateRes = await adminClient
         .from('vehicles')
         .update(payload)
         .eq('id', id)
         .select()
         .single();
 
-    if (error) {
-        console.error('Error updating vehicle:', error);
-        return { success: false, error: error.message };
+    if (updateRes.error && updateRes.error.message.includes('column') && updateRes.error.message.includes('offer')) {
+        const fallbackPayload = { ...payload };
+        delete fallbackPayload.is_offer;
+        delete fallbackPayload.offer_price;
+        delete fallbackPayload.offer_start_date;
+        delete fallbackPayload.offer_end_date;
+        delete fallbackPayload.offer_label;
+        updateRes = await adminClient
+            .from('vehicles')
+            .update(fallbackPayload)
+            .eq('id', id)
+            .select()
+            .single();
+    }
+
+    if (updateRes.error) {
+        console.error('Error updating vehicle:', updateRes.error);
+        return { success: false, error: updateRes.error.message };
     }
 
     revalidatePath(`/admin/vehiculos/${id}`);
     revalidatePath('/admin/vehiculos');
     revalidatePath('/vehiculos');
+    revalidatePath('/ofertas');
     revalidatePath('/');
 
-    return { success: true, vehicle: data };
+    return { success: true, vehicle: updateRes.data };
 }
 
 /**
@@ -600,22 +761,34 @@ export async function getPublicVehicles(params: VehicleFilterParams = {}) {
         return { data: [], total: 0, totalPages: 0 };
     }
 
-    const formatted: PublicVehicleItem[] = (data || []).map((item: any) => {
+    let formatted: PublicVehicleItem[] = (data || []).map((item: any) => {
         const sortedImages = (item.images || []).sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0));
         const primaryImg = sortedImages.find((img: any) => img.is_primary) || sortedImages[0];
+        const offerData = parseOfferData(item);
+        const itemWithOffer = { ...item, ...offerData };
+        const activeOffer = isOfferActive(itemWithOffer);
+        const savingsCalc = activeOffer && offerData.offer_price ? calculateOfferSavings(item.price || item.sale_price, offerData.offer_price) : null;
 
         return {
             ...item,
+            ...offerData,
+            is_offer_active: activeOffer,
+            savings: savingsCalc?.savings || 0,
+            discount_percentage: savingsCalc?.discountPercentage || 0,
             hide_price: parseHidePrice(item),
             primary_image_url: primaryImg?.url || null,
             images: sortedImages
         };
     });
 
+    if (params.only_offers) {
+        formatted = formatted.filter(v => v.is_offer_active);
+    }
+
     return {
         data: formatted,
-        total: count || 0,
-        totalPages: Math.ceil((count || 0) / limit)
+        total: params.only_offers ? formatted.length : (count || 0),
+        totalPages: Math.ceil((params.only_offers ? formatted.length : (count || 0)) / limit)
     };
 }
 
@@ -652,9 +825,17 @@ export async function getPublicVehicleBySlug(slugOrId: string): Promise<PublicVe
 
     const sortedImages = (data.images || []).sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0));
     const primaryImg = sortedImages.find((img: any) => img.is_primary) || sortedImages[0];
+    const offerData = parseOfferData(data);
+    const itemWithOffer = { ...data, ...offerData };
+    const activeOffer = isOfferActive(itemWithOffer);
+    const savingsCalc = activeOffer && offerData.offer_price ? calculateOfferSavings(data.price, offerData.offer_price) : null;
 
     return {
         ...data,
+        ...offerData,
+        is_offer_active: activeOffer,
+        savings: savingsCalc?.savings || 0,
+        discount_percentage: savingsCalc?.discountPercentage || 0,
         hide_price: parseHidePrice(data),
         primary_image_url: primaryImg?.url || null,
         images: sortedImages

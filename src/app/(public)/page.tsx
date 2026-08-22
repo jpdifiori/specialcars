@@ -3,6 +3,8 @@ import { getPublicVehicles } from '@/lib/actions/vehicles';
 import { getAgencySettings } from '@/lib/actions/settings';
 import { VehicleCard } from '@/components/public/VehicleCard';
 import { TestimonialsSection } from '@/components/public/TestimonialsSection';
+import { VehicleFinderSection } from '@/components/public/VehicleFinderSection';
+import { HeroFilterBar } from '@/components/public/HeroFilterBar';
 import { 
     Car, 
     MessageCircle, 
@@ -10,7 +12,8 @@ import {
     ShieldCheck, 
     Sparkles, 
     ArrowLeftRight, 
-    Award
+    Award,
+    Flame
 } from 'lucide-react';
 
 export default async function PublicHomePage() {
@@ -20,6 +23,7 @@ export default async function PublicHomePage() {
     ]);
 
     const vehicles = vehiclesRes.data;
+    const offerVehicles = vehicles.filter(v => v.is_offer_active);
     const featuredVehicles = vehicles.filter(v => v.featured);
     const latestVehicles = vehicles.slice(0, 6);
 
@@ -47,9 +51,10 @@ export default async function PublicHomePage() {
 
                         <div className="hero-actions">
                             <Link href="/vehiculos" className="btn-hero-primary">
-                                <Car size={18} />
-                                <span>Ver Todos los Vehículos</span>
-                                <ArrowRight size={16} />
+                                <Car size={17} />
+                                <span className="desktop-only-inline">Ver Todos los Vehículos</span>
+                                <span className="mobile-only-inline">Ver Todos</span>
+                                <ArrowRight size={15} />
                             </Link>
 
                             <a
@@ -58,13 +63,14 @@ export default async function PublicHomePage() {
                                 rel="noopener noreferrer"
                                 className="btn-hero-whatsapp"
                             >
-                                <MessageCircle size={18} />
-                                <span>Consultar por WhatsApp</span>
+                                <MessageCircle size={17} />
+                                <span className="desktop-only-inline">Consultar por WhatsApp</span>
+                                <span className="mobile-only-inline">Consultar</span>
                             </a>
                         </div>
 
-                        {/* Mini Badges de Confianza */}
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18, borderTop: '1px solid #E2E8F0', paddingTop: 22 }}>
+                        {/* Mini Badges de Confianza (Solo Desktop) */}
+                        <div className="desktop-only" style={{ display: 'flex', flexWrap: 'wrap', gap: 18, borderTop: '1px solid #E2E8F0', paddingTop: 22 }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, color: '#334155', fontWeight: 700 }}>
                                 <ShieldCheck size={18} style={{ color: '#EA580C' }} />
                                 <span>Unidades Verificadas</span>
@@ -78,14 +84,51 @@ export default async function PublicHomePage() {
                                 <span>Gestoría Integral</span>
                             </div>
                         </div>
+
+                        {/* COMBO MOBILE: Textos a la misma altura + Hernán reducido 20% al lado */}
+                        <div className="mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 18, borderTop: '1px solid #E2E8F0', paddingTop: 14 }}>
+                            {/* Columna Izquierda: 3 Textos de Confianza */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 7, flex: 1, minWidth: 0 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 10px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 8 }}>
+                                    <ShieldCheck size={15} style={{ color: '#EA580C', flexShrink: 0 }} />
+                                    <span style={{ fontSize: 11.5, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Unidades Verificadas</span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 10px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 8 }}>
+                                    <ArrowLeftRight size={15} style={{ color: '#EA580C', flexShrink: 0 }} />
+                                    <span style={{ fontSize: 11.5, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Tomamos tu Usado</span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 10px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 8 }}>
+                                    <Award size={15} style={{ color: '#EA580C', flexShrink: 0 }} />
+                                    <span style={{ fontSize: 11.5, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Gestoría Integral</span>
+                                </div>
+                            </div>
+
+                            {/* Columna Derecha: Hernán reducido al lado a la misma altura */}
+                            <div style={{ width: 140, flexShrink: 0, display: 'flex', justifyContent: 'center', alignItems: 'flex-end', position: 'relative' }}>
+                                <div style={{
+                                    position: 'absolute',
+                                    bottom: 0,
+                                    width: 120,
+                                    height: 120,
+                                    borderRadius: '50%',
+                                    background: 'radial-gradient(circle, rgba(234, 88, 12, 0.20) 0%, transparent 70%)',
+                                    pointerEvents: 'none'
+                                }} />
+                                <img
+                                    src="/images/franco-hero.png"
+                                    alt="Hernán Asesor de Special Cars"
+                                    style={{ width: '100%', maxHeight: 165, objectFit: 'contain', display: 'block', position: 'relative', zIndex: 2, filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.2))' }}
+                                />
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Columna Derecha: Franco con Llave en Mano y Badges Interactivos */}
-                    <div className="hero-visual">
+                    {/* Columna Derecha Desktop: Hernán de cuerpo entero */}
+                    <div className="hero-visual desktop-only-block">
                         <div className="hero-visual-backdrop" />
 
-                        {/* Badge Flotante Superior */}
-                        <div className="hero-floating-tag-top">
+                        {/* Badge Flotante Superior (Solo Desktop) */}
+                        <div className="hero-floating-tag-top desktop-only">
                             <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#22C55E', boxShadow: '0 0 8px #22C55E' }} />
                             <div style={{ textAlign: 'left' }}>
                                 <div style={{ fontSize: 12, fontWeight: 800, color: '#0F172A', lineHeight: 1.1 }}>Hernán</div>
@@ -103,8 +146,11 @@ export default async function PublicHomePage() {
                 </div>
             </section>
 
-            {/* BENEFICIOS / PROPUESTA DE VALOR */}
-            <section style={{ borderBottom: '1px solid #E2E8F0', backgroundColor: '#FFFFFF', padding: '48px 24px' }}>
+            {/* BUSCADOR RÁPIDO DE VEHÍCULOS (MOBILE & DESKTOP) */}
+            <HeroFilterBar />
+
+            {/* BENEFICIOS / PROPUESTA DE VALOR (SOLO DESKTOP) */}
+            <section className="desktop-only-block" style={{ borderBottom: '1px solid #E2E8F0', backgroundColor: '#FFFFFF', padding: '48px 24px' }}>
                 <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 32 }}>
                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
                         <div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: '#FFF7ED', border: '1px solid #FFEDD5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#EA580C', flexShrink: 0 }}>
@@ -138,17 +184,59 @@ export default async function PublicHomePage() {
                 </div>
             </section>
 
+            {/* SECCIÓN DE OFERTAS DESTACADAS */}
+            {offerVehicles.length > 0 && (
+                <section className="public-section" style={{ backgroundColor: '#FFF7ED', borderTop: '1px solid #FFEDD5', borderBottom: '1px solid #FFEDD5', padding: '40px 20px' }}>
+                    <div className="section-header" style={{ marginBottom: 20 }}>
+                        <div>
+                            <div className="section-subtitle" style={{ color: '#EA580C', display: 'flex', alignItems: 'center', gap: 5, fontWeight: 800, fontSize: 11.5, marginBottom: 2 }}>
+                                <Flame size={14} />
+                                <span>Oportunidades Imperdibles</span>
+                            </div>
+                            <h2 className="section-title" style={{ color: '#0F172A', fontSize: 'clamp(20px, 3.5vw, 28px)', margin: 0 }}>
+                                Ofertas de la Semana
+                            </h2>
+                        </div>
+                        <Link 
+                            href="/ofertas" 
+                            style={{ 
+                                display: 'inline-flex', 
+                                alignItems: 'center', 
+                                gap: 6, 
+                                backgroundColor: '#EA580C', 
+                                color: '#FFFFFF', 
+                                fontWeight: 800, 
+                                fontSize: 12.5,
+                                padding: '8px 14px',
+                                borderRadius: 8,
+                                textDecoration: 'none',
+                                boxShadow: '0 2px 8px rgba(234, 88, 12, 0.25)'
+                            }}
+                        >
+                            <span>Ver todas ({offerVehicles.length})</span>
+                            <ArrowRight size={14} />
+                        </Link>
+                    </div>
+
+                    <div className="vehicles-grid">
+                        {offerVehicles.map(v => (
+                            <VehicleCard key={v.id} vehicle={v} isOfferSection={true} />
+                        ))}
+                    </div>
+                </section>
+            )}
+
             {/* SECCIÓN VEHÍCULOS DESTACADOS */}
             {featuredVehicles.length > 0 && (
-                <section className="public-section">
-                    <div className="section-header">
+                <section className="public-section" style={{ padding: '40px 20px' }}>
+                    <div className="section-header" style={{ marginBottom: 20 }}>
                         <div>
-                            <div className="section-subtitle">Selección Especial</div>
-                            <h2 className="section-title">Vehículos Destacados</h2>
+                            <div className="section-subtitle" style={{ fontSize: 11.5, marginBottom: 2 }}>Selección Especial</div>
+                            <h2 className="section-title" style={{ fontSize: 'clamp(20px, 3.5vw, 28px)', margin: 0 }}>Vehículos Destacados</h2>
                         </div>
-                        <Link href="/vehiculos" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#EA580C', fontWeight: 700, fontSize: 14 }}>
-                            <span>Ver todo el catálogo</span>
-                            <ArrowRight size={15} />
+                        <Link href="/vehiculos" style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#EA580C', fontWeight: 700, fontSize: 13 }}>
+                            <span>Ver catálogo</span>
+                            <ArrowRight size={14} />
                         </Link>
                     </div>
 
@@ -161,15 +249,15 @@ export default async function PublicHomePage() {
             )}
 
             {/* SECCIÓN: CATÁLOGO DE INGRESOS */}
-            <section className="public-section" style={{ backgroundColor: '#FFFFFF' }}>
-                <div className="section-header">
+            <section className="public-section" style={{ backgroundColor: '#FFFFFF', padding: '40px 20px' }}>
+                <div className="section-header" style={{ marginBottom: 20 }}>
                     <div>
-                        <div className="section-subtitle">Últimos Ingresos</div>
-                        <h2 className="section-title">Novedades en Stock</h2>
+                        <div className="section-subtitle" style={{ fontSize: 11.5, marginBottom: 2 }}>Últimos Ingresos</div>
+                        <h2 className="section-title" style={{ fontSize: 'clamp(20px, 3.5vw, 28px)', margin: 0 }}>Novedades en Stock</h2>
                     </div>
-                    <Link href="/vehiculos" className="section-link">
+                    <Link href="/vehiculos" className="section-link" style={{ fontSize: 13, fontWeight: 700 }}>
                         <span>Ver catálogo completo ({vehicles.length})</span>
-                        <ArrowRight size={16} />
+                        <ArrowRight size={14} />
                     </Link>
                 </div>
 
@@ -202,65 +290,72 @@ export default async function PublicHomePage() {
                 )}
             </section>
 
+            {/* SECCIÓN: BUSCAMOS TU AUTO POR VOS (FORMULARIO INTERACTIVO) */}
+            <VehicleFinderSection whatsappNumber={wp} />
+
             {/* SECCIÓN: CARRUSEL DE 20 TESTIMONIOS */}
             <TestimonialsSection />
 
             {/* PRESENTACIÓN DE LA AGENCIA CON BANNER OFICIAL */}
-            <section style={{ backgroundColor: '#F8FAFC', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: '80px 24px' }}>
-                <div style={{ maxWidth: 1160, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 48, alignItems: 'center' }}>
+            <section style={{ backgroundColor: '#F8FAFC', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: '48px 20px' }}>
+                <div style={{ maxWidth: 1160, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 40, alignItems: 'center' }}>
                     <div>
-                        <div className="section-subtitle">Sobre Nosotros</div>
-                        <h2 className="section-title" style={{ marginBottom: 20 }}>
+                        <div className="section-subtitle" style={{ fontSize: 11.5, marginBottom: 2 }}>Sobre Nosotros</div>
+                        <h2 className="section-title" style={{ fontSize: 'clamp(22px, 3.5vw, 32px)', marginBottom: 14 }}>
                             {settings.name || 'Special Cars'}
                         </h2>
-                        <p style={{ fontSize: 15, color: '#334155', lineHeight: 1.7, marginBottom: 16 }}>
+                        <p style={{ fontSize: 14.5, color: '#334155', lineHeight: 1.6, marginBottom: 12 }}>
                             {settings.description || 'Concesionaria líder en vehículos premium, usados y 0 KM. Más de 15 años brindando transparencia, calidad y confianza en cada operación.'}
                         </p>
-                        <p style={{ fontSize: 14, color: '#64748B', lineHeight: 1.6, marginBottom: 24 }}>
+                        <p style={{ fontSize: 13.5, color: '#64748B', lineHeight: 1.55, marginBottom: 18 }}>
                             Nuestro compromiso es la transparencia absoluta en cada operación: te mostramos el estado real del vehículo, verificamos la documentación legal y te brindamos asesoramiento personalizado.
                         </p>
 
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'nowrap', marginTop: 4 }}>
                             <a
                                 href={`https://wa.me/${wp}?text=${encodeURIComponent('Hola, me gustaría recibir asesoramiento para comprar o vender un auto.')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="btn-hero-whatsapp"
                                 style={{
                                     backgroundColor: '#25D366',
                                     display: 'inline-flex',
                                     alignItems: 'center',
-                                    gap: 10,
-                                    padding: '14px 24px',
+                                    justifyContent: 'center',
+                                    gap: 8,
+                                    padding: '11px 16px',
                                     borderRadius: 12,
-                                    fontWeight: 700,
-                                    fontSize: 15,
-                                    boxShadow: '0 4px 14px rgba(37, 211, 102, 0.35)',
+                                    fontWeight: 800,
+                                    fontSize: 13.5,
+                                    boxShadow: '0 3px 10px rgba(37, 211, 102, 0.35)',
                                     textDecoration: 'none',
-                                    color: '#FFFFFF'
+                                    color: '#FFFFFF',
+                                    flex: '1',
+                                    maxWidth: 220
                                 }}
                             >
-                                <MessageCircle size={18} />
+                                <MessageCircle size={16} />
                                 <span>Hablar con un Asesor</span>
                             </a>
 
-                            {/* Hernán al móvil (solo imagen con fondo blanco, 2x más grande) */}
+                            {/* Hernán al lado en la misma línea */}
                             <a
                                 href={`https://wa.me/${wp}?text=${encodeURIComponent('Hola Hernán, me gustaría recibir asesoramiento para comprar o vender un auto.')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title="Contactar a Hernán por WhatsApp"
                                 style={{
-                                    width: 92,
-                                    height: 92,
+                                    width: 54,
+                                    height: 54,
                                     borderRadius: '50%',
                                     overflow: 'hidden',
-                                    border: '3px solid #EA580C',
+                                    border: '2px solid #EA580C',
                                     backgroundColor: '#FFFFFF',
                                     flexShrink: 0,
                                     position: 'relative',
-                                    display: 'block',
-                                    boxShadow: '0 8px 24px rgba(234, 88, 12, 0.25), 0 4px 12px rgba(0,0,0,0.12)',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    boxShadow: '0 4px 12px rgba(234, 88, 12, 0.25), 0 2px 6px rgba(0,0,0,0.1)',
                                     transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
                                 }}
                             >
@@ -273,7 +368,8 @@ export default async function PublicHomePage() {
                         </div>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                    {/* Columna Derecha: Banner Carbono y Card de Información (Solo Desktop) */}
+                    <div className="desktop-only-block" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                         {/* Banner Oficial de Fibra de Carbono */}
                         <div style={{
                             borderRadius: 16,

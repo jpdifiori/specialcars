@@ -23,7 +23,10 @@ import {
 
 export default async function VehicleDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const vehicle = await getVehicleById(id);
+    const [vehicle, matchingBuyers] = await Promise.all([
+        getVehicleById(id),
+        getMatchingBuyersForVehicle(id).catch(() => [])
+    ]);
 
     if (!vehicle) {
         notFound();

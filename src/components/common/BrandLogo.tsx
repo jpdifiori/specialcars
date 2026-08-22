@@ -10,13 +10,13 @@ export function BrandLogo({ variant = 'light', size = 'md', showText = true }: B
     const isDark = variant === 'dark';
 
     const iconSizes = {
-        sm: 34,
-        md: 60, // 20px más grande
+        sm: 41, // +20% para mobile
+        md: 60,
         lg: 74
     };
 
     const textSizes = {
-        sm: { special: 18, cars: 19 },
+        sm: { special: 22, cars: 23 }, // +20% para mobile
         md: { special: 29, cars: 30 },
         lg: { special: 38, cars: 39 }
     };

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getAdminVehicles } from '@/lib/actions/vehicles';
 import { Vehicle } from '@/lib/types';
 import { formatARS } from '@/lib/utils/currency';
+import { isOfferActive } from '@/lib/utils/offer';
 import { 
     Car,
     Plus, 
@@ -17,6 +18,7 @@ import {
     Globe, 
     Clock, 
     CheckCircle2, 
+    Flame,
     Image as ImageIcon
 } from 'lucide-react';
 
@@ -30,6 +32,7 @@ export default function AdminVehiclesPage() {
     const [status, setStatus] = useState('ALL');
     const [originType, setOriginType] = useState('ALL');
     const [published, setPublished] = useState('ALL');
+    const [offerStatus, setOfferStatus] = useState<'ALL' | 'WITH_OFFER' | 'WITHOUT_OFFER'>('ALL');
 
     const loadVehicles = async () => {
         setLoading(true);
@@ -39,6 +42,7 @@ export default function AdminVehiclesPage() {
                 status,
                 origin_type: originType,
                 published: published === 'ALL' ? undefined : published === 'true',
+                offer_status: offerStatus,
                 limit: 50
             });
             setVehicles(res.data);
@@ -51,7 +55,7 @@ export default function AdminVehiclesPage() {
 
     useEffect(() => {
         loadVehicles();
-    }, [status, originType, published]);
+    }, [status, originType, published, offerStatus]);
 
     const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -152,6 +156,16 @@ export default function AdminVehiclesPage() {
                             <option value="false">No Publicados</option>
                         </select>
 
+                        <select 
+                            className="admin-select"
+                            value={offerStatus}
+                            onChange={(e) => setOfferStatus(e.target.value as any)}
+                        >
+                            <option value="ALL">Ofertas: Todas</option>
+                            <option value="WITH_OFFER">🔥 En oferta</option>
+                            <option value="WITHOUT_OFFER">Sin oferta</option>
+                        </select>
+
                         {/* Toggle Vista */}
                         <div style={{ display: 'flex', backgroundColor: '#F1F5F9', border: '1px solid #E2E8F0', borderRadius: 6, overflow: 'hidden' }}>
                             <button
@@ -233,9 +247,26 @@ export default function AdminVehiclesPage() {
                                             </div>
                                         </td>
                                         <td>
-                                            <Link href={`/admin/vehiculos/${v.id}`} style={{ fontWeight: 600, color: '#000000' }}>
-                                                {v.brand} {v.model} {v.version || ''}
-                                            </Link>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                                                <Link href={`/admin/vehiculos/${v.id}`} style={{ fontWeight: 600, color: '#000000' }}>
+                                                    {v.brand} {v.model} {v.version || ''}
+                                                </Link>
+                                                {isOfferActive(v) && (
+                                                    <span style={{
+                                                        backgroundColor: '#EA580C',
+                                                        color: '#FFFFFF',
+                                                        fontSize: 10,
+                                                        fontWeight: 900,
+                                                        padding: '1px 6px',
+                                                        borderRadius: 4,
+                                                        display: 'inline-flex',
+                                                        alignItems: 'center',
+                                                        gap: 3
+                                                    }}>
+                                                        <Flame size={10} /> {v.offer_label || 'OFERTA'}
+                                                    </span>
+                                                )}
+                                            </div>
                                             <div style={{ fontSize: 12, color: '#000000' }}>
                                                 Año {v.year} • {v.mileage?.toLocaleString('es-AR')} km
                                             </div>
@@ -249,8 +280,21 @@ export default function AdminVehiclesPage() {
                                         <td>
                                             {getStatusBadge(v.status)}
                                         </td>
-                                        <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#34d399' }}>
-                                            {formatARS(v.sale_price)}
+                                        <td>
+                                            {isOfferActive(v) ? (
+                                                <div>
+                                                    <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#EA580C', fontSize: 13.5 }}>
+                                                        {formatARS(v.offer_price)}
+                                                    </div>
+                                                    <div style={{ fontFamily: 'var(--font-mono)', textDecoration: 'line-through', color: '#94A3B8', fontSize: 11 }}>
+                                                        {formatARS(v.sale_price)}
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#34d399' }}>
+                                                    {formatARS(v.sale_price)}
+                                                </div>
+                                            )}
                                         </td>
                                         <td style={{ fontFamily: 'var(--font-mono)', color: '#000000' }}>
                                             {formatARS(v.real_cost)}
@@ -312,9 +356,25 @@ export default function AdminVehiclesPage() {
                                                 <ImageIcon size={28} />
                                             </div>
                                         )}
-                                        <div style={{ position: 'absolute', top: 10, left: 10, display: 'flex', gap: 6 }}>
+                                        <div style={{ position: 'absolute', top: 10, left: 10, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                                             {getStatusBadge(v.status)}
                                             {getOriginBadge(v.origin_type)}
+                                            {isOfferActive(v) && (
+                                                <span style={{
+                                                    backgroundColor: '#EA580C',
+                                                    color: '#FFFFFF',
+                                                    fontSize: 10,
+                                                    fontWeight: 900,
+                                                    padding: '2px 6px',
+                                                    borderRadius: 4,
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: 3,
+                                                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                                                }}>
+                                                    🔥 {v.offer_label || 'OFERTA'}
+                                                </span>
+                                            )}
                                         </div>
                                     </div>
                                     <div style={{ padding: 16, display: 'flex', flexDirection: 'column', flex: 1 }}>
@@ -329,10 +389,23 @@ export default function AdminVehiclesPage() {
                                         </div>
                                         <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 12, borderTop: '1px solid #E2E8F0' }}>
                                             <div>
-                                                <div style={{ fontSize: 11, color: '#334155', fontWeight: 600 }}>Precio de Venta</div>
-                                                <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#059669', fontSize: 16 }}>
-                                                    {formatARS(v.sale_price)}
+                                                <div style={{ fontSize: 11, color: '#334155', fontWeight: 600 }}>
+                                                    {isOfferActive(v) ? 'Precio de Oferta' : 'Precio de Venta'}
                                                 </div>
+                                                {isOfferActive(v) ? (
+                                                    <div>
+                                                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 900, color: '#EA580C', fontSize: 16 }}>
+                                                            {formatARS(v.offer_price)}
+                                                        </span>
+                                                        <span style={{ fontFamily: 'var(--font-mono)', textDecoration: 'line-through', color: '#94A3B8', fontSize: 12, marginLeft: 6 }}>
+                                                            {formatARS(v.sale_price)}
+                                                        </span>
+                                                    </div>
+                                                ) : (
+                                                    <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#059669', fontSize: 16 }}>
+                                                        {formatARS(v.sale_price)}
+                                                    </div>
+                                                )}
                                             </div>
                                             <Link href={`/admin/vehiculos/${v.id}`} className="btn-secondary" style={{ padding: '6px 12px', fontSize: 12 }}>
                                                 Ver Ficha

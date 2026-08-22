@@ -25,7 +25,9 @@ import {
     Clock, 
     ArrowUpRight, 
     ShieldAlert,
-    FileText
+    FileText,
+    Globe,
+    Building2
 } from 'lucide-react';
 
 export function WantedVehicleDetailClient({
@@ -125,7 +127,7 @@ export function WantedVehicleDetailClient({
                         <ArrowLeft size={16} />
                         <span>Volver a Vehículos Buscados</span>
                     </Link>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                         <h1 style={{ fontSize: 26, fontWeight: 900, color: '#0F172A', margin: 0 }}>
                             {currentWanted.brand} {currentWanted.model} {currentWanted.version || ''}
                         </h1>
@@ -133,6 +135,37 @@ export function WantedVehicleDetailClient({
                             {currentWanted.code}
                         </span>
                         {getStatusBadge(currentWanted.status, currentWanted.cancellation_reason)}
+                        {currentWanted.source === 'WEB' ? (
+                            <span style={{
+                                backgroundColor: '#EFF6FF',
+                                color: '#1D4ED8',
+                                border: '1px solid #BFDBFE',
+                                padding: '3px 10px',
+                                borderRadius: 14,
+                                fontSize: 12,
+                                fontWeight: 800,
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: 4
+                            }}>
+                                <Globe size={13} /> Solicitud Web (Landing)
+                            </span>
+                        ) : (
+                            <span style={{
+                                backgroundColor: '#F1F5F9',
+                                color: '#475569',
+                                border: '1px solid #CBD5E1',
+                                padding: '3px 10px',
+                                borderRadius: 14,
+                                fontSize: 12,
+                                fontWeight: 700,
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: 4
+                            }}>
+                                <Building2 size={13} /> Creado en Agencia
+                            </span>
+                        )}
                     </div>
                 </div>
 

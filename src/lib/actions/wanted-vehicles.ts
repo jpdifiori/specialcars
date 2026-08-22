@@ -6,6 +6,8 @@ import { WantedVehicle, Vehicle, MatchResult, StockDemandItem, WantedVehicleStat
 import { calculateMatchScore } from '@/lib/utils/matching';
 import { revalidatePath } from 'next/cache';
 
+import { checkDuplicateClient, createClientRecord } from '@/lib/actions/clients';
+
 /**
  * Obtiene el listado de búsquedas de vehículos con filtros y paginación.
  */
@@ -14,11 +16,12 @@ export async function getWantedVehicles(params: {
     status?: string;
     priority?: string;
     brand?: string;
+    source?: string;
     page?: number;
     limit?: number;
 } = {}) {
     const supabase = await createServerSupabaseClient();
-    const { search, status, priority, brand, page = 1, limit = 25 } = params;
+    const { search, status, priority, brand, source, page = 1, limit = 25 } = params;
 
     let query = supabase
         .from('wanted_vehicles')
@@ -38,6 +41,10 @@ export async function getWantedVehicles(params: {
 
     if (brand && brand.trim() !== '') {
         query = query.ilike('brand', `%${brand.trim()}%`);
+    }
+
+    if (source && source !== 'ALL') {
+        query = query.eq('source', source);
     }
 
     if (search && search.trim() !== '') {
@@ -108,6 +115,7 @@ export async function createWantedVehicle(formData: {
     accepts_nearby_year?: boolean;
     has_trade_in?: boolean;
     trade_in_details?: string | null;
+    source?: 'ADMIN' | 'WEB';
     priority?: any;
     notes?: string | null;
 }) {
@@ -131,6 +139,7 @@ export async function createWantedVehicle(formData: {
         accepts_nearby_year: formData.accepts_nearby_year ?? true,
         has_trade_in: formData.has_trade_in ?? false,
         trade_in_details: formData.trade_in_details?.trim() || null,
+        source: formData.source || 'ADMIN',
         priority: formData.priority || 'MEDIUM',
         status: 'SEARCHING',
         notes: formData.notes?.trim() || null,
@@ -153,6 +162,108 @@ export async function createWantedVehicle(formData: {
     revalidatePath('/admin');
 
     return { success: true, data: data as WantedVehicle };
+}
+
+/**
+ * Registra una búsqueda enviada por un cliente desde la Landing Page.
+ * Crea o vincula el cliente automáticamente e inserta el pedido con source: 'WEB'.
+ */
+export async function submitPublicVehicleSearch(payload: {
+    first_name: string;
+    last_name: string;
+    phone: string;
+    email: string;
+    brand: string;
+    model: string;
+    year_min?: number | null;
+    year_max?: number | null;
+    body_type?: any;
+    transmission?: any;
+    has_trade_in?: boolean;
+    trade_in_details?: string | null;
+    max_budget?: number | null;
+    notes?: string | null;
+}) {
+    if (!payload.first_name?.trim() || !payload.phone?.trim() || !payload.brand?.trim() || !payload.model?.trim()) {
+        return { success: false, error: 'Por favor completá los campos obligatorios (Nombre, Teléfono, Marca y Modelo).' };
+    }
+
+    try {
+        const adminClient = createAdminClient();
+
+        // 1. Verificar si el cliente ya existe por teléfono o email
+        let clientId: string | null = null;
+        const dupCheck = await checkDuplicateClient({
+            phone: payload.phone.trim(),
+            email: payload.email?.trim() || undefined
+        });
+
+        if (dupCheck.hasDuplicate && dupCheck.matches.length > 0) {
+            clientId = dupCheck.matches[0].client.id;
+        } else {
+            // 2. Crear cliente nuevo
+            const newClientRes = await createClientRecord({
+                first_name: payload.first_name.trim(),
+                last_name: payload.last_name?.trim() || '',
+                phone: payload.phone.trim(),
+                whatsapp: payload.phone.trim(),
+                email: payload.email?.trim() || null,
+                notes: 'Registrado automáticamente desde formulario de búsqueda en Landing Page'
+            });
+
+            if (!newClientRes.success || !newClientRes.client) {
+                return { success: false, error: newClientRes.error || 'Error al registrar tus datos de contacto.' };
+            }
+
+            clientId = newClientRes.client.id;
+        }
+
+        // 3. Crear pedido en wanted_vehicles con source: 'WEB'
+        const wantedPayload = {
+            client_id: clientId,
+            brand: payload.brand.trim(),
+            model: payload.model.trim(),
+            year_min: payload.year_min ? Number(payload.year_min) : null,
+            year_max: payload.year_max ? Number(payload.year_max) : null,
+            body_type: payload.body_type || null,
+            transmission: payload.transmission || null,
+            max_budget: payload.max_budget ? Number(payload.max_budget) : 0,
+            has_trade_in: Boolean(payload.has_trade_in),
+            trade_in_details: payload.trade_in_details?.trim() || null,
+            notes: payload.notes?.trim() || null,
+            source: 'WEB',
+            priority: 'HIGH',
+            status: 'SEARCHING',
+            accepts_similar_model: true,
+            accepts_different_version: true,
+            accepts_nearby_year: true,
+            last_contact_date: new Date().toISOString()
+        };
+
+        const { data, error } = await adminClient
+            .from('wanted_vehicles')
+            .insert(wantedPayload)
+            .select()
+            .single();
+
+        if (error) {
+            console.error('Error insertando wanted_vehicle desde web:', error);
+            return { success: false, error: error.message };
+        }
+
+        revalidatePath('/admin/vehiculos-buscados');
+        revalidatePath(`/admin/clientes/${clientId}`);
+        revalidatePath('/admin');
+
+        return { 
+            success: true, 
+            code: data.code,
+            data: data as WantedVehicle 
+        };
+    } catch (err: any) {
+        console.error('Error en submitPublicVehicleSearch:', err);
+        return { success: false, error: err?.message || 'Ocurrió un error inesperado al enviar la solicitud.' };
+    }
 }
 
 /**

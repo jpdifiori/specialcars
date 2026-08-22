@@ -56,6 +56,13 @@ export interface Vehicle {
     slug?: string | null;
     meta_title?: string | null;
     meta_description?: string | null;
+
+    // Offers & Specials
+    is_offer?: boolean;
+    offer_price?: number | null;
+    offer_start_date?: string | null;
+    offer_end_date?: string | null;
+    offer_label?: string | null;
     
     // Dates & Audit
     purchase_date: string;
@@ -266,6 +273,9 @@ export interface WantedVehicle {
     has_trade_in: boolean;
     trade_in_details?: string | null;
     
+    // Origen del Pedido
+    source?: 'ADMIN' | 'WEB';
+
     // Estado y Comercial
     priority: import('../constants/enums').WantedVehiclePriority;
     status: import('../constants/enums').WantedVehicleStatus;
@@ -362,6 +372,17 @@ export interface PublicVehicleItem {
     meta_description?: string | null;
     created_at: string;
     primary_image_url?: string | null;
+
+    // Offers & Specials
+    is_offer?: boolean;
+    offer_price?: number | null;
+    offer_start_date?: string | null;
+    offer_end_date?: string | null;
+    offer_label?: string | null;
+    is_offer_active?: boolean;
+    savings?: number;
+    discount_percentage?: number;
+
     images?: {
         id: string;
         url: string;

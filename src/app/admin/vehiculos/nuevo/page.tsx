@@ -81,6 +81,11 @@ export default function NewVehiclePage() {
         description: '',
         equipment: '',
         features: '',
+        is_offer: false,
+        offer_price: 0,
+        offer_start_date: '',
+        offer_end_date: '',
+        offer_label: 'OFERTA',
         meta_title: '',
         meta_description: ''
     });
@@ -93,7 +98,7 @@ export default function NewVehiclePage() {
     useEffect(() => {
         if (formData.brand.trim() && formData.model.trim()) {
             const timer = setTimeout(() => {
-                checkQuickDemand(formData.brand, formData.model, formData.body_type).then(setDemandEstimate);
+                checkQuickDemand(formData.brand, formData.model, formData.body_type).then(res => setDemandEstimate(res as any));
             }, 300);
             return () => clearTimeout(timer);
         } else {
@@ -115,6 +120,16 @@ export default function NewVehiclePage() {
             if (formData.sale_price <= 0) {
                 setError('El precio de venta debe ser mayor a $ 0.');
                 return;
+            }
+            if (formData.is_offer) {
+                if (!formData.offer_price || formData.offer_price <= 0) {
+                    setError('Debes ingresar un precio de oferta válido mayor a $ 0.');
+                    return;
+                }
+                if (formData.offer_price >= formData.sale_price) {
+                    setError(`El precio de oferta ($ ${formData.offer_price.toLocaleString('es-AR')}) debe ser obligatoriamente menor al precio normal ($ ${formData.sale_price.toLocaleString('es-AR')}).`);
+                    return;
+                }
             }
         }
 
@@ -590,6 +605,170 @@ export default function NewVehiclePage() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* SECCIÓN: OFERTA Y PRECIO ESPECIAL */}
+                        <div style={{
+                            marginTop: 28,
+                            padding: '22px 24px',
+                            backgroundColor: formData.is_offer ? '#FFF7ED' : '#F8FAFC',
+                            borderRadius: 12,
+                            border: formData.is_offer ? '2px solid #EA580C' : '1px solid #E2E8F0',
+                            transition: 'all 0.2s ease-in-out'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 16 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                    <div style={{
+                                        width: 36,
+                                        height: 36,
+                                        borderRadius: 8,
+                                        backgroundColor: formData.is_offer ? '#EA580C' : '#E2E8F0',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: formData.is_offer ? '#FFFFFF' : '#64748B'
+                                    }}>
+                                        <Flame size={20} />
+                                    </div>
+                                    <div>
+                                        <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                                            Oferta Especial de Vehículo
+                                        </h3>
+                                        <p style={{ fontSize: 12.5, color: '#64748B', margin: '2px 0 0' }}>
+                                            Configurá un precio promocional con cálculo automático de ahorro y vigencia.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <label style={{ display: 'inline-flex', alignItems: 'center', gap: 10, cursor: 'pointer', backgroundColor: '#FFFFFF', padding: '8px 16px', borderRadius: 8, border: '1px solid #CBD5E1', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.is_offer}
+                                        onChange={(e) => updateField('is_offer', e.target.checked)}
+                                        style={{ width: 18, height: 18, accentColor: '#EA580C', cursor: 'pointer' }}
+                                    />
+                                    <span style={{ fontSize: 13.5, fontWeight: 700, color: formData.is_offer ? '#EA580C' : '#334155' }}>
+                                        Activar Oferta
+                                    </span>
+                                </label>
+                            </div>
+
+                            {formData.is_offer && (
+                                <div style={{ borderTop: '1px solid #FFEDD5', paddingTop: 18, marginTop: 10 }}>
+                                    <div className="form-grid">
+                                        <div className="form-group">
+                                            <label className="form-label">Precio Actual Normal ($ ARS)</label>
+                                            <input
+                                                type="text"
+                                                className="form-input"
+                                                value={formatARS(formData.sale_price)}
+                                                disabled
+                                                style={{ backgroundColor: '#F1F5F9', color: '#64748B', fontWeight: 700 }}
+                                            />
+                                            <span className="form-help">Precio de lista base.</span>
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label className="form-label" style={{ color: '#EA580C', fontWeight: 800 }}>Precio de Oferta ($ ARS) *</label>
+                                            <input
+                                                type="number"
+                                                className="form-input"
+                                                placeholder="Ej: 24000000"
+                                                value={formData.offer_price || ''}
+                                                onChange={(e) => updateField('offer_price', parseInt(e.target.value, 10) || 0)}
+                                                style={{ borderColor: formData.offer_price && formData.offer_price < formData.sale_price ? '#EA580C' : '#EF4444', fontWeight: 700 }}
+                                                required={formData.is_offer}
+                                            />
+                                            <span className="form-help" style={{ color: '#EA580C', fontWeight: 600 }}>
+                                                {formatARS(formData.offer_price)}
+                                            </span>
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label className="form-label">Texto / Etiqueta de Oferta</label>
+                                            <input
+                                                type="text"
+                                                className="form-input"
+                                                placeholder="Ej: OFERTA, PRECIO ESPECIAL, LIQUIDACIÓN..."
+                                                value={formData.offer_label}
+                                                onChange={(e) => updateField('offer_label', e.target.value)}
+                                            />
+                                            <span className="form-help">Por defecto: &quot;OFERTA&quot;</span>
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label className="form-label">Fecha de Inicio (Opcional)</label>
+                                            <input
+                                                type="date"
+                                                className="form-input"
+                                                value={formData.offer_start_date}
+                                                onChange={(e) => updateField('offer_start_date', e.target.value)}
+                                            />
+                                            <span className="form-help">Desde cuándo rige la oferta.</span>
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label className="form-label">Fecha de Finalización (Opcional)</label>
+                                            <input
+                                                type="date"
+                                                className="form-input"
+                                                value={formData.offer_end_date}
+                                                onChange={(e) => updateField('offer_end_date', e.target.value)}
+                                            />
+                                            <span className="form-help">Vencimiento automático de la promoción.</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Panel de Cálculo de Ahorro y Descuento */}
+                                    {formData.sale_price > 0 && formData.offer_price > 0 && (
+                                        <div style={{
+                                            marginTop: 16,
+                                            padding: 16,
+                                            borderRadius: 10,
+                                            backgroundColor: formData.offer_price < formData.sale_price ? '#ECFDF5' : '#FEF2F2',
+                                            border: `1px solid ${formData.offer_price < formData.sale_price ? '#A7F3D0' : '#FECACA'}`,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            flexWrap: 'wrap',
+                                            gap: 16
+                                        }}>
+                                            {formData.offer_price < formData.sale_price ? (
+                                                <>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                                        <div style={{
+                                                            backgroundColor: '#059669',
+                                                            color: '#FFFFFF',
+                                                            fontWeight: 900,
+                                                            fontSize: 16,
+                                                            padding: '6px 12px',
+                                                            borderRadius: 8
+                                                        }}>
+                                                            -{Math.round(((formData.sale_price - formData.offer_price) / formData.sale_price) * 100)}% OFF
+                                                        </div>
+                                                        <div>
+                                                            <div style={{ fontSize: 12, color: '#065F46', fontWeight: 700, textTransform: 'uppercase' }}>
+                                                                Importe Total de Ahorro
+                                                            </div>
+                                                            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 18, fontWeight: 800, color: '#065F46' }}>
+                                                                {formatARS(formData.sale_price - formData.offer_price)}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div style={{ fontSize: 13, color: '#065F46', fontWeight: 600 }}>
+                                                        ✅ Descuento válido para el comprador
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#DC2626', fontSize: 13.5, fontWeight: 700 }}>
+                                                    <AlertCircle size={18} />
+                                                    <span>El precio de oferta debe ser obligatoriamente menor al precio normal ({formatARS(formData.sale_price)}).</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 )}
 
@@ -880,10 +1059,26 @@ export default function NewVehiclePage() {
                                     </p>
                                 </div>
                                 <div style={{ textAlign: 'right' }}>
-                                    <div style={{ fontSize: 11, color: '#334155', textTransform: 'uppercase', fontWeight: 700 }}>Precio Publicado</div>
-                                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: 24, fontWeight: 800, color: '#059669' }}>
-                                        {formatARS(formData.sale_price)}
+                                    <div style={{ fontSize: 11, color: '#334155', textTransform: 'uppercase', fontWeight: 700 }}>
+                                        {formData.is_offer && formData.offer_price && formData.offer_price < formData.sale_price ? 'Precio Oferta' : 'Precio Publicado'}
                                     </div>
+                                    {formData.is_offer && formData.offer_price && formData.offer_price < formData.sale_price ? (
+                                        <div>
+                                            <span style={{ textDecoration: 'line-through', color: '#94A3B8', fontSize: 14, marginRight: 8 }}>
+                                                {formatARS(formData.sale_price)}
+                                            </span>
+                                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 24, fontWeight: 800, color: '#EA580C' }}>
+                                                {formatARS(formData.offer_price)}
+                                            </span>
+                                            <div style={{ fontSize: 12, color: '#059669', fontWeight: 700, marginTop: 2 }}>
+                                                🔥 {formData.offer_label || 'OFERTA'} (-{Math.round(((formData.sale_price - formData.offer_price) / formData.sale_price) * 100)}%)
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 24, fontWeight: 800, color: '#059669' }}>
+                                            {formatARS(formData.sale_price)}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 

@@ -8,6 +8,7 @@ import { addVehicleExpense, deleteVehicleExpense } from '@/lib/actions/expenses'
 import { uploadVehicleImageAction, setPrimaryVehicleImage, deleteVehicleImage } from '@/lib/actions/images';
 import { formatARS } from '@/lib/utils/currency';
 import { formatDate } from '@/lib/utils/dates';
+import { isOfferActive, calculateOfferSavings } from '@/lib/utils/offer';
 import imageCompression from 'browser-image-compression';
 import { 
     Info, 
@@ -299,6 +300,70 @@ export function VehicleDetailClient({
                     >
                         Ver Interesados ({matchingBuyers.length})
                     </button>
+                </div>
+            )}
+
+            {/* BANNER DE OFERTA ACTIVA */}
+            {isOfferActive(vehicle) && (
+                <div style={{
+                    backgroundColor: '#FFF7ED',
+                    border: '2px solid #EA580C',
+                    borderRadius: 14,
+                    padding: '16px 20px',
+                    marginBottom: 20,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: 16,
+                    boxShadow: '0 4px 14px rgba(234, 88, 12, 0.15)'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                        <div style={{
+                            width: 44,
+                            height: 44,
+                            borderRadius: 10,
+                            backgroundColor: '#EA580C',
+                            color: '#FFFFFF',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 4px 12px rgba(234, 88, 12, 0.35)'
+                        }}>
+                            <Flame size={24} />
+                        </div>
+                        <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                                <span style={{
+                                    backgroundColor: '#EA580C',
+                                    color: '#FFFFFF',
+                                    fontWeight: 900,
+                                    fontSize: 12,
+                                    padding: '2px 8px',
+                                    borderRadius: 6
+                                }}>
+                                    🔥 {vehicle.offer_label || 'OFERTA'}
+                                </span>
+                                <span style={{
+                                    backgroundColor: '#059669',
+                                    color: '#FFFFFF',
+                                    fontWeight: 800,
+                                    fontSize: 12,
+                                    padding: '2px 8px',
+                                    borderRadius: 6
+                                }}>
+                                    {calculateOfferSavings(vehicle.sale_price, vehicle.offer_price!).formattedDiscount} OFF
+                                </span>
+                                <h3 style={{ fontSize: 16, fontWeight: 800, color: '#9A3412', margin: 0 }}>
+                                    Vehículo en Oferta Promocional
+                                </h3>
+                            </div>
+                            <div style={{ fontSize: 13, color: '#9A3412', marginTop: 4 }}>
+                                Precio Lista: <strong style={{ textDecoration: 'line-through' }}>{formatARS(vehicle.sale_price)}</strong> → Precio Oferta: <strong style={{ color: '#EA580C', fontSize: 15 }}>{formatARS(vehicle.offer_price)}</strong> (Ahorro: <strong>{calculateOfferSavings(vehicle.sale_price, vehicle.offer_price!).formattedSavings}</strong>)
+                                {vehicle.offer_end_date && ` • Válido hasta: ${formatDate(vehicle.offer_end_date)}`}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
 
@@ -845,10 +910,24 @@ export function VehicleDetailClient({
                                 <span style={{ color: '#000000' }}>Precio de Venta:</span>
                                 <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 900, color: '#EA580C', fontSize: 16 }}>{formatARS(vehicle.sale_price)}</span>
                             </div>
+                            {isOfferActive(vehicle) && (
+                                <>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8, backgroundColor: '#FFF7ED', margin: '-4px -8px', padding: '8px 8px', borderRadius: 6 }}>
+                                        <span style={{ color: '#EA580C', fontWeight: 800 }}>🔥 Precio de Oferta:</span>
+                                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 900, color: '#EA580C', fontSize: 17 }}>{formatARS(vehicle.offer_price)}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
+                                        <span style={{ color: '#059669', fontWeight: 700 }}>Ahorro del Comprador:</span>
+                                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#059669' }}>
+                                            {calculateOfferSavings(vehicle.sale_price, vehicle.offer_price!).formattedSavings} ({calculateOfferSavings(vehicle.sale_price, vehicle.offer_price!).formattedDiscount})
+                                        </span>
+                                    </div>
+                                </>
+                            )}
                             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>
                                 <span style={{ color: '#000000' }}>Visualización en Web:</span>
                                 <span style={{ fontWeight: 700, color: vehicle.hide_price ? '#EA580C' : '#059669', fontSize: 12.5 }}>
-                                    {vehicle.hide_price ? 'Consultar precio! (Oculto)' : 'Precio Visible'}
+                                    {vehicle.hide_price ? 'Consultar precio! (Oculto)' : (isOfferActive(vehicle) ? 'Precio Oferta Visible' : 'Precio Visible')}
                                 </span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #F1F5F9', paddingBottom: 8 }}>

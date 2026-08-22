@@ -32,7 +32,9 @@ import {
     Eye,
     SlidersHorizontal,
     Sparkles,
-    ShieldAlert
+    ShieldAlert,
+    Globe,
+    Building2
 } from 'lucide-react';
 
 export default function WantedVehiclesPage() {
@@ -46,6 +48,7 @@ export default function WantedVehiclesPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('SEARCHING');
     const [priorityFilter, setPriorityFilter] = useState('ALL');
+    const [sourceFilter, setSourceFilter] = useState('ALL');
 
     // Demanda de Stock
     const [stockDemand, setStockDemand] = useState<StockDemandItem[]>([]);
@@ -86,6 +89,7 @@ export default function WantedVehiclesPage() {
             search: searchQuery,
             status: statusFilter,
             priority: priorityFilter,
+            source: sourceFilter,
             limit: 50
         });
         setWantedList(res.data);
@@ -107,7 +111,7 @@ export default function WantedVehiclesPage() {
         } else {
             fetchStockDemand();
         }
-    }, [activeTab, statusFilter, priorityFilter]);
+    }, [activeTab, statusFilter, priorityFilter, sourceFilter]);
 
     const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -387,6 +391,29 @@ export default function WantedVehiclesPage() {
                                     <option value="LOW">Baja</option>
                                 </select>
                             </div>
+
+                            {/* Filtro Origen */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
+                                <span style={{ color: '#64748B', fontWeight: 600 }}>Origen:</span>
+                                <select
+                                    value={sourceFilter}
+                                    onChange={(e) => setSourceFilter(e.target.value)}
+                                    style={{
+                                        padding: '8px 12px',
+                                        borderRadius: 8,
+                                        border: '1px solid #CBD5E1',
+                                        backgroundColor: '#FFFFFF',
+                                        fontSize: 13,
+                                        fontWeight: 700,
+                                        color: '#0F172A',
+                                        outline: 'none'
+                                    }}
+                                >
+                                    <option value="ALL">Todos los orígenes</option>
+                                    <option value="WEB">🌐 Solicitudes Web</option>
+                                    <option value="ADMIN">🏢 Agencia / Internos</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -459,10 +486,43 @@ export default function WantedVehiclesPage() {
                                         >
                                             {/* Código y Cliente */}
                                             <td style={{ padding: '16px 18px' }}>
-                                                <div style={{ fontSize: 11.5, fontWeight: 800, color: '#EA580C', fontFamily: 'monospace' }}>
-                                                    {w.code}
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                                                    <span style={{ fontSize: 11.5, fontWeight: 800, color: '#EA580C', fontFamily: 'monospace' }}>
+                                                        {w.code}
+                                                    </span>
+                                                    {w.source === 'WEB' ? (
+                                                        <span style={{
+                                                            backgroundColor: '#EFF6FF',
+                                                            color: '#1D4ED8',
+                                                            border: '1px solid #BFDBFE',
+                                                            padding: '1px 6px',
+                                                            borderRadius: 4,
+                                                            fontSize: 10,
+                                                            fontWeight: 800,
+                                                            display: 'inline-flex',
+                                                            alignItems: 'center',
+                                                            gap: 3
+                                                        }}>
+                                                            <Globe size={10} /> Web
+                                                        </span>
+                                                    ) : (
+                                                        <span style={{
+                                                            backgroundColor: '#F1F5F9',
+                                                            color: '#475569',
+                                                            border: '1px solid #CBD5E1',
+                                                            padding: '1px 6px',
+                                                            borderRadius: 4,
+                                                            fontSize: 10,
+                                                            fontWeight: 700,
+                                                            display: 'inline-flex',
+                                                            alignItems: 'center',
+                                                            gap: 3
+                                                        }}>
+                                                            <Building2 size={10} /> Agencia
+                                                        </span>
+                                                    )}
                                                 </div>
-                                                <div style={{ fontWeight: 800, color: '#0F172A', marginTop: 2 }}>
+                                                <div style={{ fontWeight: 800, color: '#0F172A', marginTop: 3 }}>
                                                     {w.client ? `${w.client.first_name} ${w.client.last_name}` : 'Cliente no asignado'}
                                                 </div>
                                                 {w.client?.phone && (

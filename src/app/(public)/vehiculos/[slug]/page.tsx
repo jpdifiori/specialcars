@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { getPublicVehicleBySlug, getPublicVehicles } from '@/lib/actions/vehicles';
 import { getAgencySettings } from '@/lib/actions/settings';
 import { formatARS } from '@/lib/utils/currency';
+import { formatDate } from '@/lib/utils/dates';
+import { isOfferActive, calculateOfferSavings, getOfferBadgeLabel, getVehicleWhatsAppMessage } from '@/lib/utils/offer';
 import { VehicleDetailGallery } from './VehicleDetailGallery';
 import { VehicleCard } from '@/components/public/VehicleCard';
 import { 
@@ -17,7 +19,8 @@ import {
     Cog, 
     Palette, 
     Tag,
-    Share2
+    Share2,
+    Flame
 } from 'lucide-react';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -28,8 +31,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         return { title: 'Vehículo no encontrado | Special Cars' };
     }
 
-    const title = vehicle.meta_title || `${vehicle.brand} ${vehicle.model} ${vehicle.version || ''} (${vehicle.year}) | Special Cars`;
-    const description = vehicle.meta_description || `Comprá tu ${vehicle.brand} ${vehicle.model} ${vehicle.year} por ${formatARS(vehicle.price)} en Special Cars.`;
+    const isOffer = isOfferActive(vehicle);
+    const offerPriceStr = isOffer && vehicle.offer_price ? formatARS(vehicle.offer_price) : formatARS(vehicle.price);
+    const title = vehicle.meta_title || `${isOffer ? '🔥 OFERTA: ' : ''}${vehicle.brand} ${vehicle.model} ${vehicle.version || ''} (${vehicle.year}) | Special Cars`;
+    const description = vehicle.meta_description || `Comprá tu ${vehicle.brand} ${vehicle.model} ${vehicle.year} por ${offerPriceStr} en Special Cars.`;
 
     return {
         title,
@@ -57,8 +62,9 @@ export default async function PublicVehicleDetailPage({ params }: { params: Prom
     const relatedVehicles = relatedRes.data.filter(v => v.id !== vehicle.id).slice(0, 3);
     const wp = settings.whatsapp || '5492262574254';
 
-    const vehicleTitle = `${vehicle.brand} ${vehicle.model} ${vehicle.version || ''} (${vehicle.year})`.replace(/\s+/g, ' ').trim();
-    const autoWpMessage = `Hola, necesito mas información sobre el vehículo ${vehicleTitle}`;
+    const hasOffer = isOfferActive(vehicle);
+    const savings = hasOffer && vehicle.offer_price ? calculateOfferSavings(vehicle.price, vehicle.offer_price) : null;
+    const autoWpMessage = getVehicleWhatsAppMessage(vehicle);
     const wpLink = `https://wa.me/${wp}?text=${encodeURIComponent(autoWpMessage)}`;
 
     return (
@@ -130,9 +136,16 @@ export default async function PublicVehicleDetailPage({ params }: { params: Prom
                         </div>
 
                         {/* Caja de Precio */}
-                        <div className="detail-price-box">
-                            <div style={{ fontSize: 12, color: '#64748b', textTransform: 'uppercase', fontWeight: 600, marginBottom: 2 }}>
-                                {vehicle.hide_price ? 'Condición Comercial' : 'Precio Final al Contado / Permuta'}
+                        <div className="detail-price-box" style={hasOffer ? { borderColor: '#FDBA74', backgroundColor: '#FFF7ED' } : undefined}>
+                            {hasOffer && (
+                                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, backgroundColor: '#EA580C', color: '#FFFFFF', padding: '3px 10px', borderRadius: 20, fontSize: 11.5, fontWeight: 900, marginBottom: 8, letterSpacing: 0.3 }}>
+                                    <Flame size={13} />
+                                    <span>{getOfferBadgeLabel(vehicle.offer_label)} {savings ? `· ${savings.formattedDiscount}` : ''}</span>
+                                </div>
+                            )}
+
+                            <div style={{ fontSize: 12, color: hasOffer ? '#9A3412' : '#64748b', textTransform: 'uppercase', fontWeight: 700, marginBottom: 2 }}>
+                                {vehicle.hide_price ? 'Condición Comercial' : (hasOffer ? 'Precio Especial de Oferta' : 'Precio Final al Contado / Permuta')}
                             </div>
                             {vehicle.hide_price ? (
                                 <a
@@ -165,13 +178,35 @@ export default async function PublicVehicleDetailPage({ params }: { params: Prom
                                         <MessageCircle size={16} />
                                     </span>
                                 </a>
+                            ) : hasOffer ? (
+                                <div>
+                                    <div style={{ fontSize: 14, color: '#94A3B8', textDecoration: 'line-through', fontWeight: 600 }}>
+                                        Antes: {formatARS(vehicle.price)}
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginTop: 2 }}>
+                                        <span style={{ fontSize: 14, color: '#EA580C', fontWeight: 900, textTransform: 'uppercase' }}>Ahora:</span>
+                                        <div className="detail-price" style={{ color: '#EA580C', fontSize: 34, fontWeight: 900 }}>
+                                            {formatARS(vehicle.offer_price)}
+                                        </div>
+                                    </div>
+                                    {savings && (
+                                        <div style={{ display: 'inline-block', backgroundColor: '#ECFDF5', border: '1px solid #A7F3D0', color: '#065F46', padding: '4px 10px', borderRadius: 6, fontSize: 13, fontWeight: 800, marginTop: 8 }}>
+                                            🎉 ¡Ahorrás {savings.formattedSavings}! ({savings.formattedDiscount})
+                                        </div>
+                                    )}
+                                    {vehicle.offer_end_date && (
+                                        <div style={{ fontSize: 12, color: '#9A3412', fontWeight: 600, marginTop: 6 }}>
+                                            ⏰ Oferta por tiempo limitado válida hasta el {formatDate(vehicle.offer_end_date)}
+                                        </div>
+                                    )}
+                                </div>
                             ) : (
                                 <div className="detail-price" style={{ color: '#EA580C', fontSize: 32, fontWeight: 900 }}>
                                     {formatARS(vehicle.price)}
                                 </div>
                             )}
-                            <div style={{ fontSize: 12, color: '#64748b', marginTop: 6 }}>
-                                Aceptamos permutas al mejor valor del mercado.
+                            <div style={{ fontSize: 12, color: '#64748b', marginTop: 8 }}>
+                                Aceptamos permutas al mejor valor del mercado y financiación a medida.
                             </div>
                         </div>
 
