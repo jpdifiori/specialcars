@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Vehicle, ExpenseCategory } from '@/lib/types';
+import { Vehicle, ExpenseCategory, MatchResult } from '@/lib/types';
 import { toggleVehiclePublish, updateVehicleStatus, deleteVehicle } from '@/lib/actions/vehicles';
 import { addVehicleExpense, deleteVehicleExpense } from '@/lib/actions/expenses';
 import { uploadVehicleImageAction, setPrimaryVehicleImage, deleteVehicleImage } from '@/lib/actions/images';
@@ -23,16 +23,35 @@ import {
     AlertCircle, 
     Check,
     Wrench,
-    Crop
+    Crop,
+    Flame,
+    MessageCircle,
+    User,
+    Phone,
+    CheckCircle2
 } from 'lucide-react';
 import { ImagePositionModal } from '@/components/admin/ImagePositionModal';
+import { WhatsAppPreparationModal } from '@/components/admin/WhatsAppPreparationModal';
 
-export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
+export function VehicleDetailClient({ 
+    vehicle,
+    matchingBuyers = []
+}: { 
+    vehicle: Vehicle;
+    matchingBuyers?: MatchResult[];
+}) {
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState<'info' | 'photos' | 'expenses' | 'history'>('photos');
+    const [activeTab, setActiveTab] = useState<'photos' | 'interesados' | 'expenses' | 'info'>('photos');
     const [isUpdating, setIsUpdating] = useState(false);
     const [statusVal, setStatusVal] = useState(vehicle.status);
     const [isPublished, setIsPublished] = useState(vehicle.published);
+
+    // Estado para WhatsApp Modal
+    const [whatsappModalTarget, setWhatsappModalTarget] = useState<{
+        client: any;
+        wantedBrand?: string;
+        wantedModel?: string;
+    } | null>(null);
 
     // Estado para nuevo gasto
     const [showExpenseModal, setShowExpenseModal] = useState(false);
@@ -225,6 +244,64 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                 </div>
             </div>
 
+            {/* Banner de Alerta de Demanda Comercial si hay compradores en espera */}
+            {matchingBuyers.length > 0 && (
+                <div style={{
+                    backgroundColor: '#FFF7ED',
+                    border: '2px solid #FDBA74',
+                    borderRadius: 14,
+                    padding: '16px 20px',
+                    marginBottom: 20,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: 12,
+                    boxShadow: '0 4px 16px rgba(234, 88, 12, 0.12)'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <div style={{
+                            width: 42,
+                            height: 42,
+                            borderRadius: '50%',
+                            backgroundColor: '#EA580C',
+                            color: '#FFFFFF',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 4px 12px rgba(234, 88, 12, 0.35)'
+                        }}>
+                            <Flame size={22} />
+                        </div>
+                        <div>
+                            <h3 style={{ fontSize: 16, fontWeight: 900, color: '#9A3412', margin: 0 }}>
+                                🔥 {matchingBuyers.length} {matchingBuyers.length === 1 ? 'CLIENTE PODRÍA ESTAR INTERESADO' : 'CLIENTES PODRÍAN ESTAR INTERESADOS'}
+                            </h3>
+                            <p style={{ fontSize: 13, color: '#C2410C', margin: '2px 0 0 0' }}>
+                                Hay pedidos de búsqueda activos compatibles con este {vehicle.brand} {vehicle.model}. Podés contactarlos vía WhatsApp.
+                            </p>
+                        </div>
+                    </div>
+
+                    <button
+                        onClick={() => setActiveTab('interesados')}
+                        style={{
+                            backgroundColor: '#EA580C',
+                            color: '#FFFFFF',
+                            border: 'none',
+                            padding: '9px 18px',
+                            borderRadius: 10,
+                            fontWeight: 800,
+                            fontSize: 13,
+                            cursor: 'pointer',
+                            boxShadow: '0 2px 8px rgba(234, 88, 12, 0.3)'
+                        }}
+                    >
+                        Ver Interesados ({matchingBuyers.length})
+                    </button>
+                </div>
+            )}
+
             {/* Tabs de Navegación */}
             <div style={{ display: 'flex', gap: 8, borderBottom: '1px solid #E2E8F0', marginBottom: 20 }}>
                 <button
@@ -234,6 +311,15 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                 >
                     <ImageIcon size={16} />
                     <span>Fotografías ({vehicle.images?.length || 0})</span>
+                </button>
+
+                <button
+                    onClick={() => setActiveTab('interesados')}
+                    className={`admin-nav-item ${activeTab === 'interesados' ? 'active' : ''}`}
+                    style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0, padding: '10px 18px', display: 'flex', alignItems: 'center', gap: 6 }}
+                >
+                    <Flame size={16} style={{ color: matchingBuyers.length > 0 ? '#EA580C' : 'inherit' }} />
+                    <span>Interesados ({matchingBuyers.length})</span>
                 </button>
 
                 <button
@@ -374,6 +460,168 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                                     </div>
                                 </div>
                             ))}
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {/* TAB: INTERESADOS (MOTOR DE DEMANDA & MATCHING) */}
+            {activeTab === 'interesados' && (
+                <div className="table-container" style={{ padding: 24 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
+                        <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                <Flame size={20} style={{ color: '#EA580C' }} />
+                                <h3 style={{ fontSize: 18, fontWeight: 900, color: '#0F172A', margin: 0 }}>
+                                    Clientes Potencialmente Interesados ({matchingBuyers.length})
+                                </h3>
+                            </div>
+                            <p style={{ fontSize: 13, color: '#64748B', marginTop: 4 }}>
+                                Búsquedas activas calculadas por el motor de coincidencias contra este vehículo.
+                            </p>
+                        </div>
+                    </div>
+
+                    {matchingBuyers.length === 0 ? (
+                        <div style={{
+                            backgroundColor: '#F8FAFC',
+                            border: '1px dashed #CBD5E1',
+                            borderRadius: 14,
+                            padding: '40px 20px',
+                            textAlign: 'center'
+                        }}>
+                            <User size={36} style={{ color: '#94A3B8', margin: '0 auto 10px' }} />
+                            <h4 style={{ fontSize: 15, fontWeight: 800, color: '#0F172A' }}>
+                                No hay búsquedas activas registradas para este modelo
+                            </h4>
+                            <p style={{ fontSize: 13, color: '#64748B', maxWidth: 440, margin: '6px auto 0' }}>
+                                Podés registrar pedidos de tus clientes en el módulo <strong>Vehículos Buscados</strong> para recibir alertas automáticas.
+                            </p>
+                        </div>
+                    ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                            {matchingBuyers.map((m, idx) => {
+                                const cl = m.wantedVehicle?.client;
+                                const w = m.wantedVehicle;
+                                return (
+                                    <div
+                                        key={idx}
+                                        style={{
+                                            backgroundColor: m.score >= 80 ? '#FFF7ED' : '#F8FAFC',
+                                            border: m.score >= 80 ? '1.5px solid #FDBA74' : '1px solid #E2E8F0',
+                                            borderRadius: 14,
+                                            padding: '16px 20px',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: 12
+                                        }}
+                                    >
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
+                                            <div>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                                    <span style={{
+                                                        backgroundColor: m.score >= 80 ? '#EA580C' : '#475569',
+                                                        color: '#FFFFFF',
+                                                        fontSize: 12,
+                                                        fontWeight: 900,
+                                                        padding: '3px 8px',
+                                                        borderRadius: 12
+                                                    }}>
+                                                        {m.score}% Coincidencia
+                                                    </span>
+                                                    <span style={{ fontSize: 16, fontWeight: 900, color: '#0F172A' }}>
+                                                        {cl ? `${cl.first_name} ${cl.last_name}` : 'Cliente'}
+                                                    </span>
+                                                    {w?.priority === 'HIGH' && (
+                                                        <span style={{ backgroundColor: '#FEE2E2', color: '#DC2626', fontSize: 11, fontWeight: 800, padding: '2px 6px', borderRadius: 6 }}>
+                                                            Prioridad Alta
+                                                        </span>
+                                                    )}
+                                                </div>
+
+                                                <div style={{ fontSize: 13, color: '#334155', marginTop: 4 }}>
+                                                    <strong>Busca:</strong> {w?.brand} {w?.model} {w?.version || ''} ({w?.year_min || '—'} - {w?.year_max || '—'})
+                                                    {w?.max_budget ? ` • Ppto: ${formatARS(w.max_budget)}` : ''}
+                                                </div>
+
+                                                {cl?.phone && (
+                                                    <div style={{ fontSize: 12, color: '#64748B', display: 'flex', alignItems: 'center', gap: 4, marginTop: 4 }}>
+                                                        <Phone size={12} />
+                                                        <span>{cl.phone}</span>
+                                                        {cl.city && <span>• 📍 {cl.city}</span>}
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Botón Preparar WhatsApp */}
+                                            {cl && (
+                                                <button
+                                                    onClick={() => setWhatsappModalTarget({
+                                                        client: cl,
+                                                        wantedBrand: w?.brand,
+                                                        wantedModel: w?.model
+                                                    })}
+                                                    style={{
+                                                        display: 'inline-flex',
+                                                        alignItems: 'center',
+                                                        gap: 8,
+                                                        backgroundColor: '#25D366',
+                                                        color: '#FFFFFF',
+                                                        border: 'none',
+                                                        padding: '9px 18px',
+                                                        borderRadius: 10,
+                                                        fontSize: 13,
+                                                        fontWeight: 800,
+                                                        cursor: 'pointer',
+                                                        boxShadow: '0 3px 10px rgba(37, 211, 102, 0.35)',
+                                                        transition: 'transform 0.15s'
+                                                    }}
+                                                >
+                                                    <MessageCircle size={16} />
+                                                    <span>Preparar WhatsApp</span>
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        {/* Puntos destacados */}
+                                        {m.highlights.length > 0 && (
+                                            <div style={{
+                                                display: 'flex',
+                                                flexWrap: 'wrap',
+                                                gap: 6,
+                                                padding: '8px 12px',
+                                                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                                borderRadius: 8,
+                                                border: '1px solid #E2E8F0'
+                                            }}>
+                                                {m.highlights.map((h, hIdx) => (
+                                                    <span
+                                                        key={hIdx}
+                                                        style={{
+                                                            fontSize: 11.5,
+                                                            fontWeight: 700,
+                                                            color: '#334155',
+                                                            display: 'inline-flex',
+                                                            alignItems: 'center',
+                                                            gap: 4
+                                                        }}
+                                                    >
+                                                        <Check size={12} style={{ color: '#059669' }} />
+                                                        <span>{h}</span>
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        {/* Permuta si tiene */}
+                                        {w?.has_trade_in && (
+                                            <div style={{ fontSize: 12, color: '#1E40AF', backgroundColor: '#EFF6FF', padding: '6px 10px', borderRadius: 6, border: '1px solid #BFDBFE' }}>
+                                                <strong>🔄 Entrega en permuta:</strong> {w.trade_in_details || 'Detalles no cargados'}
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </div>
                     )}
                 </div>
@@ -627,6 +875,18 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                     fileName={adjustingImage.fileName}
                     onClose={() => setAdjustingImage(null)}
                     onSave={handleSaveAdjustedImage}
+                />
+            )}
+
+            {/* Modal de Preparación de WhatsApp para Interesados */}
+            {whatsappModalTarget && whatsappModalTarget.client && (
+                <WhatsAppPreparationModal
+                    isOpen={Boolean(whatsappModalTarget)}
+                    onClose={() => setWhatsappModalTarget(null)}
+                    client={whatsappModalTarget.client}
+                    vehicle={vehicle}
+                    wantedBrand={whatsappModalTarget.wantedBrand}
+                    wantedModel={whatsappModalTarget.wantedModel}
                 />
             )}
         </div>

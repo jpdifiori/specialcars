@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getVehicleById } from '@/lib/actions/vehicles';
+import { getMatchingBuyersForVehicle } from '@/lib/actions/wanted-vehicles';
 import { formatARS, formatPercent } from '@/lib/utils/currency';
 import { formatDate } from '@/lib/utils/dates';
 import { VehicleDetailClient } from './VehicleDetailClient';
@@ -186,8 +187,8 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                 )}
             </div>
 
-            {/* COMPONENTE CLIENT INTERACTIVO (TABS: FOTOS, GASTOS, INFORMACIÓN, TRAZABILIDAD) */}
-            <VehicleDetailClient vehicle={vehicle} />
+            {/* COMPONENTE CLIENT INTERACTIVO (TABS: FOTOS, GASTOS, INFORMACIÓN, TRAZABILIDAD, INTERESADOS) */}
+            <VehicleDetailClient vehicle={vehicle} matchingBuyers={matchingBuyers} />
         </div>
     );
 }

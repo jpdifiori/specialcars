@@ -239,6 +239,72 @@ export interface ZeroKmOperation {
     client?: Client;
 }
 
+export interface WantedVehicle {
+    id: string;
+    code: string;
+    client_id: string;
+    
+    // Criterios de Búsqueda
+    brand: string;
+    model: string;
+    version?: string | null;
+    year_min?: number | null;
+    year_max?: number | null;
+    max_mileage?: number | null;
+    fuel_type?: FuelType | null;
+    transmission?: TransmissionType | null;
+    body_type?: VehicleBodyType | null;
+    preferred_color?: string | null;
+    max_budget: number;
+    
+    // Flags de Flexibilidad
+    accepts_similar_model: boolean;
+    accepts_different_version: boolean;
+    accepts_nearby_year: boolean;
+    
+    // Permuta
+    has_trade_in: boolean;
+    trade_in_details?: string | null;
+    
+    // Estado y Comercial
+    priority: import('../constants/enums').WantedVehiclePriority;
+    status: import('../constants/enums').WantedVehicleStatus;
+    cancellation_reason?: import('../constants/enums').WantedVehicleCancellationReason | null;
+    last_contact_date?: string | null;
+    notes?: string | null;
+    is_deleted: boolean;
+    created_at: string;
+    updated_at: string;
+
+    // Joined
+    client?: Client;
+    match_count?: number;
+    matching_vehicles?: MatchResult[];
+}
+
+export interface MatchResult {
+    score: number; // 0 to 100
+    level: 'HIGH' | 'MEDIUM' | 'LOW';
+    breakdown: {
+        brandScore: number;
+        modelScore: number;
+        yearScore: number;
+        priceScore: number;
+        transmissionScore: number;
+        mileageScore: number;
+    };
+    highlights: string[];
+    vehicle?: Vehicle;
+    wantedVehicle?: WantedVehicle;
+}
+
+export interface StockDemandItem {
+    vehicle: Vehicle;
+    interestedCount: number;
+    highMatchCount: number;
+    topMatches: MatchResult[];
+}
+
 export interface AgencySettings {
     id: string;
     name: string;

@@ -60,10 +60,17 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                         </div>
                     </div>
 
-                    <div style={{ display: 'flex', gap: 10 }}>
+                    <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                        <Link 
+                            href={`/admin/vehiculos-buscados/nuevo?client_id=${client.id}`} 
+                            className="btn-secondary"
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+                        >
+                            <span>+ Registrar Pedido de Auto</span>
+                        </Link>
                         <Link href={`/admin/operaciones/nueva?clientId=${client.id}`} className="btn-primary">
                             <ArrowLeftRight size={15} />
-                            <span>Crear Operación con este Cliente</span>
+                            <span>Crear Operación</span>
                         </Link>
                     </div>
                 </div>

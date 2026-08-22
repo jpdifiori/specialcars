@@ -1,10 +1,11 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createVehicle } from '@/lib/actions/vehicles';
 import { uploadVehicleImageAction } from '@/lib/actions/images';
+import { checkQuickDemand } from '@/lib/actions/wanted-vehicles';
 import imageCompression from 'browser-image-compression';
 import { formatARS } from '@/lib/utils/currency';
 import { 
@@ -23,7 +24,9 @@ import {
     AlertCircle,
     X,
     Star,
-    Crop
+    Crop,
+    Flame,
+    Sparkles
 } from 'lucide-react';
 import { ImagePositionModal } from '@/components/admin/ImagePositionModal';
 
@@ -48,6 +51,7 @@ export default function NewVehiclePage() {
     const [previews, setPreviews] = useState<string[]>([]);
     const [uploadStatus, setUploadStatus] = useState<string | null>(null);
     const [adjustingPhoto, setAdjustingPhoto] = useState<{ index: number; url: string; fileName: string } | null>(null);
+    const [demandEstimate, setDemandEstimate] = useState<{ level: 'LOW' | 'MEDIUM' | 'HIGH'; count: number; highMatchCount: number }>({ level: 'LOW', count: 0, highMatchCount: 0 });
 
     // Estado del formulario
     const [formData, setFormData] = useState({
@@ -84,6 +88,18 @@ export default function NewVehiclePage() {
     const updateField = (field: string, value: any) => {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
+
+    // Consulta de demanda estimada en tiempo real
+    useEffect(() => {
+        if (formData.brand.trim() && formData.model.trim()) {
+            const timer = setTimeout(() => {
+                checkQuickDemand(formData.brand, formData.model, formData.body_type).then(setDemandEstimate);
+            }, 300);
+            return () => clearTimeout(timer);
+        } else {
+            setDemandEstimate({ level: 'LOW', count: 0, highMatchCount: 0 });
+        }
+    }, [formData.brand, formData.model, formData.body_type]);
 
     const handleNext = () => {
         setError(null);
@@ -339,6 +355,49 @@ export default function NewVehiclePage() {
                                 <span className="form-help">Para unidades 0 KM podés ingresar N/A o dejarlo vacío.</span>
                             </div>
                         </div>
+
+                        {/* Indicador de Demanda Comercial en Tiempo Real */}
+                        {formData.brand.trim() && formData.model.trim() && (
+                            <div style={{
+                                marginTop: 22,
+                                padding: '14px 18px',
+                                borderRadius: 12,
+                                backgroundColor: demandEstimate.level === 'HIGH' ? '#FFF7ED' : demandEstimate.level === 'MEDIUM' ? '#EFF6FF' : '#F8FAFC',
+                                border: demandEstimate.level === 'HIGH' ? '1.5px solid #FDBA74' : demandEstimate.level === 'MEDIUM' ? '1.5px solid #BFDBFE' : '1px solid #E2E8F0',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                flexWrap: 'wrap',
+                                gap: 10
+                            }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                    {demandEstimate.level === 'HIGH' ? (
+                                        <Flame size={22} style={{ color: '#EA580C' }} />
+                                    ) : demandEstimate.level === 'MEDIUM' ? (
+                                        <Sparkles size={20} style={{ color: '#2563EB' }} />
+                                    ) : (
+                                        <Car size={18} style={{ color: '#64748B' }} />
+                                    )}
+                                    <div>
+                                        <span style={{
+                                            fontSize: 14,
+                                            fontWeight: 800,
+                                            color: demandEstimate.level === 'HIGH' ? '#C2410C' : demandEstimate.level === 'MEDIUM' ? '#1E40AF' : '#475569'
+                                        }}>
+                                            Demanda Estimada: {demandEstimate.level === 'HIGH' ? 'ALTA 🔥' : demandEstimate.level === 'MEDIUM' ? 'MEDIA ⚡' : 'BAJA ⚪'}
+                                        </span>
+                                        <span style={{ fontSize: 13, color: '#64748B', marginLeft: 8 }}>
+                                            ({demandEstimate.count} {demandEstimate.count === 1 ? 'cliente compatible esperando' : 'clientes compatibles esperando'})
+                                        </span>
+                                    </div>
+                                </div>
+                                {demandEstimate.count > 0 && (
+                                    <span style={{ fontSize: 12, color: '#EA580C', fontWeight: 700 }}>
+                                        ✓ Al guardar la ficha podrás contactar a los interesados por WhatsApp
+                                    </span>
+                                )}
+                            </div>
+                        )}
                     </div>
                 )}
 

@@ -102,3 +102,22 @@ export type ExpenseCategory =
     | 'FUEL' 
     | 'LISTING' 
     | 'OTHER';
+
+export type WantedVehiclePriority = 
+    | 'LOW' 
+    | 'MEDIUM' 
+    | 'HIGH';
+
+export type WantedVehicleStatus = 
+    | 'SEARCHING' 
+    | 'CONTACTED' 
+    | 'FOUND' 
+    | 'CLOSED' 
+    | 'CANCELLED';
+
+export type WantedVehicleCancellationReason = 
+    | 'BOUGHT_ELSEWHERE' 
+    | 'DECIDED_NOT_TO_CHANGE' 
+    | 'BUDGET_CHANGED' 
+    | 'FOUND_WITH_US' 
+    | 'OTHER';

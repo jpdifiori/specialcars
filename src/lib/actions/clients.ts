@@ -199,6 +199,14 @@ export async function getClient360(id: string): Promise<Client | null> {
         .eq('client_id', id)
         .eq('is_deleted', false);
 
+    // 5. Búsquedas Activas de Vehículos
+    const { data: wantedVehicles } = await adminClient
+        .from('wanted_vehicles')
+        .select('*')
+        .eq('client_id', id)
+        .eq('is_deleted', false)
+        .order('created_at', { ascending: false });
+
     // Armar Timeline
     const timeline: TimelineEvent[] = [];
 
@@ -253,6 +261,18 @@ export async function getClient360(id: string): Promise<Client | null> {
         });
     });
 
+    (wantedVehicles || []).forEach((w: any) => {
+        timeline.push({
+            id: `wanted-${w.id}`,
+            date: w.created_at,
+            title: `Búsqueda: ${w.brand} ${w.model}`,
+            description: `Código ${w.code} — Presupuesto: ${w.max_budget > 0 ? `$ ${w.max_budget.toLocaleString('es-AR')}` : 'Sin tope'} (${w.status})`,
+            type: 'note',
+            link: `/admin/vehiculos-buscados/${w.id}`,
+            badge: w.status === 'SEARCHING' ? 'Buscando' : w.status
+        });
+    });
+
     // Ordenar timeline por fecha descendente
     timeline.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -261,6 +281,7 @@ export async function getClient360(id: string): Promise<Client | null> {
         operations_count: (operations || []).length,
         consignments: consignments || [],
         reservations: reservations || [],
+        wanted_vehicles: wantedVehicles || [],
         timeline
     };
 }
