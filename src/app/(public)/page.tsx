@@ -29,36 +29,85 @@ export default async function PublicHomePage() {
         <div>
             {/* HERO SECTION */}
             <section className="hero-section">
-                <div className="hero-content">
-                    <div className="hero-badge">
-                        <Sparkles size={14} style={{ color: '#EA580C' }} />
-                        <span>Vehículos Seleccionados • Usados • 0 KM</span>
+                <div className="hero-grid-container">
+                    {/* Columna Izquierda: Mensaje Comercial y CTAs */}
+                    <div className="hero-content">
+                        <div className="hero-badge">
+                            <Sparkles size={14} style={{ color: '#EA580C' }} />
+                            <span>Vehículos Seleccionados • Usados • 0 KM</span>
+                        </div>
+
+                        <h1 className="hero-title">
+                            Encontrá tu próximo auto con <span>total confianza</span> y transparencia.
+                        </h1>
+
+                        <p className="hero-subtitle">
+                            En <strong>{settings.name || 'Special Cars'}</strong> encontrá vehículos seleccionados y verificados. Elegí tu próximo auto y entregá el tuyo en parte de pago con una excelente tasación.
+                        </p>
+
+                        <div className="hero-actions">
+                            <Link href="/vehiculos" className="btn-hero-primary">
+                                <Car size={18} />
+                                <span>Ver Todos los Vehículos</span>
+                                <ArrowRight size={16} />
+                            </Link>
+
+                            <a
+                                href={`https://wa.me/${wp}?text=${encodeURIComponent('Hola, me interesa conocer los autos disponibles en Special Cars.')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn-hero-whatsapp"
+                            >
+                                <MessageCircle size={18} />
+                                <span>Consultar por WhatsApp</span>
+                            </a>
+                        </div>
+
+                        {/* Mini Badges de Confianza */}
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18, borderTop: '1px solid #E2E8F0', paddingTop: 22 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, color: '#334155', fontWeight: 700 }}>
+                                <ShieldCheck size={18} style={{ color: '#EA580C' }} />
+                                <span>Unidades Verificadas</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, color: '#334155', fontWeight: 700 }}>
+                                <ArrowLeftRight size={18} style={{ color: '#EA580C' }} />
+                                <span>Tomamos tu Usado</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, color: '#334155', fontWeight: 700 }}>
+                                <Award size={18} style={{ color: '#EA580C' }} />
+                                <span>Gestoría Integral</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <h1 className="hero-title">
-                        Encontrá tu próximo auto con <span>total confianza</span> y transparencia.
-                    </h1>
+                    {/* Columna Derecha: Franco con Llave en Mano y Badges Interactivos */}
+                    <div className="hero-visual">
+                        <div className="hero-visual-backdrop" />
 
-                    <p className="hero-subtitle">
-                        En <strong>{settings.name || 'Special Cars'}</strong> encontrá vehículos seleccionados y verificados. Elegí tu próximo auto y entregá el tuyo en parte de pago con una excelente tasación.
-                    </p>
+                        {/* Badge Flotante Superior */}
+                        <div className="hero-floating-tag-top">
+                            <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#22C55E', boxShadow: '0 0 8px #22C55E' }} />
+                            <div style={{ textAlign: 'left' }}>
+                                <div style={{ fontSize: 12, fontWeight: 800, color: '#0F172A', lineHeight: 1.1 }}>Franco</div>
+                                <div style={{ fontSize: 10.5, color: '#64748B', lineHeight: 1.1 }}>Asesor Comercial</div>
+                            </div>
+                        </div>
 
-                    <div className="hero-actions">
-                        <Link href="/vehiculos" className="btn-hero-primary">
-                            <Car size={18} />
-                            <span>Ver Todos los Vehículos</span>
-                            <ArrowRight size={16} />
-                        </Link>
+                        {/* Imagen Oficial de Franco de cuerpo entero */}
+                        <img
+                            src="/images/franco-hero.png"
+                            alt="Franco Asesor de Special Cars"
+                            className="hero-franco-img"
+                        />
 
-                        <a
-                            href={`https://wa.me/${wp}?text=${encodeURIComponent('Hola, me interesa conocer los autos disponibles en Special Cars.')}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn-hero-whatsapp"
-                        >
-                            <MessageCircle size={18} />
-                            <span>Consultar por WhatsApp</span>
-                        </a>
+                        {/* Badge Flotante Inferior */}
+                        <div className="hero-floating-tag-bottom">
+                            <Award size={18} style={{ color: '#F97316' }} />
+                            <div style={{ textAlign: 'left' }}>
+                                <div style={{ fontSize: 12, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1 }}>Llave en Mano 🔑</div>
+                                <div style={{ fontSize: 10.5, color: '#94A3B8', lineHeight: 1.1 }}>Entrega inmediata</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
