@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Star, ChevronLeft, ChevronRight, Quote, CheckCircle, ShieldCheck } from 'lucide-react';
+import { Star, ChevronLeft, ChevronRight, Quote, CheckCircle, ShieldCheck, ThumbsUp } from 'lucide-react';
 
 interface Testimonial {
     id: number;
@@ -220,19 +220,17 @@ const TESTIMONIALS: Testimonial[] = [
 export function TestimonialsSection() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-    const [itemsPerPage, setItemsPerPage] = useState(3);
+    const [itemsPerPage, setItemsPerPage] = useState(2);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Ajuste responsivo de cantidad de tarjetas visibles
+    // Ajuste responsivo: en desktop mostramos 2 tarjetas para dar lugar armónico a Franco a la izquierda
     useEffect(() => {
         const updateItemsPerPage = () => {
             if (typeof window === 'undefined') return;
-            if (window.innerWidth < 768) {
+            if (window.innerWidth < 1024) {
                 setItemsPerPage(1);
-            } else if (window.innerWidth < 1024) {
-                setItemsPerPage(2);
             } else {
-                setItemsPerPage(3);
+                setItemsPerPage(2);
             }
         };
 
@@ -293,255 +291,338 @@ export function TestimonialsSection() {
             <div style={{
                 position: 'absolute',
                 top: '-20%',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '800px',
+                left: '20%',
+                width: '700px',
                 height: '400px',
                 background: 'radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, rgba(15, 23, 42, 0) 70%)',
                 pointerEvents: 'none'
             }} />
 
             <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative', zIndex: 2 }}>
-                {/* Header de la Sección */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: 44 }}>
+                
+                {/* Layout a 2 Columnas: Franco Apuntando (Izq) + Carrusel de Testimonios (Der) */}
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                    gap: 36,
+                    alignItems: 'center'
+                }}>
+                    
+                    {/* COLUMNA IZQUIERDA: Textos + Franco Apuntando a la Derecha */}
                     <div style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 8,
-                        backgroundColor: 'rgba(234, 88, 12, 0.15)',
-                        border: '1px solid rgba(234, 88, 12, 0.35)',
-                        color: '#FB923C',
-                        padding: '6px 14px',
-                        borderRadius: 20,
-                        fontSize: 12.5,
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: 0.8,
-                        marginBottom: 14
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        position: 'relative'
                     }}>
-                        <ShieldCheck size={16} />
-                        <span>Experiencias Reales • Calificación 4.9/5</span>
-                    </div>
+                        {/* Badge de Confianza */}
+                        <div style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 8,
+                            backgroundColor: 'rgba(234, 88, 12, 0.15)',
+                            border: '1px solid rgba(234, 88, 12, 0.35)',
+                            color: '#FB923C',
+                            padding: '6px 14px',
+                            borderRadius: 20,
+                            fontSize: 12,
+                            fontWeight: 700,
+                            textTransform: 'uppercase',
+                            letterSpacing: 0.8,
+                            marginBottom: 14,
+                            alignSelf: 'flex-start'
+                        }}>
+                            <ShieldCheck size={15} />
+                            <span>Experiencias Reales • Calificación 4.9/5</span>
+                        </div>
 
-                    <h2 style={{
-                        fontSize: 'clamp(26px, 3.5vw, 36px)',
-                        fontWeight: 900,
-                        letterSpacing: -0.5,
-                        color: '#FFFFFF',
-                        marginBottom: 12
-                    }}>
-                        Lo que dicen nuestros clientes
-                    </h2>
-
-                    <p style={{
-                        fontSize: 'clamp(14px, 1.8vw, 16px)',
-                        color: '#94A3B8',
-                        maxWidth: 640,
-                        lineHeight: 1.6
-                    }}>
-                        Más de 15 años acompañando a familias y empresas de Necochea y toda la región en la compra, venta y permuta de sus vehículos.
-                    </p>
-
-                    {/* Badge de satisfacción */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 14, color: '#FBBF24' }}>
-                        {[...Array(5)].map((_, i) => (
-                            <Star key={i} size={18} fill="#FBBF24" stroke="#FBBF24" />
-                        ))}
-                        <span style={{ color: '#FFFFFF', fontWeight: 800, fontSize: 15, marginLeft: 6 }}>4.9 / 5</span>
-                        <span style={{ color: '#64748B', fontSize: 13 }}>(+250 operaciones verificadas)</span>
-                    </div>
-                </div>
-
-                {/* Controles de Navegación Superiores */}
-                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-                    <button
-                        onClick={handlePrev}
-                        aria-label="Anterior testimonio"
-                        style={{
-                            width: 44,
-                            height: 44,
-                            borderRadius: '50%',
-                            backgroundColor: '#1E293B',
+                        <h2 style={{
+                            fontSize: 'clamp(26px, 3.2vw, 36px)',
+                            fontWeight: 900,
+                            letterSpacing: -0.5,
                             color: '#FFFFFF',
-                            border: '1px solid #334155',
+                            lineHeight: 1.15,
+                            marginBottom: 12
+                        }}>
+                            Lo que dicen nuestros clientes
+                        </h2>
+
+                        <p style={{
+                            fontSize: 'clamp(14px, 1.6vw, 15.5px)',
+                            color: '#94A3B8',
+                            lineHeight: 1.6,
+                            marginBottom: 16
+                        }}>
+                            Más de 15 años acompañando a familias y empresas de Necochea y la región en la compra, venta y permuta de sus vehículos.
+                        </p>
+
+                        {/* Puntuación General */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 20, color: '#FBBF24' }}>
+                            {[...Array(5)].map((_, i) => (
+                                <Star key={i} size={17} fill="#FBBF24" stroke="#FBBF24" />
+                            ))}
+                            <span style={{ color: '#FFFFFF', fontWeight: 800, fontSize: 14.5, marginLeft: 6 }}>4.9 / 5</span>
+                            <span style={{ color: '#64748B', fontSize: 12.5 }}>(+250 verificadas)</span>
+                        </div>
+
+                        {/* Contenedor Visual de Franco Apuntando con Badge Flotante */}
+                        <div style={{
+                            position: 'relative',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
-                        }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = '#EA580C';
-                            e.currentTarget.style.borderColor = '#EA580C';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundColor = '#1E293B';
-                            e.currentTarget.style.borderColor = '#334155';
-                        }}
-                    >
-                        <ChevronLeft size={22} />
-                    </button>
+                            maxWidth: 380,
+                            marginTop: 4
+                        }}>
+                            {/* Resplandor suave */}
+                            <div style={{
+                                position: 'absolute',
+                                width: 260,
+                                height: 260,
+                                borderRadius: '50%',
+                                background: 'radial-gradient(circle, rgba(234, 88, 12, 0.18) 0%, transparent 70%)',
+                                zIndex: 1,
+                                pointerEvents: 'none'
+                            }} />
 
-                    <button
-                        onClick={handleNext}
-                        aria-label="Siguiente testimonio"
-                        style={{
-                            width: 44,
-                            height: 44,
-                            borderRadius: '50%',
-                            backgroundColor: '#1E293B',
-                            color: '#FFFFFF',
-                            border: '1px solid #334155',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
-                        }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = '#EA580C';
-                            e.currentTarget.style.borderColor = '#EA580C';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundColor = '#1E293B';
-                            e.currentTarget.style.borderColor = '#334155';
-                        }}
-                    >
-                        <ChevronRight size={22} />
-                    </button>
-                </div>
-
-                {/* Contenedor del Carrusel */}
-                <div 
-                    ref={containerRef}
-                    style={{
-                        overflow: 'hidden',
-                        padding: '8px 0 20px 0'
-                    }}
-                >
-                    <div 
-                        style={{
-                            display: 'flex',
-                            gap: 20,
-                            transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)`,
-                            transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)'
-                        }}
-                    >
-                        {TESTIMONIALS.map((t, idx) => (
-                            <div
-                                key={t.id}
+                            {/* Imagen de Franco Apuntando a la Derecha */}
+                            <img
+                                src="/images/franco-pointing.png"
+                                alt="Franco Asesor de Special Cars señalando testimonios"
                                 style={{
-                                    flex: `0 0 calc(${100 / itemsPerPage}% - ${(20 * (itemsPerPage - 1)) / itemsPerPage}px)`,
-                                    backgroundColor: '#1E293B',
-                                    borderRadius: 18,
-                                    border: '1px solid #334155',
-                                    padding: '24px 22px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                    boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
-                                    transition: 'all 0.3s ease',
-                                    position: 'relative'
+                                    width: '100%',
+                                    maxWidth: 360,
+                                    height: 'auto',
+                                    display: 'block',
+                                    position: 'relative',
+                                    zIndex: 2,
+                                    filter: 'drop-shadow(0 12px 28px rgba(0,0,0,0.35))'
                                 }}
-                            >
-                                {/* Comillas de Fondo */}
-                                <div style={{
-                                    position: 'absolute',
-                                    top: 18,
-                                    right: 20,
-                                    color: 'rgba(234, 88, 12, 0.18)',
-                                    pointerEvents: 'none'
-                                }}>
-                                    <Quote size={38} />
-                                </div>
+                            />
 
-                                <div>
-                                    {/* Estrellas y Fecha */}
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-                                        <div style={{ display: 'flex', gap: 3, color: '#FBBF24' }}>
-                                            {[...Array(t.stars)].map((_, i) => (
-                                                <Star key={i} size={15} fill="#FBBF24" stroke="#FBBF24" />
-                                            ))}
-                                        </div>
-                                        <span style={{ fontSize: 11.5, color: '#64748B', fontWeight: 500 }}>
-                                            {t.timeAgo}
-                                        </span>
-                                    </div>
-
-                                    {/* Texto del Testimonio */}
-                                    <p style={{
-                                        fontSize: 14,
-                                        lineHeight: 1.6,
-                                        color: '#E2E8F0',
-                                        marginBottom: 20,
-                                        fontStyle: 'italic'
-                                    }}>
-                                        &ldquo;{t.text}&rdquo;
-                                    </p>
-                                </div>
-
-                                {/* Footer con Info del Cliente y Vehículo */}
-                                <div style={{ borderTop: '1px solid #334155', paddingTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
-                                    <div style={{
-                                        width: 44,
-                                        height: 44,
-                                        borderRadius: '50%',
-                                        background: avatarGradients[idx % avatarGradients.length],
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        fontWeight: 800,
-                                        fontSize: 15,
-                                        color: '#FFFFFF',
-                                        flexShrink: 0,
-                                        boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
-                                    }}>
-                                        {getInitials(t.name)}
-                                    </div>
-
-                                    <div style={{ flex: 1, minWidth: 0 }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                                            <span style={{ fontWeight: 800, fontSize: 14.5, color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                {t.name}
-                                            </span>
-                                            {t.verified && (
-                                                <CheckCircle size={14} style={{ color: '#22C55E', flexShrink: 0 }} title="Comprador Verificado" />
-                                            )}
-                                        </div>
-                                        <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 1 }}>
-                                            {t.location} • <strong style={{ color: '#FB923C' }}>{t.vehicle}</strong>
-                                        </div>
-                                    </div>
+                            {/* Badge Flotante sobre Franco */}
+                            <div style={{
+                                position: 'absolute',
+                                bottom: 12,
+                                left: 10,
+                                zIndex: 3,
+                                backgroundColor: 'rgba(15, 23, 42, 0.92)',
+                                border: '1px solid rgba(234, 88, 12, 0.4)',
+                                backdropFilter: 'blur(8px)',
+                                color: '#FFFFFF',
+                                padding: '8px 14px',
+                                borderRadius: 12,
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 8,
+                                boxShadow: '0 8px 24px rgba(0,0,0,0.35)'
+                            }}>
+                                <ThumbsUp size={15} style={{ color: '#EA580C' }} />
+                                <div style={{ textAlign: 'left' }}>
+                                    <div style={{ fontSize: 11.5, fontWeight: 800 }}>100% Satisfacción</div>
+                                    <div style={{ fontSize: 10, color: '#94A3B8' }}>Garantía Special Cars</div>
                                 </div>
                             </div>
-                        ))}
-                    </div>
-                </div>
+                        </div>
 
-                {/* Indicadores / Dots de Progreso */}
-                <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 24 }}>
-                    {Array.from({ length: maxIndex + 1 }).map((_, i) => (
-                        <button
-                            key={i}
-                            onClick={() => {
-                                setIsAutoPlaying(false);
-                                setCurrentIndex(i);
-                            }}
-                            aria-label={`Ir al grupo de testimonios ${i + 1}`}
+                        {/* Controles de Navegación del Carrusel en Desktop/Tablet */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 18 }}>
+                            <button
+                                onClick={handlePrev}
+                                aria-label="Anterior testimonio"
+                                style={{
+                                    width: 44,
+                                    height: 44,
+                                    borderRadius: '50%',
+                                    backgroundColor: '#1E293B',
+                                    color: '#FFFFFF',
+                                    border: '1px solid #334155',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                    boxShadow: '0 4px 12px rgba(0,0,0,0.25)'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#EA580C';
+                                    e.currentTarget.style.borderColor = '#EA580C';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#1E293B';
+                                    e.currentTarget.style.borderColor = '#334155';
+                                }}
+                            >
+                                <ChevronLeft size={22} />
+                            </button>
+
+                            <button
+                                onClick={handleNext}
+                                aria-label="Siguiente testimonio"
+                                style={{
+                                    width: 44,
+                                    height: 44,
+                                    borderRadius: '50%',
+                                    backgroundColor: '#1E293B',
+                                    color: '#FFFFFF',
+                                    border: '1px solid #334155',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                    boxShadow: '0 4px 12px rgba(0,0,0,0.25)'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#EA580C';
+                                    e.currentTarget.style.borderColor = '#EA580C';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#1E293B';
+                                    e.currentTarget.style.borderColor = '#334155';
+                                }}
+                            >
+                                <ChevronRight size={22} />
+                            </button>
+
+                            <span style={{ fontSize: 13, color: '#94A3B8', fontWeight: 600 }}>
+                                {currentIndex + 1} de {maxIndex + 1}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* COLUMNA DERECHA: Carrusel de Testimonios Deslizables */}
+                    <div style={{ overflow: 'hidden', minWidth: 0 }}>
+                        <div 
+                            ref={containerRef}
                             style={{
-                                width: i === currentIndex ? 26 : 8,
-                                height: 8,
-                                borderRadius: 4,
-                                backgroundColor: i === currentIndex ? '#EA580C' : '#334155',
-                                border: 'none',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s ease',
-                                padding: 0
+                                overflow: 'hidden',
+                                padding: '8px 0 16px 0'
                             }}
-                        />
-                    ))}
+                        >
+                            <div 
+                                style={{
+                                    display: 'flex',
+                                    gap: 20,
+                                    transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)`,
+                                    transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)'
+                                }}
+                            >
+                                {TESTIMONIALS.map((t, idx) => (
+                                    <div
+                                        key={t.id}
+                                        style={{
+                                            flex: `0 0 calc(${100 / itemsPerPage}% - ${(20 * (itemsPerPage - 1)) / itemsPerPage}px)`,
+                                            backgroundColor: '#1E293B',
+                                            borderRadius: 20,
+                                            border: '1px solid #334155',
+                                            padding: '28px 24px',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            justifyContent: 'space-between',
+                                            boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+                                            position: 'relative',
+                                            minHeight: 260
+                                        }}
+                                    >
+                                        {/* Comillas de Fondo */}
+                                        <div style={{
+                                            position: 'absolute',
+                                            top: 20,
+                                            right: 22,
+                                            color: 'rgba(234, 88, 12, 0.18)',
+                                            pointerEvents: 'none'
+                                        }}>
+                                            <Quote size={42} />
+                                        </div>
+
+                                        <div>
+                                            {/* Estrellas y Fecha */}
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                                                <div style={{ display: 'flex', gap: 3, color: '#FBBF24' }}>
+                                                    {[...Array(t.stars)].map((_, i) => (
+                                                        <Star key={i} size={15} fill="#FBBF24" stroke="#FBBF24" />
+                                                    ))}
+                                                </div>
+                                                <span style={{ fontSize: 12, color: '#64748B', fontWeight: 500 }}>
+                                                    {t.timeAgo}
+                                                </span>
+                                            </div>
+
+                                            {/* Texto del Testimonio */}
+                                            <p style={{
+                                                fontSize: 14.5,
+                                                lineHeight: 1.65,
+                                                color: '#E2E8F0',
+                                                marginBottom: 24,
+                                                fontStyle: 'italic'
+                                            }}>
+                                                &ldquo;{t.text}&rdquo;
+                                            </p>
+                                        </div>
+
+                                        {/* Footer con Info del Cliente y Vehículo */}
+                                        <div style={{ borderTop: '1px solid #334155', paddingTop: 18, display: 'flex', alignItems: 'center', gap: 14 }}>
+                                            <div style={{
+                                                width: 46,
+                                                height: 46,
+                                                borderRadius: '50%',
+                                                background: avatarGradients[idx % avatarGradients.length],
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                fontWeight: 800,
+                                                fontSize: 16,
+                                                color: '#FFFFFF',
+                                                flexShrink: 0,
+                                                boxShadow: '0 4px 12px rgba(0,0,0,0.35)'
+                                            }}>
+                                                {getInitials(t.name)}
+                                            </div>
+
+                                            <div style={{ flex: 1, minWidth: 0 }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                                    <span style={{ fontWeight: 800, fontSize: 15, color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                        {t.name}
+                                                    </span>
+                                                    {t.verified && (
+                                                        <CheckCircle size={15} style={{ color: '#22C55E', flexShrink: 0 }} title="Comprador Verificado" />
+                                                    )}
+                                                </div>
+                                                <div style={{ fontSize: 12.5, color: '#94A3B8', marginTop: 2 }}>
+                                                    {t.location} • <strong style={{ color: '#FB923C' }}>{t.vehicle}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Indicadores / Dots de Progreso */}
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 18 }}>
+                            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => {
+                                        setIsAutoPlaying(false);
+                                        setCurrentIndex(i);
+                                    }}
+                                    aria-label={`Ir al grupo de testimonios ${i + 1}`}
+                                    style={{
+                                        width: i === currentIndex ? 28 : 8,
+                                        height: 8,
+                                        borderRadius: 4,
+                                        backgroundColor: i === currentIndex ? '#EA580C' : '#334155',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.3s ease',
+                                        padding: 0
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
