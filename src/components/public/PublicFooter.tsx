@@ -3,6 +3,51 @@ import { AgencySettings } from '@/lib/types';
 import { BrandLogo } from '@/components/common/BrandLogo';
 import { Phone, MessageCircle, Mail, MapPin, Clock } from 'lucide-react';
 
+function InstagramIcon({ size = 18 }: { size?: number }) {
+    return (
+        <svg
+            width={size}
+            height={size}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+        </svg>
+    );
+}
+
+function FacebookIcon({ size = 18 }: { size?: number }) {
+    return (
+        <svg
+            width={size}
+            height={size}
+            viewBox="0 0 24 24"
+            fill="currentColor"
+        >
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+    );
+}
+
+function TikTokIcon({ size = 18 }: { size?: number }) {
+    return (
+        <svg
+            width={size}
+            height={size}
+            viewBox="0 0 24 24"
+            fill="currentColor"
+        >
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.86 4.46 6.27 6.27 0 0 0 1.94-4.52V8.71a8.21 8.21 0 0 0 4.79 1.52v-3.45a4.85 4.85 0 0 1-1-.09z"/>
+        </svg>
+    );
+}
+
 export function PublicFooter({ settings }: { settings: AgencySettings }) {
     const year = new Date().getFullYear();
 
@@ -17,20 +62,41 @@ export function PublicFooter({ settings }: { settings: AgencySettings }) {
                     <p className="desktop-only-block" style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.5, marginBottom: 14 }}>
                         {settings.description || 'Concesionaria líder en vehículos premium, usados y 0 KM con más de 15 años de trayectoria.'}
                     </p>
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
                         {settings.instagram && (
-                            <a href={settings.instagram} target="_blank" rel="noopener noreferrer" style={{ color: '#CBD5E1', padding: '4px 10px', background: '#1E293B', borderRadius: 6, fontSize: 11.5, fontWeight: 700, textDecoration: 'none' }}>
-                                Instagram
+                            <a 
+                                href={settings.instagram} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                title="Seguinos en Instagram"
+                                aria-label="Instagram"
+                                className="social-icon-btn social-instagram"
+                            >
+                                <InstagramIcon size={18} />
                             </a>
                         )}
                         {settings.facebook && (
-                            <a href={settings.facebook} target="_blank" rel="noopener noreferrer" style={{ color: '#CBD5E1', padding: '4px 10px', background: '#1E293B', borderRadius: 6, fontSize: 11.5, fontWeight: 700, textDecoration: 'none' }}>
-                                Facebook
+                            <a 
+                                href={settings.facebook} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                title="Seguinos en Facebook"
+                                aria-label="Facebook"
+                                className="social-icon-btn social-facebook"
+                            >
+                                <FacebookIcon size={18} />
                             </a>
                         )}
                         {settings.tiktok && (
-                            <a href={settings.tiktok} target="_blank" rel="noopener noreferrer" style={{ color: '#CBD5E1', padding: '4px 10px', background: '#1E293B', borderRadius: 6, fontSize: 11.5, fontWeight: 700, textDecoration: 'none' }}>
-                                TikTok
+                            <a 
+                                href={settings.tiktok} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                title="Seguinos en TikTok"
+                                aria-label="TikTok"
+                                className="social-icon-btn social-tiktok"
+                            >
+                                <TikTokIcon size={18} />
                             </a>
                         )}
                     </div>
