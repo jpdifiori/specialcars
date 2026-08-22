@@ -1367,6 +1367,105 @@
     margin-bottom: 20px;
   }
 
+/* OFFERS PAGE HERO BANNER */
+.offers-hero {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  border-radius: 20px;
+  padding: 44px 36px;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.15);
+  margin-bottom: 40px;
+  border: 1px solid #334155;
+}
+
+.offers-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #EA580C;
+  color: #FFFFFF;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.4);
+}
+
+.offers-hero-title {
+  font-family: var(--font-heading);
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 900;
+  line-height: 1.15;
+  color: #FFFFFF;
+  margin-bottom: 12px;
+}
+
+.offers-hero-text {
+  font-size: 15px;
+  color: #F8FAFC;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  max-width: 620px;
+}
+
+.offers-hero-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 18px;
+}
+
+.offers-hero-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+  /* Offers Hero Mobile Space & Contrast Optimization */
+  .offers-hero {
+    padding: 20px 16px !important;
+    border-radius: 16px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .offers-hero-badge {
+    padding: 4px 10px !important;
+    font-size: 11px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .offers-hero-title {
+    font-size: 21px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .offers-hero-text {
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+    margin-bottom: 12px !important;
+    color: #F8FAFC !important;
+  }
+
+  .offers-hero-features {
+    gap: 8px 14px !important;
+    padding-top: 12px !important;
+  }
+
+  .offers-hero-feature-item {
+    font-size: 11.5px !important;
+    gap: 6px !important;
+    color: #FFFFFF !important;
+  }
+
   /* Finder Mobile Max Width & Single Container */
   .finder-section {
     padding: 32px 8px 36px !important;

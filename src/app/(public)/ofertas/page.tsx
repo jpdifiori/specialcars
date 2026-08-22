@@ -43,18 +43,8 @@ export default async function PublicOffersPage() {
                 <span style={{ color: '#0F172A', fontWeight: 700 }}>Ofertas Especiales</span>
             </div>
 
-            {/* HERO / HEADER DE OFERTAS */}
-            <div style={{
-                background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
-                borderRadius: 20,
-                padding: '44px 36px',
-                color: '#FFFFFF',
-                position: 'relative',
-                overflow: 'hidden',
-                boxShadow: '0 12px 36px rgba(15, 23, 42, 0.15)',
-                marginBottom: 40,
-                border: '1px solid #334155'
-            }}>
+            {/* HERO / HEADER DE OFERTAS (OPTIMIZADO MOBILE & ALTO CONTRASTE) */}
+            <div className="offers-hero">
                 {/* Glow decorativo de fondo */}
                 <div style={{
                     position: 'absolute',
@@ -68,58 +58,31 @@ export default async function PublicOffersPage() {
                 }} />
 
                 <div style={{ position: 'relative', zIndex: 1, maxWidth: 760 }}>
-                    <div style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 6,
-                        backgroundColor: '#EA580C',
-                        color: '#FFFFFF',
-                        padding: '6px 14px',
-                        borderRadius: 20,
-                        fontSize: 12.5,
-                        fontWeight: 900,
-                        letterSpacing: 0.5,
-                        textTransform: 'uppercase',
-                        marginBottom: 16,
-                        boxShadow: '0 4px 14px rgba(234, 88, 12, 0.4)'
-                    }}>
-                        <Flame size={15} />
+                    <div className="offers-hero-badge">
+                        <Flame size={14} />
                         <span>Oportunidades por Tiempo Limitado</span>
                     </div>
 
-                    <h1 style={{
-                        fontFamily: 'var(--font-heading)',
-                        fontSize: 'clamp(26px, 4vw, 38px)',
-                        fontWeight: 900,
-                        lineHeight: 1.15,
-                        color: '#FFFFFF',
-                        marginBottom: 12
-                    }}>
+                    <h1 className="offers-hero-title">
                         Vehículos en Oferta Especial
                     </h1>
 
-                    <p style={{
-                        fontSize: 15,
-                        color: '#CBD5E1',
-                        lineHeight: 1.6,
-                        marginBottom: 24,
-                        maxWidth: 620
-                    }}>
-                        Aprovechá unidades seleccionadas con <strong>precios promocionales exclusivos</strong> y ahorro comprobable. Todas las unidades cuentan con documentación al día y garantía de transferibilidad.
+                    <p className="offers-hero-text">
+                        Aprovechá unidades seleccionadas con <strong style={{ color: '#FFFFFF', fontWeight: 800 }}>precios promocionales exclusivos</strong> y ahorro comprobable. Todas las unidades cuentan con documentación al día y garantía de transferibilidad.
                     </p>
 
                     {/* Badges de Garantía */}
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, borderTop: '1px solid rgba(255, 255, 255, 0.12)', paddingTop: 18 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: '#E2E8F0', fontWeight: 600 }}>
-                            <ShieldCheck size={16} style={{ color: '#EA580C' }} />
+                    <div className="offers-hero-features">
+                        <div className="offers-hero-feature-item">
+                            <ShieldCheck size={16} style={{ color: '#EA580C', flexShrink: 0 }} />
                             <span>100% Verificados</span>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: '#E2E8F0', fontWeight: 600 }}>
-                            <ArrowLeftRight size={16} style={{ color: '#EA580C' }} />
+                        <div className="offers-hero-feature-item">
+                            <ArrowLeftRight size={16} style={{ color: '#EA580C', flexShrink: 0 }} />
                             <span>Aceptamos Permutas</span>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: '#E2E8F0', fontWeight: 600 }}>
-                            <Award size={16} style={{ color: '#EA580C' }} />
+                        <div className="offers-hero-feature-item">
+                            <Award size={16} style={{ color: '#EA580C', flexShrink: 0 }} />
                             <span>Precios Finales en ARS</span>
                         </div>
                     </div>
