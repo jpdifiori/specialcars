@@ -91,7 +91,7 @@ export default async function PublicOffersPage() {
 
             {/* LISTADO DE OFERTAS */}
             <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
+                <div className="desktop-only" style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
                     <div>
                         <h2 style={{ fontSize: 20, fontWeight: 800, color: '#0F172A', margin: 0 }}>
                             Ofertas Vigentes
