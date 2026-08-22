@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getPublicVehicles } from '@/lib/actions/vehicles';
 import { getAgencySettings } from '@/lib/actions/settings';
 import { VehicleCard } from '@/components/public/VehicleCard';
+import { TestimonialsSection } from '@/components/public/TestimonialsSection';
 import { 
     Car, 
     MessageCircle, 
@@ -119,34 +120,37 @@ export default async function PublicHomePage() {
                 </section>
             )}
 
-            {/* SECCIÓN ÚLTIMOS INGRESOS */}
-            <section className="public-section" style={{ paddingTop: featuredVehicles.length > 0 ? 0 : 70 }}>
+            {/* SECCIÓN: CATÁLOGO DE INGRESOS */}
+            <section className="public-section" style={{ backgroundColor: '#FFFFFF' }}>
                 <div className="section-header">
                     <div>
-                        <div className="section-subtitle">Novedades en Stock</div>
-                        <h2 className="section-title">Últimos Ingresos</h2>
+                        <div className="section-subtitle">Últimos Ingresos</div>
+                        <h2 className="section-title">Novedades en Stock</h2>
                     </div>
-                    <Link href="/vehiculos" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#EA580C', fontWeight: 700, fontSize: 14 }}>
-                        <span>Ver catálogo completo ({vehicles.length} disponibles)</span>
-                        <ArrowRight size={15} />
+                    <Link href="/vehiculos" className="section-link">
+                        <span>Ver catálogo completo ({vehicles.length})</span>
+                        <ArrowRight size={16} />
                     </Link>
                 </div>
 
                 {latestVehicles.length === 0 ? (
-                    <div style={{ padding: 60, textAlign: 'center', backgroundColor: '#F8FAFC', borderRadius: 16, border: '1px solid #E2E8F0' }}>
-                        <Car size={44} style={{ color: '#94A3B8', margin: '0 auto 12px' }} />
-                        <h3 style={{ fontSize: 18, fontWeight: 800, color: '#0F172A', marginBottom: 6 }}>Próximamente nuevos ingresos</h3>
+                    <div style={{ textAlign: 'center', padding: '60px 20px', backgroundColor: '#F8FAFC', borderRadius: 16, border: '1px dashed #CBD5E1' }}>
+                        <Car size={48} style={{ color: '#94A3B8', margin: '0 auto 16px' }} />
+                        <h3 style={{ fontSize: 18, fontWeight: 700, color: '#1E293B', marginBottom: 8 }}>
+                            No hay vehículos disponibles en este momento
+                        </h3>
                         <p style={{ fontSize: 14, color: '#64748B', maxWidth: 460, margin: '0 auto 20px' }}>
-                            Estamos preparando nuevas unidades seleccionadas. Contactanos por WhatsApp para consultar vehículos en ingreso.
+                            Estamos renovando nuestro inventario. Escribinos para avisarte en cuanto ingresen nuevas unidades.
                         </p>
                         <a
                             href={`https://wa.me/${wp}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="btn-hero-whatsapp"
+                            className="btn-primary"
+                            style={{ display: 'inline-flex', padding: '10px 20px', fontSize: 14 }}
                         >
                             <MessageCircle size={16} />
-                            <span>Consultar por WhatsApp</span>
+                            <span>Consultar Próximos Ingresos</span>
                         </a>
                     </div>
                 ) : (
@@ -157,6 +161,9 @@ export default async function PublicHomePage() {
                     </div>
                 )}
             </section>
+
+            {/* SECCIÓN: CARRUSEL DE 20 TESTIMONIOS */}
+            <TestimonialsSection />
 
             {/* PRESENTACIÓN DE LA AGENCIA CON BANNER OFICIAL */}
             <section style={{ backgroundColor: '#F8FAFC', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: '80px 24px' }}>
