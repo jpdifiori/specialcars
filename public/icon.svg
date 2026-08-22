@@ -1,42 +1,27 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bgGrad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#1E293B"/>
-      <stop offset="50%" stop-color="#0F172A"/>
+      <stop offset="0%" stop-color="#0F172A"/>
       <stop offset="100%" stop-color="#020617"/>
     </linearGradient>
     <linearGradient id="borderGrad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#F97316"/>
+      <stop offset="0%" stop-color="#FB923C"/>
       <stop offset="50%" stop-color="#EA580C"/>
       <stop offset="100%" stop-color="#C2410C"/>
     </linearGradient>
-    <linearGradient id="orangeText" x1="200" y1="150" x2="400" y2="350" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FB923C"/>
+    <linearGradient id="orangeText" x1="220" y1="150" x2="440" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF8A00"/>
       <stop offset="100%" stop-color="#EA580C"/>
     </linearGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.6"/>
-    </filter>
   </defs>
 
-  <!-- Outer Glow Shadow -->
-  <circle cx="256" cy="256" r="240" fill="none" stroke="url(#borderGrad)" stroke-width="16" filter="url(#glow)"/>
+  <!-- Full Bleed Outer Circle -->
+  <circle cx="256" cy="256" r="254" fill="url(#bgGrad)"/>
+  <circle cx="256" cy="256" r="240" stroke="url(#borderGrad)" stroke-width="28" fill="none"/>
 
-  <!-- Inner Dark Disc -->
-  <circle cx="256" cy="256" r="232" fill="url(#bgGrad)"/>
-
-  <!-- Decorative Inner Ring -->
-  <circle cx="256" cy="256" r="216" fill="none" stroke="#334155" stroke-width="3" stroke-dasharray="12 6" opacity="0.6"/>
-  <circle cx="256" cy="256" r="206" fill="none" stroke="url(#borderGrad)" stroke-width="2" opacity="0.4"/>
-
-  <!-- SC Letters Monogram -->
-  <g filter="url(#glow)">
-    <!-- Letter S -->
-    <text x="165" y="335" font-family="'Arial Black', 'Impact', sans-serif" font-size="220" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="-5">S</text>
-    <!-- Letter C -->
-    <text x="340" y="335" font-family="'Arial Black', 'Impact', sans-serif" font-size="220" font-weight="900" fill="url(#orangeText)" text-anchor="middle" letter-spacing="-5">C</text>
+  <!-- Huge Bold Monogram SC Filling Max Space -->
+  <g font-family="'Arial Black', 'Impact', 'Segoe UI Black', sans-serif" font-size="290" font-weight="900" text-anchor="middle">
+    <text x="165" y="358" fill="#FFFFFF" letter-spacing="-8">S</text>
+    <text x="345" y="358" fill="url(#orangeText)" letter-spacing="-8">C</text>
   </g>
-
-  <!-- Speed accent line below SC -->
-  <path d="M 140 375 L 372 375" stroke="url(#borderGrad)" stroke-width="6" stroke-linecap="round"/>
 </svg>
