@@ -220,16 +220,72 @@ export default async function PublicHomePage() {
                             Nuestro compromiso es la transparencia absoluta en cada operación: te mostramos el estado real del vehículo, verificamos la documentación legal y te brindamos asesoramiento personalizado.
                         </p>
 
-                        <div style={{ display: 'flex', gap: 14 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
                             <a
                                 href={`https://wa.me/${wp}?text=${encodeURIComponent('Hola, me gustaría recibir asesoramiento para comprar o vender un auto.')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-hero-whatsapp"
+                                style={{
+                                    backgroundColor: '#25D366',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: 10,
+                                    padding: '14px 24px',
+                                    borderRadius: 12,
+                                    fontWeight: 700,
+                                    fontSize: 15,
+                                    boxShadow: '0 4px 14px rgba(37, 211, 102, 0.35)',
+                                    textDecoration: 'none',
+                                    color: '#FFFFFF'
+                                }}
                             >
-                                <MessageCircle size={16} />
+                                <MessageCircle size={18} />
                                 <span>Hablar con un Asesor</span>
                             </a>
+
+                            {/* Hernán hablando por el móvil */}
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 10,
+                                backgroundColor: '#FFFFFF',
+                                border: '1px solid #E2E8F0',
+                                padding: '6px 14px 6px 8px',
+                                borderRadius: 40,
+                                boxShadow: '0 2px 10px rgba(15, 23, 42, 0.05)'
+                            }}>
+                                <div style={{
+                                    width: 46,
+                                    height: 46,
+                                    borderRadius: '50%',
+                                    overflow: 'hidden',
+                                    border: '2px solid #EA580C',
+                                    backgroundColor: '#0F172A',
+                                    flexShrink: 0,
+                                    position: 'relative'
+                                }}>
+                                    <img
+                                        src="/images/hernan-phone-circle.png"
+                                        alt="Hernán Asesor de Special Cars"
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    />
+                                    <span style={{
+                                        position: 'absolute',
+                                        bottom: 1,
+                                        right: 1,
+                                        width: 10,
+                                        height: 10,
+                                        borderRadius: '50%',
+                                        backgroundColor: '#22C55E',
+                                        border: '1.5px solid #FFFFFF'
+                                    }} />
+                                </div>
+                                <div style={{ textAlign: 'left' }}>
+                                    <div style={{ fontSize: 13, fontWeight: 800, color: '#0F172A', lineHeight: 1.1 }}>Hernán</div>
+                                    <div style={{ fontSize: 11, color: '#64748B', lineHeight: 1.2 }}>Atención directa</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
