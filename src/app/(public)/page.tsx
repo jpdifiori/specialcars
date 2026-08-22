@@ -267,9 +267,37 @@ export default async function PublicHomePage() {
                                 </div>
                                 <div>
                                     <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>WhatsApp Directo</span>
-                                    <div style={{ color: '#EA580C', fontWeight: 800, marginTop: 2 }}>
-                                        <a href={`https://wa.me/${wp}`} target="_blank" rel="noopener noreferrer" style={{ color: '#EA580C' }}>
-                                            +54 9 2262 57-4254
+                                    <div style={{ marginTop: 4 }}>
+                                        <a 
+                                            href={`https://wa.me/${wp}?text=${encodeURIComponent('Hola! Me comunico desde la página web de Special Cars para hacer una consulta.')}`} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer" 
+                                            style={{ 
+                                                display: 'inline-flex',
+                                                alignItems: 'center',
+                                                gap: 8,
+                                                color: '#EA580C', 
+                                                fontWeight: 800,
+                                                fontSize: 15,
+                                                textDecoration: 'none'
+                                            }}
+                                            title="Abrir WhatsApp"
+                                        >
+                                            <span>+54 9 2262 57-4254</span>
+                                            <span style={{
+                                                width: 26,
+                                                height: 26,
+                                                borderRadius: '50%',
+                                                backgroundColor: '#25D366',
+                                                display: 'inline-flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                color: '#FFFFFF',
+                                                boxShadow: '0 2px 8px rgba(37, 211, 102, 0.35)',
+                                                flexShrink: 0
+                                            }}>
+                                                <MessageCircle size={15} />
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
