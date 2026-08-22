@@ -247,24 +247,25 @@ export function AIChatbot({
                         zIndex: 99,
                         backgroundColor: '#FFFFFF',
                         color: '#0F172A',
-                        padding: '10px 16px',
+                        padding: '10px 18px',
                         borderRadius: 16,
-                        boxShadow: '0 10px 30px rgba(15, 23, 42, 0.18)',
+                        boxShadow: '0 12px 32px rgba(15, 23, 42, 0.2)',
                         border: '1px solid #E2E8F0',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: 10,
+                        gap: 12,
                         cursor: 'pointer',
-                        maxWidth: 270,
+                        maxWidth: 'calc(100vw - 48px)',
+                        width: 'max-content',
                         animation: 'fadeIn 0.3s ease-out'
                     }}
                 >
                     <div style={{
-                        width: 32,
-                        height: 32,
+                        width: 36,
+                        height: 36,
                         borderRadius: '50%',
                         overflow: 'hidden',
-                        border: '1.5px solid #EA580C',
+                        border: '2px solid #EA580C',
                         backgroundColor: '#FFFFFF',
                         flexShrink: 0
                     }}>
@@ -274,11 +275,11 @@ export function AIChatbot({
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                         />
                     </div>
-                    <div style={{ textAlign: 'left' }}>
-                        <div style={{ fontSize: 12.5, fontWeight: 800, color: '#0F172A', lineHeight: 1.15 }}>
+                    <div style={{ textAlign: 'left', whiteSpace: 'nowrap' }}>
+                        <div style={{ fontSize: 13.5, fontWeight: 800, color: '#0F172A', lineHeight: 1.15 }}>
                             ¡Hola! 👋 Soy Hernán
                         </div>
-                        <div style={{ fontSize: 11, color: '#64748B', lineHeight: 1.2, marginTop: 2 }}>
+                        <div style={{ fontSize: 13, color: '#0F172A', fontWeight: 600, lineHeight: 1.2, marginTop: 3 }}>
                             ¿Te asesoro con algún vehículo?
                         </div>
                     </div>
@@ -286,17 +287,18 @@ export function AIChatbot({
                         onClick={(e) => { e.stopPropagation(); setShowBubbleTip(false); }} 
                         aria-label="Cerrar sugerencia"
                         style={{
-                            marginLeft: 'auto',
+                            marginLeft: 10,
                             color: '#94A3B8',
-                            padding: 2,
+                            padding: 4,
                             border: 'none',
                             background: 'transparent',
                             cursor: 'pointer',
                             display: 'flex',
-                            alignItems: 'center'
+                            alignItems: 'center',
+                            borderRadius: '50%'
                         }}
                     >
-                        <X size={13} />
+                        <X size={14} />
                     </button>
                     {/* Flechita del globo */}
                     <div className="speech-bubble-tail" />
