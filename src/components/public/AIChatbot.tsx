@@ -61,7 +61,7 @@ export function AIChatbot({
         {
             id: 'welcome',
             role: 'assistant',
-            content: `¡Hola! 👋 Soy **Franco**, de **Special Cars**. ¿Cómo estás?\n\nContame, ¿en qué te puedo ayudar?`,
+            content: `¡Hola! 👋 Soy **Hernán**, de **Special Cars**. ¿Cómo estás?\n\nContame, ¿en qué te puedo ayudar?`,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
     ]);
@@ -146,7 +146,7 @@ export function AIChatbot({
             {
                 id: 'welcome',
                 role: 'assistant',
-                content: `¡Hola! 👋 Soy **Franco**, de **Special Cars**. ¿Cómo estás?\n\nContame, ¿en qué te puedo ayudar?`,
+                content: `¡Hola! 👋 Soy **Hernán**, de **Special Cars**. ¿Cómo estás?\n\nContame, ¿en qué te puedo ayudar?`,
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             }
         ]);
@@ -263,10 +263,10 @@ export function AIChatbot({
                 >
                     <img 
                         src="/images/franco-avatar.jpg" 
-                        alt="Franco" 
+                        alt="Hernán" 
                         style={{ width: 28, height: 28, borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #EA580C', flexShrink: 0 }} 
                     />
-                    <span>¡Hola! Soy Franco. ¿En qué te puedo ayudar?</span>
+                    <span>¡Hola! Soy Hernán. ¿En qué te puedo ayudar?</span>
                     <button 
                         onClick={(e) => { e.stopPropagation(); setShowBubbleTip(false); }} 
                         style={{ marginLeft: 'auto', color: '#94A3B8', padding: 2 }}
@@ -300,7 +300,7 @@ export function AIChatbot({
                     padding: 0,
                     overflow: 'hidden'
                 }}
-                title={isOpen ? 'Cerrar Asistente' : 'Hablar con Franco (Asesor Virtual)'}
+                title={isOpen ? 'Cerrar Asistente' : 'Hablar con Hernán (Asesor Virtual)'}
             >
                 {isOpen ? (
                     <ChevronDown size={30} style={{ color: '#FFFFFF' }} />
@@ -308,7 +308,7 @@ export function AIChatbot({
                     <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <img 
                             src="/images/franco-avatar.jpg" 
-                            alt="Franco Asesor" 
+                            alt="Hernán Asesor" 
                             style={{ 
                                 width: '100%', 
                                 height: '100%', 
@@ -373,13 +373,13 @@ export function AIChatbot({
                             }}>
                                 <img 
                                     src="/images/franco-avatar.jpg" 
-                                    alt="Franco" 
+                                    alt="Hernán" 
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                                 />
                             </div>
                             <div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: -0.2 }}>Franco</span>
+                                    <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: -0.2 }}>Hernán</span>
                                     <span style={{
                                         fontSize: 10,
                                         fontWeight: 700,
@@ -510,10 +510,10 @@ export function AIChatbot({
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, alignSelf: 'flex-start', backgroundColor: '#FFFFFF', padding: '10px 16px', borderRadius: '18px 18px 18px 4px', border: '1px solid #E2E8F0' }}>
                                 <img 
                                     src="/images/franco-avatar.jpg" 
-                                    alt="Franco" 
+                                    alt="Hernán" 
                                     style={{ width: 22, height: 22, borderRadius: '50%', objectFit: 'cover' }} 
                                 />
-                                <span style={{ fontSize: 12, color: '#64748B' }}>Franco está escribiendo...</span>
+                                <span style={{ fontSize: 12, color: '#64748B' }}>Hernán está escribiendo...</span>
                                 <div style={{ display: 'flex', gap: 3, marginLeft: 2 }}>
                                     <span className="dot-pulse" style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: '#EA580C' }} />
                                     <span className="dot-pulse" style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: '#EA580C', animationDelay: '0.2s' }} />
@@ -590,7 +590,7 @@ export function AIChatbot({
                                     handleSend();
                                 }
                             }}
-                            placeholder="Escribile a Franco tu consulta..."
+                            placeholder="Escribile a Hernán tu consulta..."
                             disabled={isLoading}
                             style={{
                                 flex: 1,

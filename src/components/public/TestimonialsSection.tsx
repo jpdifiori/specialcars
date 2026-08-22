@@ -41,7 +41,7 @@ const TESTIMONIALS: Testimonial[] = [
         location: 'Necochea',
         vehicle: 'Peugeot 208 Feline',
         stars: 5,
-        text: 'Buscaba mi primer auto automático y Franco y los chicos me asesoraron con total paciencia y transparencia. El auto está nuevo tal como me lo mostraron en la web.',
+        text: 'Buscaba mi primer auto automático y Hernán y los chicos me asesoraron con total paciencia y transparencia. El auto está nuevo tal como me lo mostraron en la web.',
         timeAgo: 'Hace 2 semanas',
         verified: true
     },
@@ -181,7 +181,7 @@ const TESTIMONIALS: Testimonial[] = [
         location: 'Necochea',
         vehicle: 'Renault Duster Iconic',
         stars: 5,
-        text: 'Agradezco a Franco por el asesoramiento previo por la página web y a todo el personal en el local. Me sentí muy cómoda y segura en cada paso.',
+        text: 'Agradezco a Hernán por el asesoramiento previo por la página web y a todo el personal en el local. Me sentí muy cómoda y segura en cada paso.',
         timeAgo: 'Hace 4 meses',
         verified: true
     },
@@ -385,10 +385,10 @@ export function TestimonialsSection() {
                                 pointerEvents: 'none'
                             }} />
 
-                            {/* Imagen de Franco Apuntando a la Derecha */}
+                            {/* Imagen de Hernán Apuntando a la Derecha */}
                             <img
                                 src="/images/franco-pointing.png"
-                                alt="Franco Asesor de Special Cars señalando testimonios"
+                                alt="Hernán Asesor de Special Cars señalando testimonios"
                                 style={{
                                     width: '100%',
                                     maxWidth: 360,

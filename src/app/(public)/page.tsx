@@ -88,15 +88,15 @@ export default async function PublicHomePage() {
                         <div className="hero-floating-tag-top">
                             <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#22C55E', boxShadow: '0 0 8px #22C55E' }} />
                             <div style={{ textAlign: 'left' }}>
-                                <div style={{ fontSize: 12, fontWeight: 800, color: '#0F172A', lineHeight: 1.1 }}>Franco</div>
+                                <div style={{ fontSize: 12, fontWeight: 800, color: '#0F172A', lineHeight: 1.1 }}>Hernán</div>
                                 <div style={{ fontSize: 10.5, color: '#64748B', lineHeight: 1.1 }}>Asesor Comercial</div>
                             </div>
                         </div>
 
-                        {/* Imagen Oficial de Franco de cuerpo entero */}
+                        {/* Imagen Oficial de Hernán de cuerpo entero */}
                         <img
                             src="/images/franco-hero.png"
-                            alt="Franco Asesor de Special Cars"
+                            alt="Hernán Asesor de Special Cars"
                             className="hero-franco-img"
                         />
                     </div>
