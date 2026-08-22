@@ -163,7 +163,7 @@ export function VehicleFinderSection({ whatsappNumber = '5492262574254' }: { wha
     };
 
     return (
-        <section id="buscar-auto" className="finder-section public-section">
+        <section id="buscar-auto" className="finder-section public-section" style={{ backgroundColor: '#0B0F19', padding: '80px 24px', position: 'relative', overflow: 'hidden' }}>
             {/* Decoración de Fondo / Glow Premium */}
             <div style={{
                 position: 'absolute',
@@ -176,7 +176,7 @@ export function VehicleFinderSection({ whatsappNumber = '5492262574254' }: { wha
                 pointerEvents: 'none'
             }} />
 
-            <div className="finder-container">
+            <div className="finder-container" style={{ maxWidth: 1040, margin: '0 auto', position: 'relative', zIndex: 1 }}>
                 {/* Header de Sección */}
                 <div style={{ textAlign: 'center', marginBottom: 40 }}>
                     <div style={{
@@ -316,6 +316,13 @@ export function VehicleFinderSection({ whatsappNumber = '5492262574254' }: { wha
                     <form 
                         onSubmit={handleSubmit}
                         className="finder-form"
+                        style={{
+                            backgroundColor: '#131B2E',
+                            border: '1px solid #1E293B',
+                            borderRadius: 24,
+                            padding: '36px 32px',
+                            boxShadow: '0 20px 60px rgba(0,0,0,0.5)'
+                        }}
                     >
                         {error && (
                             <div style={{
@@ -335,7 +342,7 @@ export function VehicleFinderSection({ whatsappNumber = '5492262574254' }: { wha
                             </div>
                         )}
 
-                        <div className="finder-grid">
+                        <div className="finder-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 32 }}>
                             {/* COLUMNA 1: DATOS DEL VEHÍCULO BUSCADO */}
                             <div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 18 }}>
@@ -806,6 +813,23 @@ export function VehicleFinderSection({ whatsappNumber = '5492262574254' }: { wha
                                     type="submit"
                                     disabled={isSubmitting}
                                     className="finder-submit-btn"
+                                    style={{
+                                        backgroundColor: '#EA580C',
+                                        color: '#FFFFFF',
+                                        border: 'none',
+                                        padding: '16px 36px',
+                                        borderRadius: 14,
+                                        fontWeight: 900,
+                                        fontSize: 16,
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: 10,
+                                        cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                                        opacity: isSubmitting ? 0.7 : 1,
+                                        boxShadow: '0 8px 24px rgba(234, 88, 12, 0.4)',
+                                        transition: 'all 0.2s',
+                                        letterSpacing: 0.3
+                                    }}
                                 >
                                     {isSubmitting ? (
                                         <>
