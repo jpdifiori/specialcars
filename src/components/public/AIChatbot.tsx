@@ -348,40 +348,9 @@ export function AIChatbot({
                                     width: '100%', 
                                     height: '100%', 
                                     objectFit: 'cover', 
-                                    display: 'block'
+                                    display: 'block' 
                                 }} 
                             />
-
-                            {/* Badge de Chat en la esquina superior derecha */}
-                            <div style={{
-                                position: 'absolute',
-                                top: 2,
-                                right: 2,
-                                width: 20,
-                                height: 20,
-                                borderRadius: '50%',
-                                backgroundColor: '#EA580C',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                boxShadow: '0 2px 6px rgba(0,0,0,0.25)',
-                                border: '1.5px solid #FFFFFF'
-                            }}>
-                                <MessageSquare size={10} color="#FFFFFF" fill="#FFFFFF" />
-                            </div>
-
-                            {/* Punto Verde de Estado En Línea en la esquina inferior derecha */}
-                            <span style={{
-                                position: 'absolute',
-                                bottom: 2,
-                                right: 3,
-                                width: 12,
-                                height: 12,
-                                borderRadius: '50%',
-                                backgroundColor: '#22C55E',
-                                border: '2px solid #FFFFFF',
-                                boxShadow: '0 0 6px #22C55E'
-                            }} />
                         </div>
                     )}
                 </button>
