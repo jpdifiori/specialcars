@@ -1395,14 +1395,22 @@
   }
 
   .hero-subtitle {
-    font-size: 14.5px;
-    margin-bottom: 24px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.55;
+  }
+
+  .hero-badge {
+    font-size: 11.5px;
+    padding: 4px 12px;
+    margin-bottom: 14px;
   }
 
   .hero-actions {
     flex-direction: row;
     width: 100%;
     gap: 8px;
+    margin-bottom: 18px;
   }
 
   .btn-hero-primary, .btn-hero-whatsapp {
@@ -1416,8 +1424,78 @@
     min-width: 0;
   }
 
+  /* --- SECTIONS: Compact Vertical Spacing --- */
+  .public-section {
+    padding: 24px 16px !important;
+  }
+
+  .section-header {
+    margin-bottom: 14px !important;
+    gap: 10px !important;
+  }
+
+  .section-title {
+    font-size: 20px !important;
+    letter-spacing: -0.5px;
+  }
+
+  .section-subtitle {
+    color: #C2410C !important;
+    font-size: 10.5px !important;
+    margin-bottom: 1px !important;
+  }
+
+  /* --- VEHICLE CARDS: Tighter Mobile Layout --- */
+  .vehicles-grid {
+    gap: 16px !important;
+  }
+
+  .vehicle-card-body {
+    padding: 10px 14px !important;
+  }
+
+  .vehicle-card-specs {
+    padding: 6px 0 !important;
+    margin-bottom: 8px !important;
+    gap: 4px 10px !important;
+  }
+
+  .vehicle-card-title {
+    font-size: 15.5px !important;
+  }
+
+  /* --- HERO FILTER BAR: Compact --- */
+  .hero-filter-container {
+    margin: 12px auto 16px auto !important;
+    padding: 0 16px !important;
+  }
+
+  .hero-filter-card {
+    padding: 12px 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .hero-filter-header {
+    margin-bottom: 10px !important;
+  }
+
+  .hero-filter-select {
+    height: 42px !important;
+    font-size: 13px !important;
+  }
+
+  .hero-filter-btn {
+    height: 42px !important;
+    font-size: 13px !important;
+  }
+
+  .hero-filter-chips {
+    display: none !important;
+  }
+
+  /* --- FOOTER: Compact --- */
   .public-footer {
-    padding: 32px 16px 20px;
+    padding: 24px 16px 16px !important;
   }
 
   .hero-floating-tag-top,
@@ -1426,11 +1504,11 @@
   }
 
   .footer-container {
-    gap: 20px;
-    margin-bottom: 20px;
+    gap: 16px;
+    margin-bottom: 16px;
   }
 
-  /* Offers Hero Mobile Space & Contrast Optimization */
+  /* --- OFFERS HERO: Space & Contrast --- */
   .offers-hero {
     padding: 20px 16px !important;
     border-radius: 16px !important;
@@ -1466,9 +1544,9 @@
     color: #FFFFFF !important;
   }
 
-  /* Finder Mobile Max Width & Single Container */
+  /* --- FINDER: Mobile Max Width & Single Container --- */
   .finder-section {
-    padding: 32px 8px 36px !important;
+    padding: 28px 8px 32px !important;
   }
 
   .finder-container {
@@ -1495,4 +1573,19 @@
     padding: 14px 20px !important;
     font-size: 15px !important;
   }
+
+  /* --- ABOUT SECTION: Compact Mobile --- */
+  .about-section {
+    padding: 28px 16px !important;
+  }
+
+  .about-section .section-subtitle {
+    font-size: 10.5px !important;
+  }
+
+  .about-section .section-title {
+    font-size: 22px !important;
+    margin-bottom: 10px !important;
+  }
 }
+

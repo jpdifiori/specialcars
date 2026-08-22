@@ -86,38 +86,29 @@ export default async function PublicHomePage() {
                         </div>
 
                         {/* COMBO MOBILE: Textos a la misma altura + Hernán reducido 20% al lado */}
-                        <div className="mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 18, borderTop: '1px solid #E2E8F0', paddingTop: 14 }}>
+                        <div className="mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginTop: 12, borderTop: '1px solid #E2E8F0', paddingTop: 10 }}>
                             {/* Columna Izquierda: 3 Textos de Confianza */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 7, flex: 1, minWidth: 0 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 10px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 8 }}>
-                                    <ShieldCheck size={15} style={{ color: '#EA580C', flexShrink: 0 }} />
-                                    <span style={{ fontSize: 11.5, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Unidades Verificadas</span>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 5, flex: 1, minWidth: 0 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 9px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 7 }}>
+                                    <ShieldCheck size={14} style={{ color: '#EA580C', flexShrink: 0 }} />
+                                    <span style={{ fontSize: 11, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Unidades Verificadas</span>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 10px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 8 }}>
-                                    <ArrowLeftRight size={15} style={{ color: '#EA580C', flexShrink: 0 }} />
-                                    <span style={{ fontSize: 11.5, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Tomamos tu Usado</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 9px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 7 }}>
+                                    <ArrowLeftRight size={14} style={{ color: '#EA580C', flexShrink: 0 }} />
+                                    <span style={{ fontSize: 11, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Tomamos tu Usado</span>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 10px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 8 }}>
-                                    <Award size={15} style={{ color: '#EA580C', flexShrink: 0 }} />
-                                    <span style={{ fontSize: 11.5, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Gestoría Integral</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 9px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 7 }}>
+                                    <Award size={14} style={{ color: '#EA580C', flexShrink: 0 }} />
+                                    <span style={{ fontSize: 11, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Gestoría Integral</span>
                                 </div>
                             </div>
 
-                            {/* Columna Derecha: Hernán reducido al lado a la misma altura */}
-                            <div style={{ width: 140, flexShrink: 0, display: 'flex', justifyContent: 'center', alignItems: 'flex-end', position: 'relative' }}>
-                                <div style={{
-                                    position: 'absolute',
-                                    bottom: 0,
-                                    width: 120,
-                                    height: 120,
-                                    borderRadius: '50%',
-                                    background: 'radial-gradient(circle, rgba(234, 88, 12, 0.20) 0%, transparent 70%)',
-                                    pointerEvents: 'none'
-                                }} />
+                            {/* Columna Derecha: Hernán compacto */}
+                            <div style={{ width: 110, flexShrink: 0, display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
                                 <img
                                     src="/images/franco-hero.png"
                                     alt="Hernán Asesor de Special Cars"
-                                    style={{ width: '100%', maxHeight: 165, objectFit: 'contain', display: 'block', position: 'relative', zIndex: 2, filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.2))' }}
+                                    style={{ width: '100%', maxHeight: 130, objectFit: 'contain', display: 'block', filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.18))' }}
                                 />
                             </div>
                         </div>
@@ -297,7 +288,7 @@ export default async function PublicHomePage() {
             <TestimonialsSection />
 
             {/* PRESENTACIÓN DE LA AGENCIA CON BANNER OFICIAL */}
-            <section style={{ backgroundColor: '#F8FAFC', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: '48px 20px' }}>
+            <section className="about-section" style={{ backgroundColor: '#F8FAFC', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: '48px 20px' }}>
                 <div style={{ maxWidth: 1160, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 40, alignItems: 'center' }}>
                     <div>
                         <div className="section-subtitle" style={{ fontSize: 11.5, marginBottom: 2 }}>Sobre Nosotros</div>
