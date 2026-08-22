@@ -244,7 +244,7 @@ export default async function PublicHomePage() {
                                 <span>Hablar con un Asesor</span>
                             </a>
 
-                            {/* Hernán al móvil (solo imagen, 2x más grande) */}
+                            {/* Hernán al móvil (solo imagen con fondo blanco, 2x más grande) */}
                             <a
                                 href={`https://wa.me/${wp}?text=${encodeURIComponent('Hola Hernán, me gustaría recibir asesoramiento para comprar o vender un auto.')}`}
                                 target="_blank"
@@ -256,11 +256,11 @@ export default async function PublicHomePage() {
                                     borderRadius: '50%',
                                     overflow: 'hidden',
                                     border: '3px solid #EA580C',
-                                    backgroundColor: '#0F172A',
+                                    backgroundColor: '#FFFFFF',
                                     flexShrink: 0,
                                     position: 'relative',
                                     display: 'block',
-                                    boxShadow: '0 8px 24px rgba(234, 88, 12, 0.25), 0 4px 12px rgba(0,0,0,0.15)',
+                                    boxShadow: '0 8px 24px rgba(234, 88, 12, 0.25), 0 4px 12px rgba(0,0,0,0.12)',
                                     transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
                                 }}
                             >
@@ -269,17 +269,6 @@ export default async function PublicHomePage() {
                                     alt="Hernán Asesor Comercial Special Cars"
                                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                                 />
-                                <span style={{
-                                    position: 'absolute',
-                                    bottom: 4,
-                                    right: 4,
-                                    width: 16,
-                                    height: 16,
-                                    borderRadius: '50%',
-                                    backgroundColor: '#22C55E',
-                                    border: '2.5px solid #FFFFFF',
-                                    boxShadow: '0 0 8px #22C55E'
-                                }} />
                             </a>
                         </div>
                     </div>
