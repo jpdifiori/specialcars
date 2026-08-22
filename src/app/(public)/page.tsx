@@ -244,48 +244,43 @@ export default async function PublicHomePage() {
                                 <span>Hablar con un Asesor</span>
                             </a>
 
-                            {/* Hernán hablando por el móvil */}
-                            <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 10,
-                                backgroundColor: '#FFFFFF',
-                                border: '1px solid #E2E8F0',
-                                padding: '6px 14px 6px 8px',
-                                borderRadius: 40,
-                                boxShadow: '0 2px 10px rgba(15, 23, 42, 0.05)'
-                            }}>
-                                <div style={{
-                                    width: 46,
-                                    height: 46,
+                            {/* Hernán al móvil (solo imagen, 2x más grande) */}
+                            <a
+                                href={`https://wa.me/${wp}?text=${encodeURIComponent('Hola Hernán, me gustaría recibir asesoramiento para comprar o vender un auto.')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Contactar a Hernán por WhatsApp"
+                                style={{
+                                    width: 92,
+                                    height: 92,
                                     borderRadius: '50%',
                                     overflow: 'hidden',
-                                    border: '2px solid #EA580C',
+                                    border: '3px solid #EA580C',
                                     backgroundColor: '#0F172A',
                                     flexShrink: 0,
-                                    position: 'relative'
-                                }}>
-                                    <img
-                                        src="/images/hernan-phone-circle.png"
-                                        alt="Hernán Asesor de Special Cars"
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                    />
-                                    <span style={{
-                                        position: 'absolute',
-                                        bottom: 1,
-                                        right: 1,
-                                        width: 10,
-                                        height: 10,
-                                        borderRadius: '50%',
-                                        backgroundColor: '#22C55E',
-                                        border: '1.5px solid #FFFFFF'
-                                    }} />
-                                </div>
-                                <div style={{ textAlign: 'left' }}>
-                                    <div style={{ fontSize: 13, fontWeight: 800, color: '#0F172A', lineHeight: 1.1 }}>Hernán</div>
-                                    <div style={{ fontSize: 11, color: '#64748B', lineHeight: 1.2 }}>Atención directa</div>
-                                </div>
-                            </div>
+                                    position: 'relative',
+                                    display: 'block',
+                                    boxShadow: '0 8px 24px rgba(234, 88, 12, 0.25), 0 4px 12px rgba(0,0,0,0.15)',
+                                    transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
+                                }}
+                            >
+                                <img
+                                    src="/images/hernan-phone-circle.png"
+                                    alt="Hernán Asesor Comercial Special Cars"
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                                />
+                                <span style={{
+                                    position: 'absolute',
+                                    bottom: 4,
+                                    right: 4,
+                                    width: 16,
+                                    height: 16,
+                                    borderRadius: '50%',
+                                    backgroundColor: '#22C55E',
+                                    border: '2.5px solid #FFFFFF',
+                                    boxShadow: '0 0 8px #22C55E'
+                                }} />
+                            </a>
                         </div>
                     </div>
 
