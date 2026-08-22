@@ -99,15 +99,6 @@ export default async function PublicHomePage() {
                             alt="Franco Asesor de Special Cars"
                             className="hero-franco-img"
                         />
-
-                        {/* Badge Flotante Inferior */}
-                        <div className="hero-floating-tag-bottom">
-                            <Award size={18} style={{ color: '#F97316' }} />
-                            <div style={{ textAlign: 'left' }}>
-                                <div style={{ fontSize: 12, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1 }}>Llave en Mano 🔑</div>
-                                <div style={{ fontSize: 10.5, color: '#94A3B8', lineHeight: 1.1 }}>Entrega inmediata</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>
