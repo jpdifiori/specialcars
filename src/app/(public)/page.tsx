@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import { getPublicVehicles } from '@/lib/actions/vehicles';
 import { getAgencySettings } from '@/lib/actions/settings';
+import { getActiveGiveaway } from '@/lib/actions/giveaways';
 import { VehicleCard } from '@/components/public/VehicleCard';
 import { TestimonialsSection } from '@/components/public/TestimonialsSection';
 import { VehicleFinderSection } from '@/components/public/VehicleFinderSection';
 import { HeroFilterBar } from '@/components/public/HeroFilterBar';
+import { GiveawaySection } from '@/components/public/GiveawaySection';
 import { 
     Car, 
     MessageCircle, 
@@ -12,14 +14,15 @@ import {
     ShieldCheck, 
     Sparkles, 
     ArrowLeftRight, 
-    Award,
+    Award, 
     Flame
 } from 'lucide-react';
 
 export default async function PublicHomePage() {
-    const [vehiclesRes, settings] = await Promise.all([
+    const [vehiclesRes, settings, giveawayRes] = await Promise.all([
         getPublicVehicles({ limit: 12, sort_by: 'newest' }),
-        getAgencySettings()
+        getAgencySettings(),
+        getActiveGiveaway()
     ]);
 
     const vehicles = vehiclesRes.data;
@@ -280,6 +283,13 @@ export default async function PublicHomePage() {
                     </div>
                 )}
             </section>
+
+            {/* SECCIÓN: SORTEOS ESPECIALES */}
+            <GiveawaySection 
+                activeGiveaway={giveawayRes.active} 
+                latestClosedGiveaway={giveawayRes.latestClosed} 
+                whatsappNumber={wp} 
+            />
 
             {/* SECCIÓN: BUSCAMOS TU AUTO POR VOS (FORMULARIO INTERACTIVO) */}
             <VehicleFinderSection whatsappNumber={wp} />

@@ -16,13 +16,15 @@ import {
     BarChart3, 
     Settings, 
     LogOut,
-    ExternalLink
+    ExternalLink,
+    Gift
 } from 'lucide-react';
 
 const NAV_ITEMS = [
     { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { label: 'Vehículos (Stock)', href: '/admin/vehiculos', icon: Car },
     { label: 'Vehículos Buscados', href: '/admin/vehiculos-buscados', icon: SearchCheck },
+    { label: 'Sorteos', href: '/admin/sorteos', icon: Gift },
     { label: 'Clientes', href: '/admin/clientes', icon: Users },
     { label: 'Operaciones', href: '/admin/operaciones', icon: ArrowLeftRight },
     { label: 'Consignaciones', href: '/admin/consignaciones', icon: FileSpreadsheet },

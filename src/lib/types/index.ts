@@ -422,3 +422,48 @@ export interface DashboardStats {
         stagnant_stock: number;
     };
 }
+
+export type GiveawayStatus = 'draft' | 'active' | 'closed' | 'cancelled';
+
+export interface GiveawayPrize {
+    id: string;
+    giveaway_id: string;
+    position: number;
+    title: string;
+    description?: string | null;
+    image_url?: string | null;
+    winner_participant_id?: string | null;
+    winner_name?: string | null;
+    winner_announced_at?: string | null;
+    created_at: string;
+    winner_participant?: GiveawayParticipant | null;
+}
+
+export interface GiveawayParticipant {
+    id: string;
+    giveaway_id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+    is_winner: boolean;
+    prize_position?: number | null;
+    created_at: string;
+}
+
+export interface Giveaway {
+    id: string;
+    title: string;
+    slug?: string | null;
+    description?: string | null;
+    terms_and_conditions?: string | null;
+    banner_url?: string | null;
+    status: GiveawayStatus;
+    start_date: string;
+    end_date: string;
+    is_deleted: boolean;
+    created_at: string;
+    updated_at: string;
+    prizes?: GiveawayPrize[];
+    participants_count?: number;
+}

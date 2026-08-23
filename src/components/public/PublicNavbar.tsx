@@ -14,7 +14,8 @@ import {
     Search, 
     MapPin, 
     Phone, 
-    ChevronRight
+    ChevronRight,
+    Gift
 } from 'lucide-react';
 
 export function PublicNavbar({ whatsappNumber }: { whatsappNumber?: string; agencyName?: string }) {
@@ -48,6 +49,13 @@ export function PublicNavbar({ whatsappNumber }: { whatsappNumber?: string; agen
             icon: Flame, 
             badge: '🔥 HOT',
             isSpecial: true 
+        },
+        { 
+            label: 'Sorteos', 
+            href: '/sorteos', 
+            icon: Gift, 
+            badge: '🎁 SORTEO',
+            isSpecial: false 
         },
         { label: 'Buscamos tu Auto', href: '/#buscar-auto', icon: Search },
         { label: 'Contacto & Ubicación', href: '/#contacto', icon: MapPin },
@@ -100,6 +108,30 @@ export function PublicNavbar({ whatsappNumber }: { whatsappNumber?: string; agen
                                 lineHeight: 1.2
                             }}>
                                 🔥
+                            </span>
+                        </Link>
+                        <Link 
+                            href="/sorteos" 
+                            className="public-nav-link"
+                            style={{ 
+                                color: pathname.startsWith('/sorteos') ? '#EA580C' : undefined, 
+                                fontWeight: pathname.startsWith('/sorteos') ? 800 : undefined,
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: 5
+                            }}
+                        >
+                            <span>Sorteos</span>
+                            <span style={{
+                                backgroundColor: '#8B5CF6',
+                                color: '#FFFFFF',
+                                fontSize: 10,
+                                fontWeight: 900,
+                                padding: '1px 6px',
+                                borderRadius: 10,
+                                lineHeight: 1.2
+                            }}>
+                                🎁
                             </span>
                         </Link>
                         <a href="/#buscar-auto" className="public-nav-link">
