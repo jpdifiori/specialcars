@@ -506,6 +506,23 @@ export default function AdminGiveawayDetailPage({ params }: { params: Promise<{ 
                         </button>
                     </div>
 
+                    <div style={{
+                        padding: '10px 14px',
+                        backgroundColor: '#FFFFFF',
+                        border: '1px solid #E2E8F0',
+                        borderRadius: 10,
+                        fontSize: 12.5,
+                        color: '#475569',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8
+                    }}>
+                        <Sparkles size={16} style={{ color: '#EA580C', flexShrink: 0 }} />
+                        <span>
+                            <strong>Tip:</strong> Podés tener <strong>1 solo premio</strong> (eliminando los demás), <strong>2 premios</strong> o la cantidad que desees. La web adapta el diseño automáticamente. Fotos recomendadas: <strong>800x800 px</strong> (1:1) o <strong>1200x900 px</strong> (4:3).
+                        </span>
+                    </div>
+
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                         {prizes.map((prize, index) => {
                             const isWinnerAssigned = !!prize.winner_name;

@@ -302,6 +302,24 @@ export default function NewGiveawayPage() {
                         </button>
                     </div>
 
+                    <div style={{
+                        padding: '10px 14px',
+                        backgroundColor: '#F8FAFC',
+                        border: '1px solid #E2E8F0',
+                        borderRadius: 10,
+                        fontSize: 12.5,
+                        color: '#475569',
+                        marginBottom: 16,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8
+                    }}>
+                        <Sparkles size={16} style={{ color: '#EA580C', flexShrink: 0 }} />
+                        <span>
+                            <strong>Tip:</strong> Podés configurar <strong>1 solo premio</strong> (eliminando los otros 2), <strong>2 premios</strong> o la cantidad que desees. Las fotos se adaptan automáticamente sin recortarse (recomendado: <strong>800x800 px</strong> o <strong>1200x900 px</strong>).
+                        </span>
+                    </div>
+
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                         {prizes.map((prize, index) => (
                             <div

@@ -280,176 +280,385 @@ export function GiveawaySection({
                     </div>
                 )}
 
-                {/* Grid de Premios */}
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                    gap: 24,
-                    marginBottom: 48
-                }}>
-                    {prizes.map((prize) => {
-                        const badge = getMedalBadge(prize.position);
-                        const isWinnerAssigned = !!prize.winner_name;
+                {/* Grid o Showcase de Premios según la cantidad (1, 2, 3 o más) */}
+                {prizes.length === 1 ? (
+                    // CASO 1 PREMIO: Spotlight Card Destacado
+                    <div style={{ maxWidth: 820, margin: '0 auto 48px' }}>
+                        {(() => {
+                            const prize = prizes[0];
+                            const badge = getMedalBadge(prize.position);
+                            const isWinnerAssigned = !prize.winner_name;
 
-                        return (
-                            <div
-                                key={prize.id}
-                                style={{
+                            return (
+                                <div style={{
                                     backgroundColor: '#1E293B',
-                                    borderRadius: 18,
-                                    border: `2px solid ${isWinnerAssigned ? '#22C55E' : '#334155'}`,
+                                    borderRadius: 22,
+                                    border: '2px solid rgba(245, 158, 11, 0.4)',
                                     overflow: 'hidden',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    position: 'relative',
-                                    boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.4)',
-                                    transition: 'transform 0.2s ease, border-color 0.2s ease'
-                                }}
-                            >
-                                {/* Puesto / Badge de Medalla */}
-                                <div style={{
-                                    position: 'absolute',
-                                    top: 14,
-                                    left: 14,
-                                    zIndex: 2,
-                                    background: badge.bg,
-                                    color: badge.color,
-                                    padding: '6px 14px',
-                                    borderRadius: 30,
-                                    fontWeight: 900,
-                                    fontSize: 12,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 6,
-                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-                                    border: `1px solid ${badge.border}`
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                                    boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.5)',
+                                    position: 'relative'
                                 }}>
-                                    <span style={{ fontSize: 15 }}>{badge.icon}</span>
-                                    <span>{badge.label}</span>
-                                </div>
-
-                                {/* Imagen del Premio */}
-                                <div style={{
-                                    width: '100%',
-                                    height: 220,
-                                    backgroundColor: '#0F172A',
-                                    position: 'relative',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    overflow: 'hidden'
-                                }}>
-                                    {prize.image_url ? (
-                                        <Image
-                                            src={prize.image_url}
-                                            alt={prize.title}
-                                            fill
-                                            style={{ objectFit: 'cover' }}
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                        />
-                                    ) : (
-                                        <div style={{ textAlign: 'center', color: '#64748B' }}>
-                                            <Gift size={54} strokeWidth={1.5} style={{ color: '#EA580C', opacity: 0.8, marginBottom: 8 }} />
-                                            <p style={{ fontSize: 13, margin: 0, fontWeight: 600 }}>Premio Especial</p>
-                                        </div>
-                                    )}
-
-                                    {/* Overlay de Ganador si ya fue anunciado */}
-                                    {isWinnerAssigned && (
+                                    {/* Imagen del Premio */}
+                                    <div style={{
+                                        minHeight: 280,
+                                        maxHeight: 380,
+                                        backgroundColor: '#0F172A',
+                                        position: 'relative',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        padding: 16
+                                    }}>
+                                        {/* Badge de Medalla */}
                                         <div style={{
                                             position: 'absolute',
-                                            bottom: 0,
-                                            left: 0,
-                                            right: 0,
-                                            backgroundColor: 'rgba(15, 23, 42, 0.92)',
-                                            backdropFilter: 'blur(6px)',
-                                            padding: '10px 14px',
-                                            borderTop: '2px solid #22C55E',
+                                            top: 14,
+                                            left: 14,
+                                            zIndex: 2,
+                                            background: badge.bg,
+                                            color: badge.color,
+                                            padding: '6px 14px',
+                                            borderRadius: 30,
+                                            fontWeight: 900,
+                                            fontSize: 12,
                                             display: 'flex',
                                             alignItems: 'center',
-                                            gap: 8
+                                            gap: 6,
+                                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+                                            border: `1px solid ${badge.border}`
                                         }}>
-                                            <Trophy size={18} style={{ color: '#FACC15', flexShrink: 0 }} />
-                                            <div style={{ overflow: 'hidden' }}>
-                                                <div style={{ fontSize: 11, fontWeight: 800, color: '#4ADE80', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                                                    Ganador Oficial
-                                                </div>
-                                                <div style={{ fontSize: 14, fontWeight: 900, color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                    {prize.winner_name}
-                                                </div>
-                                            </div>
+                                            <span style={{ fontSize: 15 }}>{badge.icon}</span>
+                                            <span>{badge.label}</span>
                                         </div>
-                                    )}
-                                </div>
 
-                                {/* Contenido del Premio */}
-                                <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                                    <div>
-                                        <h4 style={{ fontSize: 18, fontWeight: 800, color: '#F8FAFC', marginBottom: 8, lineHeight: 1.3 }}>
-                                            {prize.title}
-                                        </h4>
-                                        {prize.description && (
-                                            <p style={{ color: '#94A3B8', fontSize: 14, lineHeight: 1.5, margin: 0 }}>
-                                                {prize.description}
-                                            </p>
+                                        {prize.image_url ? (
+                                            <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 250 }}>
+                                                <Image
+                                                    src={prize.image_url}
+                                                    alt={prize.title}
+                                                    fill
+                                                    style={{ objectFit: 'contain' }}
+                                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div style={{ textAlign: 'center', color: '#64748B' }}>
+                                                <Gift size={64} strokeWidth={1.5} style={{ color: '#EA580C', opacity: 0.8, marginBottom: 8 }} />
+                                                <p style={{ fontSize: 14, margin: 0, fontWeight: 600 }}>Premio Especial</p>
+                                            </div>
                                         )}
                                     </div>
 
-                                    {/* Footer del card con datos del ganador en sorteo cerrado */}
-                                    {isWinnerAssigned && (
+                                    {/* Información del Premio */}
+                                    <div style={{
+                                        padding: '32px 28px',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        backgroundColor: '#1E293B'
+                                    }}>
                                         <div style={{
-                                            marginTop: 16,
-                                            padding: '10px 12px',
-                                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                                            borderRadius: 10,
-                                            border: '1px solid rgba(34, 197, 94, 0.25)',
-                                            display: 'flex',
+                                            display: 'inline-flex',
                                             alignItems: 'center',
-                                            gap: 8
+                                            gap: 6,
+                                            color: '#F59E0B',
+                                            fontSize: 12,
+                                            fontWeight: 800,
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.05em',
+                                            marginBottom: 8
                                         }}>
-                                            <Award size={18} style={{ color: '#4ADE80', flexShrink: 0 }} />
-                                            <span style={{ fontSize: 13, color: '#E2E8F0', fontWeight: 600 }}>
-                                                Premio asignado a: <strong>{prize.winner_name}</strong>
-                                            </span>
+                                            <Sparkles size={15} />
+                                            <span>Premio Principal en Juego</span>
                                         </div>
-                                    )}
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
 
-                {/* Formulario de Participación (Solo si el sorteo está ACTIVO) */}
+                                        <h3 style={{ fontSize: 24, fontWeight: 900, color: '#FFFFFF', marginBottom: 12, lineHeight: 1.3 }}>
+                                            {prize.title}
+                                        </h3>
+
+                                        {prize.description && (
+                                            <p style={{ color: '#CBD5E1', fontSize: 15, lineHeight: 1.6, margin: 0 }}>
+                                                {prize.description}
+                                            </p>
+                                        )}
+
+                                        {isWinnerAssigned && (
+                                            <div style={{
+                                                marginTop: 20,
+                                                padding: '12px 16px',
+                                                backgroundColor: 'rgba(34, 197, 94, 0.12)',
+                                                borderRadius: 12,
+                                                border: '1px solid rgba(34, 197, 94, 0.3)',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: 10
+                                            }}>
+                                                <Trophy size={20} style={{ color: '#4ADE80', flexShrink: 0 }} />
+                                                <span style={{ fontSize: 14, color: '#FFFFFF', fontWeight: 600 }}>
+                                                    Ganador Oficial: <strong>{prize.winner_name}</strong>
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })()}
+                    </div>
+                ) : prizes.length === 2 ? (
+                    // CASO 2 PREMIOS: Grid de 2 Columnas Centradas
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                        gap: 24,
+                        maxWidth: 960,
+                        margin: '0 auto 48px'
+                    }}>
+                        {prizes.map((prize) => {
+                            const badge = getMedalBadge(prize.position);
+                            const isWinnerAssigned = !prize.winner_name;
+
+                            return (
+                                <div
+                                    key={prize.id}
+                                    style={{
+                                        backgroundColor: '#1E293B',
+                                        borderRadius: 20,
+                                        border: `2px solid ${isWinnerAssigned ? '#22C55E' : '#334155'}`,
+                                        overflow: 'hidden',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        position: 'relative',
+                                        boxShadow: '0 12px 30px -5px rgba(0, 0, 0, 0.45)'
+                                    }}
+                                >
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: 14,
+                                        left: 14,
+                                        zIndex: 2,
+                                        background: badge.bg,
+                                        color: badge.color,
+                                        padding: '6px 14px',
+                                        borderRadius: 30,
+                                        fontWeight: 900,
+                                        fontSize: 12,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 6,
+                                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+                                        border: `1px solid ${badge.border}`
+                                    }}>
+                                        <span style={{ fontSize: 15 }}>{badge.icon}</span>
+                                        <span>{badge.label}</span>
+                                    </div>
+
+                                    <div style={{
+                                        width: '100%',
+                                        height: 240,
+                                        backgroundColor: '#0F172A',
+                                        position: 'relative',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        padding: 14
+                                    }}>
+                                        {prize.image_url ? (
+                                            <Image
+                                                src={prize.image_url}
+                                                alt={prize.title}
+                                                fill
+                                                style={{ objectFit: 'contain' }}
+                                                sizes="(max-width: 768px) 100vw, 50vw"
+                                            />
+                                        ) : (
+                                            <div style={{ textAlign: 'center', color: '#64748B' }}>
+                                                <Gift size={54} strokeWidth={1.5} style={{ color: '#EA580C', opacity: 0.8, marginBottom: 8 }} />
+                                                <p style={{ fontSize: 13, margin: 0, fontWeight: 600 }}>Premio Especial</p>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div style={{ padding: '22px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                                        <div>
+                                            <h4 style={{ fontSize: 19, fontWeight: 800, color: '#FFFFFF', marginBottom: 8, lineHeight: 1.3 }}>
+                                                {prize.title}
+                                            </h4>
+                                            {prize.description && (
+                                                <p style={{ color: '#94A3B8', fontSize: 14, lineHeight: 1.5, margin: 0 }}>
+                                                    {prize.description}
+                                                </p>
+                                            )}
+                                        </div>
+
+                                        {isWinnerAssigned && (
+                                            <div style={{
+                                                marginTop: 16,
+                                                padding: '10px 14px',
+                                                backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                                                borderRadius: 10,
+                                                border: '1px solid rgba(34, 197, 94, 0.25)',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: 8
+                                            }}>
+                                                <Award size={18} style={{ color: '#4ADE80', flexShrink: 0 }} />
+                                                <span style={{ fontSize: 13, color: '#FFFFFF', fontWeight: 600 }}>
+                                                    Ganador: <strong>{prize.winner_name}</strong>
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                ) : (
+                    // CASO 3 O MÁS PREMIOS: Grid de 3 Columnas
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                        gap: 24,
+                        marginBottom: 48
+                    }}>
+                        {prizes.map((prize) => {
+                            const badge = getMedalBadge(prize.position);
+                            const isWinnerAssigned = !prize.winner_name;
+
+                            return (
+                                <div
+                                    key={prize.id}
+                                    style={{
+                                        backgroundColor: '#1E293B',
+                                        borderRadius: 18,
+                                        border: `2px solid ${isWinnerAssigned ? '#22C55E' : '#334155'}`,
+                                        overflow: 'hidden',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        position: 'relative',
+                                        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.4)'
+                                    }}
+                                >
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: 14,
+                                        left: 14,
+                                        zIndex: 2,
+                                        background: badge.bg,
+                                        color: badge.color,
+                                        padding: '6px 14px',
+                                        borderRadius: 30,
+                                        fontWeight: 900,
+                                        fontSize: 12,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 6,
+                                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                                        border: `1px solid ${badge.border}`
+                                    }}>
+                                        <span style={{ fontSize: 15 }}>{badge.icon}</span>
+                                        <span>{badge.label}</span>
+                                    </div>
+
+                                    <div style={{
+                                        width: '100%',
+                                        height: 220,
+                                        backgroundColor: '#0F172A',
+                                        position: 'relative',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        padding: 12
+                                    }}>
+                                        {prize.image_url ? (
+                                            <Image
+                                                src={prize.image_url}
+                                                alt={prize.title}
+                                                fill
+                                                style={{ objectFit: 'contain' }}
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            />
+                                        ) : (
+                                            <div style={{ textAlign: 'center', color: '#64748B' }}>
+                                                <Gift size={54} strokeWidth={1.5} style={{ color: '#EA580C', opacity: 0.8, marginBottom: 8 }} />
+                                                <p style={{ fontSize: 13, margin: 0, fontWeight: 600 }}>Premio Especial</p>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                                        <div>
+                                            <h4 style={{ fontSize: 18, fontWeight: 800, color: '#F8FAFC', marginBottom: 8, lineHeight: 1.3 }}>
+                                                {prize.title}
+                                            </h4>
+                                            {prize.description && (
+                                                <p style={{ color: '#94A3B8', fontSize: 14, lineHeight: 1.5, margin: 0 }}>
+                                                    {prize.description}
+                                                </p>
+                                            )}
+                                        </div>
+
+                                        {isWinnerAssigned && (
+                                            <div style={{
+                                                marginTop: 16,
+                                                padding: '10px 12px',
+                                                backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                                                borderRadius: 10,
+                                                border: '1px solid rgba(34, 197, 94, 0.25)',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: 8
+                                            }}>
+                                                <Award size={18} style={{ color: '#4ADE80', flexShrink: 0 }} />
+                                                <span style={{ fontSize: 13, color: '#E2E8F0', fontWeight: 600 }}>
+                                                    Premio asignado a: <strong>{prize.winner_name}</strong>
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+
+                {/* Formulario de Participación Luminoso y de Alto Contraste (Solo si el sorteo está ACTIVO) */}
                 {!isClosed && (
                     <div style={{
-                        maxWidth: 760,
+                        maxWidth: 720,
                         margin: '0 auto',
-                        backgroundColor: '#1E293B',
+                        backgroundColor: '#FFFFFF',
                         borderRadius: 24,
-                        border: '1px solid #334155',
-                        padding: '36px 28px',
-                        boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.5)'
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        padding: '40px 32px',
+                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.6)'
                     }}>
                         {!registeredSuccessfully ? (
                             <>
-                                <div style={{ textAlign: 'center', marginBottom: 26 }}>
+                                <div style={{ textAlign: 'center', marginBottom: 28 }}>
                                     <div style={{
                                         display: 'inline-flex',
                                         alignItems: 'center',
                                         gap: 6,
+                                        backgroundColor: '#FFF7ED',
+                                        border: '1px solid #FDBA74',
                                         color: '#EA580C',
+                                        padding: '4px 14px',
+                                        borderRadius: 20,
                                         fontWeight: 800,
-                                        fontSize: 13,
-                                        marginBottom: 6,
-                                        textTransform: 'uppercase'
+                                        fontSize: 12,
+                                        marginBottom: 10,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.04em'
                                     }}>
-                                        <Sparkles size={16} />
-                                        <span>Participá Gratis</span>
+                                        <Sparkles size={15} />
+                                        <span>Participá Gratis en 30 Segundos</span>
                                     </div>
-                                    <h3 style={{ fontSize: 24, fontWeight: 900, color: '#FFFFFF', margin: '0 0 8px' }}>
+                                    <h3 style={{ fontSize: 26, fontWeight: 900, color: '#0F172A', margin: '0 0 8px', letterSpacing: '-0.02em' }}>
                                         Completá tus datos para participar
                                     </h3>
-                                    <p style={{ color: '#94A3B8', fontSize: 14, margin: 0 }}>
+                                    <p style={{ color: '#64748B', fontSize: 14.5, margin: 0 }}>
                                         Ingresá tus datos para entrar en el sorteo. Te contactaremos si resultás ganador.
                                     </p>
                                 </div>
@@ -460,24 +669,24 @@ export function GiveawaySection({
                                         alignItems: 'center',
                                         gap: 10,
                                         padding: '12px 16px',
-                                        borderRadius: 10,
-                                        marginBottom: 20,
+                                        borderRadius: 12,
+                                        marginBottom: 22,
                                         fontSize: 14,
-                                        fontWeight: 600,
-                                        backgroundColor: statusMessage.type === 'success' ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)',
-                                        border: `1px solid ${statusMessage.type === 'success' ? '#22C55E' : '#EF4444'}`,
-                                        color: statusMessage.type === 'success' ? '#4ADE80' : '#FCA5A5'
+                                        fontWeight: 700,
+                                        backgroundColor: statusMessage.type === 'success' ? '#DCFCE7' : '#FEE2E2',
+                                        border: `1px solid ${statusMessage.type === 'success' ? '#86EFAC' : '#FCA5A5'}`,
+                                        color: statusMessage.type === 'success' ? '#15803D' : '#B91C1C'
                                     }}>
-                                        {statusMessage.type === 'success' ? <CheckCircle2 size={18} /> : <AlertCircle size={18} />}
+                                        {statusMessage.type === 'success' ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
                                         <span>{statusMessage.text}</span>
                                     </div>
                                 )}
 
-                                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+                                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
                                         <div>
-                                            <label style={{ display: 'block', fontSize: 13, fontWeight: 700, color: '#CBD5E1', marginBottom: 6 }}>
-                                                Nombre *
+                                            <label style={{ display: 'block', fontSize: 13, fontWeight: 800, color: '#334155', marginBottom: 6 }}>
+                                                Nombre <span style={{ color: '#EA580C' }}>*</span>
                                             </label>
                                             <input
                                                 type="text"
@@ -487,20 +696,32 @@ export function GiveawaySection({
                                                 onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                                                 style={{
                                                     width: '100%',
-                                                    padding: '12px 14px',
-                                                    borderRadius: 10,
-                                                    backgroundColor: '#0F172A',
-                                                    border: '1px solid #334155',
-                                                    color: '#FFFFFF',
-                                                    fontSize: 14,
-                                                    outline: 'none'
+                                                    padding: '12px 16px',
+                                                    borderRadius: 12,
+                                                    backgroundColor: '#F8FAFC',
+                                                    border: '1.5px solid #CBD5E1',
+                                                    color: '#0F172A',
+                                                    fontSize: 15,
+                                                    fontWeight: 500,
+                                                    outline: 'none',
+                                                    transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
+                                                }}
+                                                onFocus={(e) => {
+                                                    e.target.style.borderColor = '#EA580C';
+                                                    e.target.style.backgroundColor = '#FFFFFF';
+                                                    e.target.style.boxShadow = '0 0 0 3px rgba(234, 88, 12, 0.15)';
+                                                }}
+                                                onBlur={(e) => {
+                                                    e.target.style.borderColor = '#CBD5E1';
+                                                    e.target.style.backgroundColor = '#F8FAFC';
+                                                    e.target.style.boxShadow = 'none';
                                                 }}
                                             />
                                         </div>
 
                                         <div>
-                                            <label style={{ display: 'block', fontSize: 13, fontWeight: 700, color: '#CBD5E1', marginBottom: 6 }}>
-                                                Apellido *
+                                            <label style={{ display: 'block', fontSize: 13, fontWeight: 800, color: '#334155', marginBottom: 6 }}>
+                                                Apellido <span style={{ color: '#EA580C' }}>*</span>
                                             </label>
                                             <input
                                                 type="text"
@@ -510,22 +731,34 @@ export function GiveawaySection({
                                                 onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                                                 style={{
                                                     width: '100%',
-                                                    padding: '12px 14px',
-                                                    borderRadius: 10,
-                                                    backgroundColor: '#0F172A',
-                                                    border: '1px solid #334155',
-                                                    color: '#FFFFFF',
-                                                    fontSize: 14,
-                                                    outline: 'none'
+                                                    padding: '12px 16px',
+                                                    borderRadius: 12,
+                                                    backgroundColor: '#F8FAFC',
+                                                    border: '1.5px solid #CBD5E1',
+                                                    color: '#0F172A',
+                                                    fontSize: 15,
+                                                    fontWeight: 500,
+                                                    outline: 'none',
+                                                    transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
+                                                }}
+                                                onFocus={(e) => {
+                                                    e.target.style.borderColor = '#EA580C';
+                                                    e.target.style.backgroundColor = '#FFFFFF';
+                                                    e.target.style.boxShadow = '0 0 0 3px rgba(234, 88, 12, 0.15)';
+                                                }}
+                                                onBlur={(e) => {
+                                                    e.target.style.borderColor = '#CBD5E1';
+                                                    e.target.style.backgroundColor = '#F8FAFC';
+                                                    e.target.style.boxShadow = 'none';
                                                 }}
                                             />
                                         </div>
                                     </div>
 
-                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
                                         <div>
-                                            <label style={{ display: 'block', fontSize: 13, fontWeight: 700, color: '#CBD5E1', marginBottom: 6 }}>
-                                                Correo Electrónico *
+                                            <label style={{ display: 'block', fontSize: 13, fontWeight: 800, color: '#334155', marginBottom: 6 }}>
+                                                Correo Electrónico <span style={{ color: '#EA580C' }}>*</span>
                                             </label>
                                             <input
                                                 type="email"
@@ -535,20 +768,32 @@ export function GiveawaySection({
                                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                                 style={{
                                                     width: '100%',
-                                                    padding: '12px 14px',
-                                                    borderRadius: 10,
-                                                    backgroundColor: '#0F172A',
-                                                    border: '1px solid #334155',
-                                                    color: '#FFFFFF',
-                                                    fontSize: 14,
-                                                    outline: 'none'
+                                                    padding: '12px 16px',
+                                                    borderRadius: 12,
+                                                    backgroundColor: '#F8FAFC',
+                                                    border: '1.5px solid #CBD5E1',
+                                                    color: '#0F172A',
+                                                    fontSize: 15,
+                                                    fontWeight: 500,
+                                                    outline: 'none',
+                                                    transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
+                                                }}
+                                                onFocus={(e) => {
+                                                    e.target.style.borderColor = '#EA580C';
+                                                    e.target.style.backgroundColor = '#FFFFFF';
+                                                    e.target.style.boxShadow = '0 0 0 3px rgba(234, 88, 12, 0.15)';
+                                                }}
+                                                onBlur={(e) => {
+                                                    e.target.style.borderColor = '#CBD5E1';
+                                                    e.target.style.backgroundColor = '#F8FAFC';
+                                                    e.target.style.boxShadow = 'none';
                                                 }}
                                             />
                                         </div>
 
                                         <div>
-                                            <label style={{ display: 'block', fontSize: 13, fontWeight: 700, color: '#CBD5E1', marginBottom: 6 }}>
-                                                Celular / WhatsApp *
+                                            <label style={{ display: 'block', fontSize: 13, fontWeight: 800, color: '#334155', marginBottom: 6 }}>
+                                                Celular / WhatsApp <span style={{ color: '#EA580C' }}>*</span>
                                             </label>
                                             <input
                                                 type="tel"
@@ -558,13 +803,25 @@ export function GiveawaySection({
                                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                                 style={{
                                                     width: '100%',
-                                                    padding: '12px 14px',
-                                                    borderRadius: 10,
-                                                    backgroundColor: '#0F172A',
-                                                    border: '1px solid #334155',
-                                                    color: '#FFFFFF',
-                                                    fontSize: 14,
-                                                    outline: 'none'
+                                                    padding: '12px 16px',
+                                                    borderRadius: 12,
+                                                    backgroundColor: '#F8FAFC',
+                                                    border: '1.5px solid #CBD5E1',
+                                                    color: '#0F172A',
+                                                    fontSize: 15,
+                                                    fontWeight: 500,
+                                                    outline: 'none',
+                                                    transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
+                                                }}
+                                                onFocus={(e) => {
+                                                    e.target.style.borderColor = '#EA580C';
+                                                    e.target.style.backgroundColor = '#FFFFFF';
+                                                    e.target.style.boxShadow = '0 0 0 3px rgba(234, 88, 12, 0.15)';
+                                                }}
+                                                onBlur={(e) => {
+                                                    e.target.style.borderColor = '#CBD5E1';
+                                                    e.target.style.backgroundColor = '#F8FAFC';
+                                                    e.target.style.boxShadow = 'none';
                                                 }}
                                             />
                                         </div>
@@ -574,26 +831,26 @@ export function GiveawaySection({
                                         type="submit"
                                         disabled={isSubmitting}
                                         style={{
-                                            marginTop: 10,
+                                            marginTop: 8,
                                             width: '100%',
-                                            padding: '14px 20px',
+                                            padding: '15px 24px',
                                             borderRadius: 12,
-                                            backgroundColor: '#EA580C',
+                                            background: 'linear-gradient(135deg, #EA580C 0%, #C2410C 100%)',
                                             color: '#FFFFFF',
                                             fontSize: 16,
-                                            fontWeight: 800,
+                                            fontWeight: 900,
                                             border: 'none',
                                             cursor: isSubmitting ? 'not-allowed' : 'pointer',
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            gap: 8,
-                                            boxShadow: '0 10px 20px -5px rgba(234, 88, 12, 0.4)',
-                                            transition: 'opacity 0.2s ease, transform 0.1s ease'
+                                            gap: 10,
+                                            boxShadow: '0 12px 24px -6px rgba(234, 88, 12, 0.45)',
+                                            transition: 'transform 0.15s ease, opacity 0.2s ease'
                                         }}
                                     >
                                         {isSubmitting ? (
-                                            <span>Registrando participación...</span>
+                                            <span>Registrando tu participación...</span>
                                         ) : (
                                             <>
                                                 <Send size={18} />
@@ -603,30 +860,30 @@ export function GiveawaySection({
                                     </button>
 
                                     <p style={{ fontSize: 12, color: '#64748B', textAlign: 'center', margin: '4px 0 0' }}>
-                                        Al participar aceptás las bases y condiciones del sorteo de Special Cars.
+                                        🔒 Tus datos están protegidos. Al participar aceptás las bases del sorteo de Special Cars.
                                     </p>
                                 </form>
                             </>
                         ) : (
-                            <div style={{ textAlign: 'center', padding: '16px 8px' }}>
+                            <div style={{ textAlign: 'center', padding: '20px 8px' }}>
                                 <div style={{
-                                    width: 64,
-                                    height: 64,
+                                    width: 70,
+                                    height: 70,
                                     borderRadius: '50%',
-                                    backgroundColor: 'rgba(34, 197, 94, 0.15)',
+                                    backgroundColor: '#DCFCE7',
                                     border: '2px solid #22C55E',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     margin: '0 auto 16px',
-                                    color: '#4ADE80'
+                                    color: '#15803D'
                                 }}>
-                                    <CheckCircle2 size={36} />
+                                    <CheckCircle2 size={40} />
                                 </div>
-                                <h3 style={{ fontSize: 24, fontWeight: 900, color: '#FFFFFF', marginBottom: 8 }}>
+                                <h3 style={{ fontSize: 26, fontWeight: 900, color: '#0F172A', marginBottom: 8 }}>
                                     ¡Ya estás participando!
                                 </h3>
-                                <p style={{ color: '#CBD5E1', fontSize: 15, maxWidth: 500, margin: '0 auto 24px', lineHeight: 1.6 }}>
+                                <p style={{ color: '#475569', fontSize: 15, maxWidth: 500, margin: '0 auto 24px', lineHeight: 1.6 }}>
                                     Registramos tus datos correctamente para <strong>{currentGiveaway.title}</strong>. El sorteo se realizará el día <strong>{formatDate(currentGiveaway.end_date)}</strong>.
                                 </p>
 
@@ -639,16 +896,16 @@ export function GiveawaySection({
                                             display: 'inline-flex',
                                             alignItems: 'center',
                                             gap: 8,
-                                            padding: '10px 18px',
+                                            padding: '12px 20px',
                                             backgroundColor: '#25D366',
                                             color: '#FFFFFF',
-                                            fontWeight: 700,
+                                            fontWeight: 800,
                                             borderRadius: 10,
                                             fontSize: 14,
                                             textDecoration: 'none'
                                         }}
                                     >
-                                        <MessageCircle size={17} />
+                                        <MessageCircle size={18} />
                                         <span>Compartir por WhatsApp</span>
                                     </a>
 
@@ -660,13 +917,13 @@ export function GiveawaySection({
                                             setStatusMessage(null);
                                         }}
                                         style={{
-                                            padding: '10px 18px',
-                                            backgroundColor: '#334155',
-                                            color: '#FFFFFF',
+                                            padding: '12px 20px',
+                                            backgroundColor: '#F1F5F9',
+                                            color: '#334155',
                                             fontWeight: 700,
                                             borderRadius: 10,
                                             fontSize: 14,
-                                            border: 'none',
+                                            border: '1px solid #CBD5E1',
                                             cursor: 'pointer'
                                         }}
                                     >
@@ -679,14 +936,18 @@ export function GiveawaySection({
                 )}
 
                 {/* Botón Ver Más / Bases */}
-                <div style={{ textAlign: 'center', marginTop: 36 }}>
+                <div style={{ textAlign: 'center', marginTop: 40 }}>
                     <Link
                         href="/sorteos"
                         style={{
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: 6,
-                            color: '#EA580C',
+                            gap: 8,
+                            padding: '10px 20px',
+                            borderRadius: 30,
+                            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            color: '#FB923C',
                             fontWeight: 700,
                             fontSize: 14,
                             textDecoration: 'none'
