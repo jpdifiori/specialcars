@@ -214,46 +214,28 @@ export function GiveawaySection({
                     </h2>
 
                     {currentGiveaway.description && (
-                        <p style={{ color: '#94A3B8', maxWidth: 720, margin: '0 auto 16px', fontSize: 16, lineHeight: 1.6 }}>
+                        <p style={{ color: '#FFFFFF', maxWidth: 720, margin: '0 auto 16px', fontSize: 16.5, lineHeight: 1.6, fontWeight: 500 }}>
                             {currentGiveaway.description}
                         </p>
                     )}
 
-                    {/* Chips de Fechas y Participantes */}
-                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, marginTop: 16 }}>
+                    {/* Chip de Vigencia */}
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 14 }}>
                         <div style={{
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: 6,
-                            padding: '6px 14px',
-                            backgroundColor: 'rgba(30, 41, 59, 0.8)',
-                            borderRadius: 20,
-                            border: '1px solid #334155',
-                            color: '#CBD5E1',
-                            fontSize: 13,
-                            fontWeight: 600
+                            gap: 8,
+                            padding: '8px 18px',
+                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                            borderRadius: 30,
+                            border: '1px solid rgba(255, 255, 255, 0.15)',
+                            color: '#FFFFFF',
+                            fontSize: 14,
+                            fontWeight: 700
                         }}>
-                            <Calendar size={14} style={{ color: '#EA580C' }} />
+                            <Calendar size={15} style={{ color: '#EA580C' }} />
                             <span>Vigencia: {formatDate(currentGiveaway.start_date)} al {formatDate(currentGiveaway.end_date)}</span>
                         </div>
-
-                        {!isClosed && currentGiveaway.participants_count !== undefined && (
-                            <div style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: 6,
-                                padding: '6px 14px',
-                                backgroundColor: 'rgba(30, 41, 59, 0.8)',
-                                borderRadius: 20,
-                                border: '1px solid #334155',
-                                color: '#CBD5E1',
-                                fontSize: 13,
-                                fontWeight: 600
-                            }}>
-                                <Users size={14} style={{ color: '#38BDF8' }} />
-                                <span>{currentGiveaway.participants_count} {currentGiveaway.participants_count === 1 ? 'persona participando' : 'personas participando'}</span>
-                            </div>
-                        )}
                     </div>
                 </div>
 
@@ -282,78 +264,78 @@ export function GiveawaySection({
 
                 {/* Grid o Showcase de Premios según la cantidad (1, 2, 3 o más) */}
                 {prizes.length === 1 ? (
-                    // CASO 1 PREMIO: Spotlight Card Destacado
-                    <div style={{ maxWidth: 820, margin: '0 auto 48px' }}>
+                    // CASO 1 PREMIO: Spotlight Card Destacado con Imagen Grande
+                    <div style={{ maxWidth: 940, margin: '0 auto 48px' }}>
                         {(() => {
                             const prize = prizes[0];
                             const badge = getMedalBadge(prize.position);
-                            const isWinnerAssigned = !prize.winner_name;
+                            const isWinnerAssigned = Boolean(prize.winner_name && prize.winner_name.trim());
 
                             return (
                                 <div style={{
                                     backgroundColor: '#1E293B',
-                                    borderRadius: 22,
+                                    borderRadius: 24,
                                     border: '2px solid rgba(245, 158, 11, 0.4)',
                                     overflow: 'hidden',
                                     display: 'grid',
-                                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                                    boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.5)',
+                                    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                                    boxShadow: '0 25px 50px -10px rgba(0, 0, 0, 0.6)',
                                     position: 'relative'
                                 }}>
-                                    {/* Imagen del Premio */}
+                                    {/* Imagen del Premio (Doble de grande) */}
                                     <div style={{
-                                        minHeight: 280,
-                                        maxHeight: 380,
+                                        minHeight: 420,
                                         backgroundColor: '#0F172A',
                                         position: 'relative',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        padding: 16
+                                        padding: 24
                                     }}>
                                         {/* Badge de Medalla */}
                                         <div style={{
                                             position: 'absolute',
-                                            top: 14,
-                                            left: 14,
+                                            top: 18,
+                                            left: 18,
                                             zIndex: 2,
                                             background: badge.bg,
                                             color: badge.color,
-                                            padding: '6px 14px',
+                                            padding: '8px 16px',
                                             borderRadius: 30,
                                             fontWeight: 900,
-                                            fontSize: 12,
+                                            fontSize: 13,
                                             display: 'flex',
                                             alignItems: 'center',
                                             gap: 6,
-                                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+                                            boxShadow: '0 6px 16px rgba(0, 0, 0, 0.5)',
                                             border: `1px solid ${badge.border}`
                                         }}>
-                                            <span style={{ fontSize: 15 }}>{badge.icon}</span>
+                                            <span style={{ fontSize: 16 }}>{badge.icon}</span>
                                             <span>{badge.label}</span>
                                         </div>
 
                                         {prize.image_url ? (
-                                            <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 250 }}>
+                                            <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 380 }}>
                                                 <Image
                                                     src={prize.image_url}
                                                     alt={prize.title}
                                                     fill
                                                     style={{ objectFit: 'contain' }}
                                                     sizes="(max-width: 768px) 100vw, 50vw"
+                                                    priority
                                                 />
                                             </div>
                                         ) : (
                                             <div style={{ textAlign: 'center', color: '#64748B' }}>
-                                                <Gift size={64} strokeWidth={1.5} style={{ color: '#EA580C', opacity: 0.8, marginBottom: 8 }} />
-                                                <p style={{ fontSize: 14, margin: 0, fontWeight: 600 }}>Premio Especial</p>
+                                                <Gift size={72} strokeWidth={1.5} style={{ color: '#EA580C', opacity: 0.8, marginBottom: 12 }} />
+                                                <p style={{ fontSize: 15, margin: 0, fontWeight: 700 }}>Premio Especial</p>
                                             </div>
                                         )}
                                     </div>
 
                                     {/* Información del Premio */}
                                     <div style={{
-                                        padding: '32px 28px',
+                                        padding: '40px 32px',
                                         display: 'flex',
                                         flexDirection: 'column',
                                         justifyContent: 'center',
@@ -364,41 +346,46 @@ export function GiveawaySection({
                                             alignItems: 'center',
                                             gap: 6,
                                             color: '#F59E0B',
-                                            fontSize: 12,
+                                            fontSize: 12.5,
                                             fontWeight: 800,
                                             textTransform: 'uppercase',
                                             letterSpacing: '0.05em',
-                                            marginBottom: 8
+                                            marginBottom: 10
                                         }}>
-                                            <Sparkles size={15} />
+                                            <Sparkles size={16} />
                                             <span>Premio Principal en Juego</span>
                                         </div>
 
-                                        <h3 style={{ fontSize: 24, fontWeight: 900, color: '#FFFFFF', marginBottom: 12, lineHeight: 1.3 }}>
+                                        <h3 style={{ fontSize: 26, fontWeight: 900, color: '#FFFFFF', marginBottom: 14, lineHeight: 1.3 }}>
                                             {prize.title}
                                         </h3>
 
                                         {prize.description && (
-                                            <p style={{ color: '#CBD5E1', fontSize: 15, lineHeight: 1.6, margin: 0 }}>
+                                            <p style={{ color: '#E2E8F0', fontSize: 16, lineHeight: 1.6, margin: 0 }}>
                                                 {prize.description}
                                             </p>
                                         )}
 
                                         {isWinnerAssigned && (
                                             <div style={{
-                                                marginTop: 20,
-                                                padding: '12px 16px',
-                                                backgroundColor: 'rgba(34, 197, 94, 0.12)',
-                                                borderRadius: 12,
-                                                border: '1px solid rgba(34, 197, 94, 0.3)',
+                                                marginTop: 24,
+                                                padding: '14px 18px',
+                                                backgroundColor: 'rgba(34, 197, 94, 0.15)',
+                                                borderRadius: 14,
+                                                border: '1px solid rgba(34, 197, 94, 0.4)',
                                                 display: 'flex',
                                                 alignItems: 'center',
-                                                gap: 10
+                                                gap: 12
                                             }}>
-                                                <Trophy size={20} style={{ color: '#4ADE80', flexShrink: 0 }} />
-                                                <span style={{ fontSize: 14, color: '#FFFFFF', fontWeight: 600 }}>
-                                                    Ganador Oficial: <strong>{prize.winner_name}</strong>
-                                                </span>
+                                                <Trophy size={24} style={{ color: '#4ADE80', flexShrink: 0 }} />
+                                                <div>
+                                                    <div style={{ fontSize: 11, fontWeight: 800, color: '#86EFAC', textTransform: 'uppercase' }}>
+                                                        Ganador Oficial
+                                                    </div>
+                                                    <div style={{ fontSize: 16, color: '#FFFFFF', fontWeight: 800 }}>
+                                                        {prize.winner_name}
+                                                    </div>
+                                                </div>
                                             </div>
                                         )}
                                     </div>
@@ -417,7 +404,7 @@ export function GiveawaySection({
                     }}>
                         {prizes.map((prize) => {
                             const badge = getMedalBadge(prize.position);
-                            const isWinnerAssigned = !prize.winner_name;
+                            const isWinnerAssigned = Boolean(prize.winner_name && prize.winner_name.trim());
 
                             return (
                                 <div
@@ -524,7 +511,7 @@ export function GiveawaySection({
                     }}>
                         {prizes.map((prize) => {
                             const badge = getMedalBadge(prize.position);
-                            const isWinnerAssigned = !prize.winner_name;
+                            const isWinnerAssigned = Boolean(prize.winner_name && prize.winner_name.trim());
 
                             return (
                                 <div
