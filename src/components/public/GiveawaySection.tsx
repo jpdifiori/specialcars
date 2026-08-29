@@ -216,7 +216,308 @@ export function GiveawaySection({
     const whatsappShareText = encodeURIComponent(`¡Participá del ${currentGiveaway.title} en Special Cars! Ingresá acá: ${shareUrl}`);
 
     return (
-        <section id="sorteos" style={{ padding: '70px 20px', backgroundColor: '#0B1120', position: 'relative', overflow: 'hidden' }}>
+        <section id="sorteos" style={{ padding: '50px 16px', backgroundColor: '#0B1120', position: 'relative', overflow: 'hidden' }}>
+            {/* CSS Responsivo Incrustado para Mobile */}
+            <style jsx>{`
+                .giveaway-hero-grid {
+                    display: grid;
+                    grid-template-columns: 1.15fr 0.85fr;
+                    align-items: center;
+                    gap: 32px;
+                    max-width: 1040px;
+                    margin: 0 auto 48px;
+                    padding: 0 12px;
+                }
+                .giveaway-hero-left {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 18px;
+                    text-align: left;
+                }
+                .giveaway-hero-title {
+                    font-size: clamp(2.4rem, 5vw, 3.8rem);
+                    font-weight: 900;
+                    margin: 0;
+                    letter-spacing: -0.03em;
+                    line-height: 1.05;
+                    display: flex;
+                    flex-direction: column;
+                }
+                .giveaway-speech-bubble {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 8px 18px;
+                    background-color: rgba(30, 41, 59, 0.95);
+                    border: 1px solid rgba(234, 88, 12, 0.45);
+                    border-radius: 24px;
+                    color: #FFFFFF;
+                    font-size: 14px;
+                    font-weight: 800;
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+                    width: fit-content;
+                }
+                .giveaway-clock-container {
+                    background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+                    border: 1px solid rgba(234, 88, 12, 0.45);
+                    box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.7), 0 0 25px rgba(234, 88, 12, 0.2);
+                    border-radius: 20px;
+                    padding: 16px 20px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                    width: fit-content;
+                }
+                .giveaway-clock-box {
+                    background-color: #0F172A;
+                    border: 1px solid #334155;
+                    border-radius: 12px;
+                    padding: 8px 12px;
+                    min-width: 62px;
+                    text-align: center;
+                    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+                }
+                .giveaway-clock-box.seconds-box {
+                    border-color: rgba(234, 88, 12, 0.7);
+                    box-shadow: 0 0 14px rgba(234, 88, 12, 0.3), inset 0 2px 4px rgba(0,0,0,0.5);
+                }
+                .giveaway-clock-num {
+                    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+                    font-weight: 900;
+                    color: #FFFFFF;
+                    line-height: 1;
+                    font-family: monospace;
+                }
+                .giveaway-clock-num.seconds-num {
+                    color: #FB923C;
+                }
+                .giveaway-clock-label {
+                    font-size: 10px;
+                    font-weight: 800;
+                    color: #94A3B8;
+                    text-transform: uppercase;
+                    margin-top: 4px;
+                    letter-spacing: 0.04em;
+                }
+                .giveaway-clock-colon {
+                    font-size: 20px;
+                    font-weight: 900;
+                    color: #EA580C;
+                }
+                .giveaway-hero-right {
+                    display: flex;
+                    align-items: center;
+                    justifyContent: center;
+                    position: relative;
+                }
+                .giveaway-hernan-wrapper {
+                    position: relative;
+                    width: 100%;
+                    max-width: 390px;
+                    height: 390px;
+                    z-index: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .giveaway-hernan-glow {
+                    position: absolute;
+                    width: 320px;
+                    height: 320px;
+                    border-radius: 50%;
+                    background: radial-gradient(circle, rgba(234, 88, 12, 0.45) 0%, rgba(234, 88, 12, 0) 70%);
+                    filter: blur(25px);
+                    z-index: 0;
+                }
+                .giveaway-spotlight-card {
+                    background-color: #1E293B;
+                    border-radius: 24px;
+                    border: 2px solid rgba(234, 88, 12, 0.5);
+                    overflow: hidden;
+                    display: grid;
+                    grid-template-columns: 1fr 1.2fr;
+                    box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.7), 0 0 30px rgba(234, 88, 12, 0.15);
+                    position: relative;
+                    max-width: 940px;
+                    margin: 0 auto 48px;
+                }
+                .giveaway-spotlight-img-box {
+                    min-height: 420px;
+                    background-color: #0F172A;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 24px;
+                }
+                .giveaway-spotlight-info-box {
+                    padding: 40px 32px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    position: relative;
+                    background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+                    overflow: hidden;
+                }
+                .giveaway-spotlight-title {
+                    font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+                    font-weight: 900;
+                    color: #FFFFFF;
+                    margin-bottom: 12px;
+                    line-height: 1.2;
+                    letter-spacing: -0.02em;
+                    position: relative;
+                    z-index: 1;
+                }
+                .giveaway-spotlight-desc-box {
+                    padding: 12px 16px;
+                    background-color: rgba(15, 23, 42, 0.6);
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    border-left: 4px solid #EA580C;
+                    border-radius: 0 12px 12px 0;
+                    margin-bottom: 20px;
+                    position: relative;
+                    z-index: 1;
+                }
+                .giveaway-spotlight-perks-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+                    gap: 10px;
+                    margin-bottom: 20px;
+                    position: relative;
+                    z-index: 1;
+                }
+
+                /* RESPONSIVE MOBILE OPTIMIZATIONS (≤ 768px) */
+                @media (max-width: 768px) {
+                    .giveaway-hero-grid {
+                        display: flex !important;
+                        flex-direction: row !important;
+                        align-items: center !important;
+                        justify-content: space-between !important;
+                        gap: 10px !important;
+                        margin-bottom: 28px !important;
+                        padding: 0 !important;
+                    }
+                    .giveaway-hero-left {
+                        flex: 1 1 58% !important;
+                        min-width: 0 !important;
+                        gap: 8px !important;
+                    }
+                    .giveaway-hero-title {
+                        font-size: clamp(1.35rem, 5.2vw, 1.95rem) !important;
+                    }
+                    .giveaway-speech-bubble {
+                        padding: 4px 10px !important;
+                        font-size: 10.5px !important;
+                        border-radius: 14px !important;
+                        gap: 5px !important;
+                    }
+                    .giveaway-speech-bubble span {
+                        white-space: normal;
+                        line-height: 1.2;
+                    }
+                    .giveaway-clock-container {
+                        padding: 8px 10px !important;
+                        border-radius: 14px !important;
+                        gap: 6px !important;
+                        width: 100% !important;
+                    }
+                    .giveaway-clock-header-row {
+                        gap: 6px !important;
+                    }
+                    .giveaway-clock-header-txt {
+                        font-size: 9.5px !important;
+                    }
+                    .giveaway-clock-live-badge {
+                        font-size: 8.5px !important;
+                        padding: 1px 5px !important;
+                    }
+                    .giveaway-clock-digits-row {
+                        gap: 3px !important;
+                    }
+                    .giveaway-clock-box {
+                        min-width: 32px !important;
+                        padding: 4px 2px !important;
+                        border-radius: 8px !important;
+                        flex: 1;
+                    }
+                    .giveaway-clock-num {
+                        font-size: 13.5px !important;
+                    }
+                    .giveaway-clock-label {
+                        font-size: 7.5px !important;
+                        margin-top: 1px !important;
+                    }
+                    .giveaway-clock-colon {
+                        font-size: 12px !important;
+                    }
+                    .giveaway-clock-footer {
+                        font-size: 9px !important;
+                    }
+                    .giveaway-hero-right {
+                        flex: 0 0 40% !important;
+                        max-width: 160px !important;
+                    }
+                    .giveaway-hernan-wrapper {
+                        height: 200px !important;
+                        max-width: 160px !important;
+                    }
+                    .giveaway-hernan-glow {
+                        width: 150px !important;
+                        height: 150px !important;
+                    }
+
+                    /* TARJETA DEL PREMIO EN MOBILE: UNO AL LADO DEL OTRO */
+                    .giveaway-spotlight-card {
+                        display: flex !important;
+                        flex-direction: row !important;
+                        border-radius: 16px !important;
+                        margin-bottom: 28px !important;
+                    }
+                    .giveaway-spotlight-img-box {
+                        flex: 0 0 42% !important;
+                        min-height: 180px !important;
+                        padding: 8px !important;
+                    }
+                    .giveaway-spotlight-info-box {
+                        flex: 1 1 58% !important;
+                        padding: 12px 10px !important;
+                    }
+                    .giveaway-spotlight-badge {
+                        font-size: 9.5px !important;
+                        padding: 2px 7px !important;
+                    }
+                    .giveaway-spotlight-title {
+                        font-size: 14px !important;
+                        margin-bottom: 4px !important;
+                    }
+                    .giveaway-spotlight-desc-box {
+                        padding: 6px 8px !important;
+                        margin-bottom: 8px !important;
+                    }
+                    .giveaway-spotlight-desc-box p {
+                        font-size: 11px !important;
+                        line-height: 1.35 !important;
+                    }
+                    .giveaway-spotlight-perks-grid {
+                        grid-template-columns: 1fr 1fr !important;
+                        gap: 4px !important;
+                        margin-bottom: 8px !important;
+                    }
+                    .giveaway-spotlight-perk-item {
+                        padding: 4px 6px !important;
+                        font-size: 9px !important;
+                        gap: 4px !important;
+                        border-radius: 6px !important;
+                    }
+                    .giveaway-spotlight-cta {
+                        font-size: 10px !important;
+                        gap: 4px !important;
+                    }
+                }
+            `}</style>
+
             {/* Elementos visuales de fondo */}
             <div style={{
                 position: 'absolute',
@@ -232,68 +533,29 @@ export function GiveawaySection({
 
             <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
                 {/* Header de la sección: 2 Columnas (Texto Izquierda + Hernán Grande Derecha) */}
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                    alignItems: 'center',
-                    gap: 32,
-                    maxWidth: 1040,
-                    margin: '0 auto 48px',
-                    padding: '0 12px'
-                }}>
+                <div className="giveaway-hero-grid">
                     {/* Columna Izquierda: Títulos y Datos */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 18, textAlign: 'left' }}>
-                        <h2 style={{
-                            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-                            fontWeight: 900,
-                            margin: 0,
-                            letterSpacing: '-0.03em',
-                            lineHeight: 1.05,
-                            display: 'flex',
-                            flexDirection: 'column'
-                        }}>
+                    <div className="giveaway-hero-left">
+                        <h2 className="giveaway-hero-title">
                             <span style={{ color: '#FFFFFF', textTransform: 'uppercase' }}>SORTEOS</span>
                             <span style={{ color: '#EA580C' }}>Special Cars</span>
                         </h2>
 
                         {/* Globo de mensaje divertido */}
-                        <div style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 8,
-                            padding: '8px 18px',
-                            backgroundColor: 'rgba(30, 41, 59, 0.95)',
-                            border: '1px solid rgba(234, 88, 12, 0.45)',
-                            borderRadius: 24,
-                            color: '#FFFFFF',
-                            fontSize: 14,
-                            fontWeight: 800,
-                            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
-                            width: 'fit-content'
-                        }}>
-                            <Sparkles size={16} style={{ color: '#F59E0B' }} />
+                        <div className="giveaway-speech-bubble">
+                            <Sparkles size={15} style={{ color: '#F59E0B', flexShrink: 0 }} />
                             <span>¡Sumate gratis, vos podés ser el próximo ganador!</span>
                         </div>
 
                         {/* RELOJ DE CUENTA REGRESIVA ÉPICO */}
-                        <div style={{
-                            background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%)',
-                            border: '1px solid rgba(234, 88, 12, 0.45)',
-                            boxShadow: '0 12px 30px -8px rgba(0, 0, 0, 0.7), 0 0 25px rgba(234, 88, 12, 0.2)',
-                            borderRadius: 20,
-                            padding: '16px 20px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 12,
-                            width: 'fit-content'
-                        }}>
+                        <div className="giveaway-clock-container">
                             {/* Cabecera del Reloj */}
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#FB923C', fontSize: 12, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                                    <Clock size={15} style={{ color: '#EA580C' }} />
+                            <div className="giveaway-clock-header-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14 }}>
+                                <div className="giveaway-clock-header-txt" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#FB923C', fontSize: 12, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                                    <Clock size={14} style={{ color: '#EA580C' }} />
                                     <span>{timeLeft.isExpired ? '⏳ Sorteo en Proceso' : '⏳ El sorteo finaliza en:'}</span>
                                 </div>
-                                <div style={{
+                                <div className="giveaway-clock-live-badge" style={{
                                     display: 'flex',
                                     alignItems: 'center',
                                     gap: 5,
@@ -305,88 +567,56 @@ export function GiveawaySection({
                                     fontSize: 11,
                                     fontWeight: 900
                                 }}>
-                                    <span style={{ width: 7, height: 7, borderRadius: '50%', backgroundColor: '#22C55E', boxShadow: '0 0 8px #22C55E' }} />
+                                    <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#22C55E', boxShadow: '0 0 8px #22C55E' }} />
                                     <span>EN VIVO</span>
                                 </div>
                             </div>
 
                             {/* Bloques de Tiempo Digitales */}
                             {mounted ? (
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                <div className="giveaway-clock-digits-row" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                     {/* Días */}
-                                    <div style={{
-                                        backgroundColor: '#0F172A',
-                                        border: '1px solid #334155',
-                                        borderRadius: 12,
-                                        padding: '8px 12px',
-                                        minWidth: 62,
-                                        textAlign: 'center',
-                                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)'
-                                    }}>
-                                        <div style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 900, color: '#FFFFFF', lineHeight: 1, fontFamily: 'monospace' }}>
+                                    <div className="giveaway-clock-box">
+                                        <div className="giveaway-clock-num">
                                             {String(timeLeft.days).padStart(2, '0')}
                                         </div>
-                                        <div style={{ fontSize: 10, fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', marginTop: 4, letterSpacing: '0.04em' }}>
+                                        <div className="giveaway-clock-label">
                                             Días
                                         </div>
                                     </div>
 
-                                    <span style={{ fontSize: 20, fontWeight: 900, color: '#EA580C' }}>:</span>
+                                    <span className="giveaway-clock-colon">:</span>
 
                                     {/* Horas */}
-                                    <div style={{
-                                        backgroundColor: '#0F172A',
-                                        border: '1px solid #334155',
-                                        borderRadius: 12,
-                                        padding: '8px 12px',
-                                        minWidth: 62,
-                                        textAlign: 'center',
-                                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)'
-                                    }}>
-                                        <div style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 900, color: '#FFFFFF', lineHeight: 1, fontFamily: 'monospace' }}>
+                                    <div className="giveaway-clock-box">
+                                        <div className="giveaway-clock-num">
                                             {String(timeLeft.hours).padStart(2, '0')}
                                         </div>
-                                        <div style={{ fontSize: 10, fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', marginTop: 4, letterSpacing: '0.04em' }}>
+                                        <div className="giveaway-clock-label">
                                             Horas
                                         </div>
                                     </div>
 
-                                    <span style={{ fontSize: 20, fontWeight: 900, color: '#EA580C' }}>:</span>
+                                    <span className="giveaway-clock-colon">:</span>
 
                                     {/* Minutos */}
-                                    <div style={{
-                                        backgroundColor: '#0F172A',
-                                        border: '1px solid #334155',
-                                        borderRadius: 12,
-                                        padding: '8px 12px',
-                                        minWidth: 62,
-                                        textAlign: 'center',
-                                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)'
-                                    }}>
-                                        <div style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 900, color: '#FFFFFF', lineHeight: 1, fontFamily: 'monospace' }}>
+                                    <div className="giveaway-clock-box">
+                                        <div className="giveaway-clock-num">
                                             {String(timeLeft.minutes).padStart(2, '0')}
                                         </div>
-                                        <div style={{ fontSize: 10, fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', marginTop: 4, letterSpacing: '0.04em' }}>
+                                        <div className="giveaway-clock-label">
                                             Min
                                         </div>
                                     </div>
 
-                                    <span style={{ fontSize: 20, fontWeight: 900, color: '#EA580C' }}>:</span>
+                                    <span className="giveaway-clock-colon">:</span>
 
                                     {/* Segundos (con resplandor naranja vibrante) */}
-                                    <div style={{
-                                        backgroundColor: '#0F172A',
-                                        border: '1px solid rgba(234, 88, 12, 0.7)',
-                                        borderRadius: 12,
-                                        padding: '8px 12px',
-                                        minWidth: 62,
-                                        textAlign: 'center',
-                                        boxShadow: '0 0 14px rgba(234, 88, 12, 0.3), inset 0 2px 4px rgba(0,0,0,0.5)'
-                                    }}>
-                                        <div style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 900, color: '#FB923C', lineHeight: 1, fontFamily: 'monospace' }}>
+                                    <div className="giveaway-clock-box seconds-box">
+                                        <div className="giveaway-clock-num seconds-num">
                                             {String(timeLeft.seconds).padStart(2, '0')}
                                         </div>
-                                        <div style={{ fontSize: 10, fontWeight: 800, color: '#EA580C', textTransform: 'uppercase', marginTop: 4, letterSpacing: '0.04em' }}>
+                                        <div className="giveaway-clock-label" style={{ color: '#EA580C' }}>
                                             Seg
                                         </div>
                                     </div>
@@ -398,41 +628,19 @@ export function GiveawaySection({
                             )}
 
                             {/* Subtexto con fecha exacta */}
-                            <div style={{ fontSize: 11.5, color: '#94A3B8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+                            <div className="giveaway-clock-footer" style={{ fontSize: 11.5, color: '#94A3B8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
                                 <Calendar size={13} style={{ color: '#EA580C' }} />
                                 <span>Cierre del sorteo: <strong>{formatDate(currentGiveaway.end_date)}</strong></span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Columna Derecha: Hernán Saltando 2.5x Más Grande */}
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        position: 'relative'
-                    }}>
+                    {/* Columna Derecha: Hernán Saltando */}
+                    <div className="giveaway-hero-right">
                         {/* Resplandor cálido detrás de Hernán */}
-                        <div style={{
-                            position: 'absolute',
-                            width: 320,
-                            height: 320,
-                            borderRadius: '50%',
-                            background: 'radial-gradient(circle, rgba(234, 88, 12, 0.45) 0%, rgba(234, 88, 12, 0) 70%)',
-                            filter: 'blur(25px)',
-                            zIndex: 0
-                        }} />
+                        <div className="giveaway-hernan-glow" />
 
-                        <div style={{
-                            position: 'relative',
-                            width: '100%',
-                            maxWidth: 390,
-                            height: 390,
-                            zIndex: 1,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
+                        <div className="giveaway-hernan-wrapper">
                             <img
                                 src="/images/hernan-jumping-winner.png"
                                 alt="Hernán celebrando ganador del sorteo Special Cars"
@@ -472,7 +680,7 @@ export function GiveawaySection({
 
                 {/* Grid o Showcase de Premios según la cantidad (1, 2, 3 o más) */}
                 {prizes.length === 1 ? (
-                    // CASO 1 PREMIO: Spotlight Card Destacado con Imagen Grande
+                    // CASO 1 PREMIO: Spotlight Card Destacado
                     <div style={{ maxWidth: 940, margin: '0 auto 48px' }}>
                         {(() => {
                             const prize = prizes[0];
@@ -480,77 +688,52 @@ export function GiveawaySection({
                             const isWinnerAssigned = Boolean(prize.winner_name && prize.winner_name.trim());
 
                             return (
-                                <div style={{
-                                    backgroundColor: '#1E293B',
-                                    borderRadius: 24,
-                                    border: '2px solid rgba(234, 88, 12, 0.5)',
-                                    overflow: 'hidden',
-                                    display: 'grid',
-                                    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                                    boxShadow: '0 25px 60px -10px rgba(0, 0, 0, 0.7), 0 0 30px rgba(234, 88, 12, 0.15)',
-                                    position: 'relative'
-                                }}>
-                                    {/* Imagen del Premio (Doble de grande) */}
-                                    <div style={{
-                                        minHeight: 420,
-                                        backgroundColor: '#0F172A',
-                                        position: 'relative',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        padding: 24
-                                    }}>
+                                <div className="giveaway-spotlight-card">
+                                    {/* Imagen del Premio */}
+                                    <div className="giveaway-spotlight-img-box">
                                         {/* Badge de Medalla */}
                                         <div style={{
                                             position: 'absolute',
-                                            top: 18,
-                                            left: 18,
+                                            top: 14,
+                                            left: 14,
                                             zIndex: 2,
                                             background: badge.bg,
                                             color: badge.color,
-                                            padding: '8px 16px',
+                                            padding: '6px 14px',
                                             borderRadius: 30,
                                             fontWeight: 900,
-                                            fontSize: 13,
+                                            fontSize: 12,
                                             display: 'flex',
                                             alignItems: 'center',
                                             gap: 6,
                                             boxShadow: '0 6px 16px rgba(0, 0, 0, 0.5)',
                                             border: `1px solid ${badge.border}`
                                         }}>
-                                            <span style={{ fontSize: 16 }}>{badge.icon}</span>
+                                            <span style={{ fontSize: 15 }}>{badge.icon}</span>
                                             <span>{badge.label}</span>
                                         </div>
 
                                         {prize.image_url ? (
-                                            <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 380 }}>
+                                            <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 200 }}>
                                                 <Image
                                                     src={prize.image_url}
                                                     alt={prize.title}
                                                     fill
                                                     style={{ objectFit: 'contain' }}
-                                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                                    sizes="(max-width: 768px) 50vw, 50vw"
                                                     priority
                                                 />
                                             </div>
                                         ) : (
                                             <div style={{ textAlign: 'center', color: '#64748B' }}>
-                                                <Gift size={72} strokeWidth={1.5} style={{ color: '#EA580C', opacity: 0.8, marginBottom: 12 }} />
-                                                <p style={{ fontSize: 15, margin: 0, fontWeight: 700 }}>Premio Especial</p>
+                                                <Gift size={64} strokeWidth={1.5} style={{ color: '#EA580C', opacity: 0.8, marginBottom: 10 }} />
+                                                <p style={{ fontSize: 13, margin: 0, fontWeight: 700 }}>Premio Especial</p>
                                             </div>
                                         )}
                                     </div>
 
                                     {/* Información del Premio con Franjas y Estilo Festejos */}
-                                    <div style={{
-                                        padding: '40px 32px',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'center',
-                                        position: 'relative',
-                                        background: 'linear-gradient(135deg, #1E293B 0%, #0F172A 100%)',
-                                        overflow: 'hidden'
-                                    }}>
+                                    <div className="giveaway-spotlight-info-box">
                                         {/* Franjas diagonales de competición / festejo decorativas */}
                                         <div style={{
                                             position: 'absolute',
@@ -569,150 +752,125 @@ export function GiveawaySection({
                                             alignItems: 'center',
                                             justifyContent: 'space-between',
                                             flexWrap: 'wrap',
-                                            gap: 8,
-                                            marginBottom: 14,
+                                            gap: 6,
+                                            marginBottom: 10,
                                             position: 'relative',
                                             zIndex: 1
                                         }}>
-                                            <div style={{
+                                            <div className="giveaway-spotlight-badge" style={{
                                                 display: 'inline-flex',
                                                 alignItems: 'center',
-                                                gap: 6,
-                                                padding: '4px 12px',
+                                                gap: 5,
+                                                padding: '3px 10px',
                                                 backgroundColor: 'rgba(245, 158, 11, 0.15)',
                                                 border: '1px solid rgba(245, 158, 11, 0.4)',
                                                 borderRadius: 20,
                                                 color: '#F59E0B',
-                                                fontSize: 12,
+                                                fontSize: 11,
                                                 fontWeight: 900,
                                                 textTransform: 'uppercase',
-                                                letterSpacing: '0.06em'
+                                                letterSpacing: '0.05em'
                                             }}>
-                                                <Sparkles size={14} />
-                                                <span>Premio Principal en Juego</span>
+                                                <Sparkles size={13} />
+                                                <span>Premio Principal</span>
                                             </div>
 
                                             <div style={{
                                                 display: 'inline-flex',
                                                 alignItems: 'center',
                                                 gap: 4,
-                                                fontSize: 11,
+                                                fontSize: 10.5,
                                                 fontWeight: 800,
                                                 color: '#EA580C',
                                                 textTransform: 'uppercase',
                                                 letterSpacing: '0.04em'
                                             }}>
-                                                <Flame size={13} />
+                                                <Flame size={12} />
                                                 <span>Edición Especial</span>
                                             </div>
                                         </div>
 
                                         {/* Título del Premio */}
-                                        <h3 style={{
-                                            fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)',
-                                            fontWeight: 900,
-                                            color: '#FFFFFF',
-                                            marginBottom: 12,
-                                            lineHeight: 1.2,
-                                            letterSpacing: '-0.02em',
-                                            position: 'relative',
-                                            zIndex: 1
-                                        }}>
+                                        <h3 className="giveaway-spotlight-title">
                                             {prize.title}
                                         </h3>
 
                                         {/* Descripción del Premio en tarjeta destacada */}
                                         {prize.description && (
-                                            <div style={{
-                                                padding: '12px 16px',
-                                                backgroundColor: 'rgba(15, 23, 42, 0.6)',
-                                                border: '1px solid rgba(255, 255, 255, 0.08)',
-                                                borderLeft: '4px solid #EA580C',
-                                                borderRadius: '0 12px 12px 0',
-                                                marginBottom: 20,
-                                                position: 'relative',
-                                                zIndex: 1
-                                            }}>
-                                                <p style={{ color: '#F1F5F9', fontSize: 15, lineHeight: 1.5, margin: 0, fontWeight: 500 }}>
+                                            <div className="giveaway-spotlight-desc-box">
+                                                <p style={{ color: '#F1F5F9', fontSize: 14, lineHeight: 1.45, margin: 0, fontWeight: 500 }}>
                                                     {prize.description}
                                                 </p>
                                             </div>
                                         )}
 
                                         {/* Franja de Beneficios / Características del Sorteo */}
-                                        <div style={{
-                                            display: 'grid',
-                                            gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-                                            gap: 10,
-                                            marginBottom: 20,
-                                            position: 'relative',
-                                            zIndex: 1
-                                        }}>
-                                            <div style={{
+                                        <div className="giveaway-spotlight-perks-grid">
+                                            <div className="giveaway-spotlight-perk-item" style={{
                                                 display: 'flex',
                                                 alignItems: 'center',
-                                                gap: 8,
-                                                padding: '8px 12px',
+                                                gap: 6,
+                                                padding: '6px 10px',
                                                 backgroundColor: 'rgba(30, 41, 59, 0.7)',
-                                                borderRadius: 10,
+                                                borderRadius: 8,
                                                 border: '1px solid rgba(255, 255, 255, 0.06)'
                                             }}>
-                                                <Gift size={16} style={{ color: '#EA580C', flexShrink: 0 }} />
-                                                <span style={{ fontSize: 12, color: '#E2E8F0', fontWeight: 700 }}>
+                                                <Gift size={14} style={{ color: '#EA580C', flexShrink: 0 }} />
+                                                <span style={{ fontSize: 11, color: '#E2E8F0', fontWeight: 700 }}>
                                                     100% Gratuito
                                                 </span>
                                             </div>
 
-                                            <div style={{
+                                            <div className="giveaway-spotlight-perk-item" style={{
                                                 display: 'flex',
                                                 alignItems: 'center',
-                                                gap: 8,
-                                                padding: '8px 12px',
+                                                gap: 6,
+                                                padding: '6px 10px',
                                                 backgroundColor: 'rgba(30, 41, 59, 0.7)',
-                                                borderRadius: 10,
+                                                borderRadius: 8,
                                                 border: '1px solid rgba(255, 255, 255, 0.06)'
                                             }}>
-                                                <Trophy size={16} style={{ color: '#F59E0B', flexShrink: 0 }} />
-                                                <span style={{ fontSize: 12, color: '#E2E8F0', fontWeight: 700 }}>
+                                                <Trophy size={14} style={{ color: '#F59E0B', flexShrink: 0 }} />
+                                                <span style={{ fontSize: 11, color: '#E2E8F0', fontWeight: 700 }}>
                                                     Entrega Directa
                                                 </span>
                                             </div>
                                         </div>
 
                                         {/* Indicador para completar formulario abajo */}
-                                        <div style={{
+                                        <div className="giveaway-spotlight-cta" style={{
                                             display: 'flex',
                                             alignItems: 'center',
-                                            gap: 8,
+                                            gap: 6,
                                             color: '#FB923C',
-                                            fontSize: 13,
+                                            fontSize: 12,
                                             fontWeight: 800,
                                             position: 'relative',
                                             zIndex: 1
                                         }}>
-                                            <PartyPopper size={16} style={{ color: '#EA580C' }} />
-                                            <span>¡Completá tus datos abajo para participar!</span>
+                                            <PartyPopper size={15} style={{ color: '#EA580C' }} />
+                                            <span>¡Completá abajo para participar!</span>
                                         </div>
 
                                         {isWinnerAssigned && (
                                             <div style={{
-                                                marginTop: 20,
-                                                padding: '14px 18px',
+                                                marginTop: 14,
+                                                padding: '10px 14px',
                                                 backgroundColor: 'rgba(34, 197, 94, 0.15)',
-                                                borderRadius: 14,
+                                                borderRadius: 12,
                                                 border: '1px solid rgba(34, 197, 94, 0.4)',
                                                 display: 'flex',
                                                 alignItems: 'center',
-                                                gap: 12,
+                                                gap: 10,
                                                 position: 'relative',
                                                 zIndex: 1
                                             }}>
-                                                <Trophy size={24} style={{ color: '#4ADE80', flexShrink: 0 }} />
+                                                <Trophy size={20} style={{ color: '#4ADE80', flexShrink: 0 }} />
                                                 <div>
-                                                    <div style={{ fontSize: 11, fontWeight: 800, color: '#86EFAC', textTransform: 'uppercase' }}>
+                                                    <div style={{ fontSize: 10, fontWeight: 800, color: '#86EFAC', textTransform: 'uppercase' }}>
                                                         Ganador Oficial
                                                     </div>
-                                                    <div style={{ fontSize: 16, color: '#FFFFFF', fontWeight: 800 }}>
+                                                    <div style={{ fontSize: 14, color: '#FFFFFF', fontWeight: 800 }}>
                                                         {prize.winner_name}
                                                     </div>
                                                 </div>
