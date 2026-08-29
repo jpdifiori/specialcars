@@ -304,18 +304,31 @@ export async function uploadGiveawayImageAction(formData: FormData): Promise<{
     url?: string;
     error?: string;
 }> {
-    const admin = createAdminClient();
-    const file = formData.get('file') as File;
-    const giveawayId = (formData.get('giveaway_id') as string) || 'general';
-
-    if (!file) {
-        return { success: false, error: 'No se envió ningún archivo.' };
-    }
-
     try {
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        const ext = file.name.split('.').pop() || 'jpg';
+        const admin = createAdminClient();
+        const file = formData.get('file') as File;
+        const giveawayId = (formData.get('giveaway_id') as string) || 'general';
+
+        if (!file || typeof file === 'string') {
+            return { success: false, error: 'No se envió ningún archivo.' };
+        }
+
+        // Validar tamaño máximo (5MB)
+        const MAX_SIZE = 5 * 1024 * 1024;
+        if (file.size > MAX_SIZE) {
+            return { success: false, error: 'La imagen supera el límite de 5MB. Intentá con una imagen más liviana.' };
+        }
+
+        let buffer: Buffer;
+        try {
+            const bytes = await file.arrayBuffer();
+            buffer = Buffer.from(bytes);
+        } catch (bufferErr) {
+            console.error('Error al leer el archivo de imagen:', bufferErr);
+            return { success: false, error: 'No se pudo leer el archivo de imagen. Intentá de nuevo.' };
+        }
+
+        const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
         const fileName = `${giveawayId}/${Date.now()}-${Math.random().toString(36).substring(2, 7)}.${ext}`;
 
         const { error: uploadErr } = await admin.storage
@@ -328,7 +341,14 @@ export async function uploadGiveawayImageAction(formData: FormData): Promise<{
 
         if (uploadErr) {
             console.error('Error subiendo imagen a Storage giveaways:', uploadErr);
-            return { success: false, error: uploadErr.message };
+            // Detectar si el bucket no existe
+            const errMsg = typeof uploadErr === 'object' && uploadErr !== null && 'message' in uploadErr
+                ? String(uploadErr.message)
+                : String(uploadErr);
+            if (errMsg.includes('not found') || errMsg.includes('Bucket')) {
+                return { success: false, error: 'El bucket de almacenamiento "giveaways" no existe en Supabase. Crealo desde el panel de Supabase Storage.' };
+            }
+            return { success: false, error: errMsg || 'Error al subir la imagen al servidor.' };
         }
 
         const { data: publicUrlData } = admin.storage
@@ -336,9 +356,10 @@ export async function uploadGiveawayImageAction(formData: FormData): Promise<{
             .getPublicUrl(fileName);
 
         return { success: true, url: publicUrlData.publicUrl };
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error('Error in uploadGiveawayImageAction:', err);
-        return { success: false, error: err.message || 'Error al procesar la imagen.' };
+        const message = err instanceof Error ? err.message : String(err || 'Error al procesar la imagen.');
+        return { success: false, error: message };
     }
 }
 

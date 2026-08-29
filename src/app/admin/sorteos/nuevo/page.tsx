@@ -95,8 +95,9 @@ export default function NewGiveawayPage() {
             } else {
                 alert('Error al subir la imagen: ' + (res.error || 'Desconocido'));
             }
-        } catch (err: any) {
-            alert('Error al procesar la imagen: ' + err.message);
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : String(err || 'Error desconocido');
+            alert('Error al procesar la imagen: ' + msg);
         } finally {
             updated[index].isUploading = false;
             setPrizes([...updated]);
@@ -147,8 +148,9 @@ export default function NewGiveawayPage() {
                 setErrorMessage(res.error || 'Ocurrió un error al crear el sorteo.');
                 setIsSubmitting(false);
             }
-        } catch (err: any) {
-            setErrorMessage(err.message || 'Error inesperado al guardar.');
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : String(err || 'Error inesperado al guardar.');
+            setErrorMessage(msg);
             setIsSubmitting(false);
         }
     };

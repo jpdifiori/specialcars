@@ -141,8 +141,9 @@ export default function AdminGiveawayDetailPage({ params }: { params: Promise<{ 
             } else {
                 alert('Error al subir imagen: ' + (res.error || 'Desconocido'));
             }
-        } catch (err: any) {
-            alert('Error: ' + err.message);
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : String(err || 'Error desconocido');
+            alert('Error: ' + msg);
         } finally {
             updated[index].isUploading = false;
             setPrizes([...updated]);
