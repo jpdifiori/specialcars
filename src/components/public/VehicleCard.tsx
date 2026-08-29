@@ -33,8 +33,8 @@ export function VehicleCard({
 
     return (
         <div className={`vehicle-card ${hasActiveOffer ? 'vehicle-card-offer' : ''}`} style={hasActiveOffer ? { borderColor: '#FDBA74' } : undefined}>
-            {/* Foto de Portada */}
-            <Link href={slugUrl} className="vehicle-card-image-wrap" style={{ aspectRatio: '16/9.5' }}>
+            {/* Foto de Portada (Más Alta: Formato 4/3) */}
+            <Link href={slugUrl} className="vehicle-card-image-wrap" style={{ aspectRatio: '4/3' }}>
                 {vehicle.primary_image_url ? (
                     <img 
                         src={vehicle.primary_image_url} 
