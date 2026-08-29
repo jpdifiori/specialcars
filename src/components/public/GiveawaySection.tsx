@@ -202,14 +202,16 @@ export function GiveawaySection({
                     {/* Columna Izquierda: Títulos y Datos */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 18, textAlign: 'left' }}>
                         <h2 style={{
-                            fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
+                            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
                             fontWeight: 900,
-                            color: '#FFFFFF',
                             margin: 0,
                             letterSpacing: '-0.03em',
-                            lineHeight: 1.1
+                            lineHeight: 1.05,
+                            display: 'flex',
+                            flexDirection: 'column'
                         }}>
-                            Sorteos <span style={{ color: '#EA580C' }}>Special Cars</span>
+                            <span style={{ color: '#FFFFFF', textTransform: 'uppercase' }}>SORTEOS</span>
+                            <span style={{ color: '#EA580C' }}>Special Cars</span>
                         </h2>
 
                         {/* Globo de mensaje divertido */}
