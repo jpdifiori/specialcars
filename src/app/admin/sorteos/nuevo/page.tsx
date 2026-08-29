@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { createGiveawayAction, uploadGiveawayImageAction } from '@/lib/actions/giveaways';
 import { GiveawayStatus } from '@/lib/types';
+import imageCompression from 'browser-image-compression';
 import { 
     ArrowLeft, 
     Gift, 
@@ -85,8 +86,15 @@ export default function NewGiveawayPage() {
         setPrizes([...updated]);
 
         try {
+            // Comprimir la imagen antes de subir para optimizar rendimiento y evitar límites de payload
+            const compressed = await imageCompression(file, {
+                maxSizeMB: 1.2,
+                maxWidthOrHeight: 1920,
+                useWebWorker: true
+            });
+
             const formData = new FormData();
-            formData.append('file', file);
+            formData.append('file', compressed, file.name);
             formData.append('giveaway_id', 'new');
 
             const res = await uploadGiveawayImageAction(formData);
@@ -96,6 +104,7 @@ export default function NewGiveawayPage() {
                 alert('Error al subir la imagen: ' + (res.error || 'Desconocido'));
             }
         } catch (err: unknown) {
+            console.error('Error al procesar imagen:', err);
             const msg = err instanceof Error ? err.message : String(err || 'Error desconocido');
             alert('Error al procesar la imagen: ' + msg);
         } finally {

@@ -297,7 +297,7 @@ export async function getGiveawayParticipantsAction(giveawayId: string): Promise
 }
 
 /**
- * Sube una imagen de premio o banner a Supabase Storage (bucket: 'giveaways').
+ * Sube una imagen de premio o banner a Supabase Storage (bucket: 'giveaways' o fallback 'vehicle-images').
  */
 export async function uploadGiveawayImageAction(formData: FormData): Promise<{
     success: boolean;
@@ -313,10 +313,10 @@ export async function uploadGiveawayImageAction(formData: FormData): Promise<{
             return { success: false, error: 'No se envió ningún archivo.' };
         }
 
-        // Validar tamaño máximo (5MB)
-        const MAX_SIZE = 5 * 1024 * 1024;
+        // Validar tamaño máximo (10MB)
+        const MAX_SIZE = 10 * 1024 * 1024;
         if (file.size > MAX_SIZE) {
-            return { success: false, error: 'La imagen supera el límite de 5MB. Intentá con una imagen más liviana.' };
+            return { success: false, error: 'La imagen supera el límite de 10MB. Intentá con una imagen más liviana.' };
         }
 
         let buffer: Buffer;
@@ -329,31 +329,66 @@ export async function uploadGiveawayImageAction(formData: FormData): Promise<{
         }
 
         const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
-        const fileName = `${giveawayId}/${Date.now()}-${Math.random().toString(36).substring(2, 7)}.${ext}`;
+        let targetBucket = 'giveaways';
+        let targetPath = `${giveawayId}/${Date.now()}-${Math.random().toString(36).substring(2, 7)}.${ext}`;
 
-        const { error: uploadErr } = await admin.storage
-            .from('giveaways')
-            .upload(fileName, buffer, {
+        let { error: uploadErr } = await admin.storage
+            .from(targetBucket)
+            .upload(targetPath, buffer, {
                 contentType: file.type || 'image/jpeg',
                 cacheControl: '3600',
                 upsert: true
             });
 
+        // Si el bucket 'giveaways' no existe, intentar crearlo o hacer fallback a 'vehicle-images'
         if (uploadErr) {
-            console.error('Error subiendo imagen a Storage giveaways:', uploadErr);
-            // Detectar si el bucket no existe
+            const errStr = typeof uploadErr === 'object' && uploadErr !== null && 'message' in uploadErr
+                ? String(uploadErr.message)
+                : String(uploadErr);
+
+            if (errStr.toLowerCase().includes('not found') || errStr.toLowerCase().includes('bucket')) {
+                // Intentar crear el bucket 'giveaways' como público
+                try {
+                    await admin.storage.createBucket('giveaways', { public: true });
+                    const retry = await admin.storage
+                        .from('giveaways')
+                        .upload(targetPath, buffer, {
+                            contentType: file.type || 'image/jpeg',
+                            cacheControl: '3600',
+                            upsert: true
+                        });
+                    uploadErr = retry.error;
+                } catch {
+                    uploadErr = { message: 'createBucket failed' } as any;
+                }
+
+                // Si aún falla, fallback al bucket 'vehicle-images' que ya está activo
+                if (uploadErr) {
+                    targetBucket = 'vehicle-images';
+                    targetPath = `giveaways/${targetPath}`;
+                    const fallbackRes = await admin.storage
+                        .from(targetBucket)
+                        .upload(targetPath, buffer, {
+                            contentType: file.type || 'image/jpeg',
+                            cacheControl: '3600',
+                            upsert: true
+                        });
+                    uploadErr = fallbackRes.error;
+                }
+            }
+        }
+
+        if (uploadErr) {
+            console.error('Error subiendo imagen a Storage:', uploadErr);
             const errMsg = typeof uploadErr === 'object' && uploadErr !== null && 'message' in uploadErr
                 ? String(uploadErr.message)
                 : String(uploadErr);
-            if (errMsg.includes('not found') || errMsg.includes('Bucket')) {
-                return { success: false, error: 'El bucket de almacenamiento "giveaways" no existe en Supabase. Crealo desde el panel de Supabase Storage.' };
-            }
             return { success: false, error: errMsg || 'Error al subir la imagen al servidor.' };
         }
 
         const { data: publicUrlData } = admin.storage
-            .from('giveaways')
-            .getPublicUrl(fileName);
+            .from(targetBucket)
+            .getPublicUrl(targetPath);
 
         return { success: true, url: publicUrlData.publicUrl };
     } catch (err: unknown) {

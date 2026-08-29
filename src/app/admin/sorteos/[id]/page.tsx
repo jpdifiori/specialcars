@@ -14,6 +14,7 @@ import {
     drawRandomWinnerAction
 } from '@/lib/actions/giveaways';
 import { Giveaway, GiveawayPrize, GiveawayParticipant, GiveawayStatus } from '@/lib/types';
+import imageCompression from 'browser-image-compression';
 import { 
     ArrowLeft, 
     Gift, 
@@ -131,8 +132,15 @@ export default function AdminGiveawayDetailPage({ params }: { params: Promise<{ 
         setPrizes([...updated]);
 
         try {
+            // Comprimir la imagen antes de subir para optimizar rendimiento y evitar límites de payload
+            const compressed = await imageCompression(file, {
+                maxSizeMB: 1.2,
+                maxWidthOrHeight: 1920,
+                useWebWorker: true
+            });
+
             const formData = new FormData();
-            formData.append('file', file);
+            formData.append('file', compressed, file.name);
             formData.append('giveaway_id', id);
 
             const res = await uploadGiveawayImageAction(formData);
@@ -142,6 +150,7 @@ export default function AdminGiveawayDetailPage({ params }: { params: Promise<{ 
                 alert('Error al subir imagen: ' + (res.error || 'Desconocido'));
             }
         } catch (err: unknown) {
+            console.error('Error al procesar imagen:', err);
             const msg = err instanceof Error ? err.message : String(err || 'Error desconocido');
             alert('Error: ' + msg);
         } finally {
