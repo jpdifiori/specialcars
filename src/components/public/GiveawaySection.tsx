@@ -977,28 +977,6 @@ export function GiveawaySection({
                     </div>
                 )}
 
-                {/* Botón Ver Más / Bases */}
-                <div style={{ textAlign: 'center', marginTop: 40 }}>
-                    <Link
-                        href="/sorteos"
-                        style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 8,
-                            padding: '10px 20px',
-                            borderRadius: 30,
-                            backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            color: '#FB923C',
-                            fontWeight: 700,
-                            fontSize: 14,
-                            textDecoration: 'none'
-                        }}
-                    >
-                        <span>Ver más detalles, bases y sorteos anteriores</span>
-                        <ArrowRight size={16} />
-                    </Link>
-                </div>
             </div>
         </section>
     );
