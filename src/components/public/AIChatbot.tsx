@@ -88,9 +88,9 @@ export function AIChatbot({
         }
     }, [isOpen, messages]);
 
-    // Ocultar el bubble tip después de 10 segundos
+    // Ocultar el bubble tip después de exactamente 3 segundos en desktop y mobile
     useEffect(() => {
-        const timer = setTimeout(() => setShowBubbleTip(false), 12000);
+        const timer = setTimeout(() => setShowBubbleTip(false), 3000);
         return () => clearTimeout(timer);
     }, []);
 
