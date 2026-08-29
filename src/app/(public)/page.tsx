@@ -88,30 +88,30 @@ export default async function PublicHomePage() {
                             </div>
                         </div>
 
-                        {/* COMBO MOBILE: Textos a la misma altura + Hernán reducido 20% al lado */}
-                        <div className="mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginTop: 12, borderTop: '1px solid #E2E8F0', paddingTop: 10 }}>
+                        {/* COMBO MOBILE: Textos de Confianza + Hernán 2x más grande */}
+                        <div className="mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginTop: 14, borderTop: '1px solid #E2E8F0', paddingTop: 12 }}>
                             {/* Columna Izquierda: 3 Textos de Confianza */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 5, flex: 1, minWidth: 0 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 9px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 7 }}>
-                                    <ShieldCheck size={14} style={{ color: '#EA580C', flexShrink: 0 }} />
-                                    <span style={{ fontSize: 11, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Unidades Verificadas</span>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 7, flex: '1 1 54%', minWidth: 0 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 10px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 9, boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}>
+                                    <ShieldCheck size={16} style={{ color: '#EA580C', flexShrink: 0 }} />
+                                    <span style={{ fontSize: 11.5, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Unidades Verificadas</span>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 9px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 7 }}>
-                                    <ArrowLeftRight size={14} style={{ color: '#EA580C', flexShrink: 0 }} />
-                                    <span style={{ fontSize: 11, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Tomamos tu Usado</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 10px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 9, boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}>
+                                    <ArrowLeftRight size={16} style={{ color: '#EA580C', flexShrink: 0 }} />
+                                    <span style={{ fontSize: 11.5, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Tomamos tu Usado</span>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 9px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 7 }}>
-                                    <Award size={14} style={{ color: '#EA580C', flexShrink: 0 }} />
-                                    <span style={{ fontSize: 11, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Gestoría Integral</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 10px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 9, boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}>
+                                    <Award size={16} style={{ color: '#EA580C', flexShrink: 0 }} />
+                                    <span style={{ fontSize: 11.5, fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap' }}>Gestoría Integral</span>
                                 </div>
                             </div>
 
-                            {/* Columna Derecha: Hernán compacto */}
-                            <div style={{ width: 110, flexShrink: 0, display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
+                            {/* Columna Derecha: Hernán el doble de grande */}
+                            <div style={{ flex: '0 0 46%', maxWidth: 175, display: 'flex', justifyContent: 'center', alignItems: 'flex-end', position: 'relative' }}>
                                 <img
                                     src="/images/franco-hero.png"
                                     alt="Hernán Asesor de Special Cars"
-                                    style={{ width: '100%', maxHeight: 130, objectFit: 'contain', display: 'block', filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.18))' }}
+                                    style={{ width: '100%', maxHeight: 220, objectFit: 'contain', display: 'block', filter: 'drop-shadow(0 10px 22px rgba(0,0,0,0.22))' }}
                                 />
                             </div>
                         </div>
