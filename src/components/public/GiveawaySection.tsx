@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Giveaway, GiveawayPrize } from '@/lib/types';
@@ -18,7 +18,9 @@ import {
     Medal, 
     PartyPopper,
     Send,
-    MessageCircle
+    MessageCircle,
+    Clock,
+    Flame
 } from 'lucide-react';
 
 interface GiveawaySectionProps {
@@ -41,10 +43,50 @@ export function GiveawaySection({
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
     const [registeredSuccessfully, setRegisteredSuccessfully] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    const [timeLeft, setTimeLeft] = useState<{
+        days: number;
+        hours: number;
+        minutes: number;
+        seconds: number;
+        isExpired: boolean;
+    }>({ days: 0, hours: 0, minutes: 0, seconds: 0, isExpired: false });
 
     // Determinar qué sorteo mostrar como principal
     const currentGiveaway = activeGiveaway || latestClosedGiveaway;
     const isClosed = !activeGiveaway && !!latestClosedGiveaway;
+
+    useEffect(() => {
+        setMounted(true);
+        if (!currentGiveaway?.end_date) return;
+
+        const calculateTime = () => {
+            const now = new Date().getTime();
+            // Handle date string (ensuring end of day if only date is provided)
+            let target = new Date(currentGiveaway.end_date).getTime();
+            if (currentGiveaway.end_date.length === 10) {
+                target = new Date(`${currentGiveaway.end_date}T23:59:59`).getTime();
+            }
+
+            const difference = target - now;
+
+            if (difference <= 0) {
+                setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, isExpired: true });
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            setTimeLeft({ days, hours, minutes, seconds, isExpired: false });
+        };
+
+        calculateTime();
+        const interval = setInterval(calculateTime, 1000);
+        return () => clearInterval(interval);
+    }, [currentGiveaway?.end_date]);
 
     if (!currentGiveaway) {
         return (
@@ -233,22 +275,133 @@ export function GiveawaySection({
                             <span>¡Sumate gratis, vos podés ser el próximo ganador!</span>
                         </div>
 
-                        {/* Chip de Vigencia */}
+                        {/* RELOJ DE CUENTA REGRESIVA ÉPICO */}
                         <div style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 8,
-                            padding: '8px 18px',
-                            backgroundColor: 'rgba(15, 23, 42, 0.85)',
-                            borderRadius: 30,
-                            border: '1px solid #334155',
-                            color: '#E2E8F0',
-                            fontSize: 13.5,
-                            fontWeight: 600,
+                            background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%)',
+                            border: '1px solid rgba(234, 88, 12, 0.45)',
+                            boxShadow: '0 12px 30px -8px rgba(0, 0, 0, 0.7), 0 0 25px rgba(234, 88, 12, 0.2)',
+                            borderRadius: 20,
+                            padding: '16px 20px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 12,
                             width: 'fit-content'
                         }}>
-                            <Calendar size={15} style={{ color: '#EA580C' }} />
-                            <span>Vigencia: {formatDate(currentGiveaway.start_date)} al {formatDate(currentGiveaway.end_date)}</span>
+                            {/* Cabecera del Reloj */}
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#FB923C', fontSize: 12, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                                    <Clock size={15} style={{ color: '#EA580C' }} />
+                                    <span>{timeLeft.isExpired ? '⏳ Sorteo en Proceso' : '⏳ El sorteo finaliza en:'}</span>
+                                </div>
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 5,
+                                    padding: '3px 9px',
+                                    borderRadius: 12,
+                                    backgroundColor: 'rgba(234, 88, 12, 0.15)',
+                                    border: '1px solid rgba(234, 88, 12, 0.3)',
+                                    color: '#EA580C',
+                                    fontSize: 11,
+                                    fontWeight: 900
+                                }}>
+                                    <span style={{ width: 7, height: 7, borderRadius: '50%', backgroundColor: '#22C55E', boxShadow: '0 0 8px #22C55E' }} />
+                                    <span>EN VIVO</span>
+                                </div>
+                            </div>
+
+                            {/* Bloques de Tiempo Digitales */}
+                            {mounted ? (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    {/* Días */}
+                                    <div style={{
+                                        backgroundColor: '#0F172A',
+                                        border: '1px solid #334155',
+                                        borderRadius: 12,
+                                        padding: '8px 12px',
+                                        minWidth: 62,
+                                        textAlign: 'center',
+                                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)'
+                                    }}>
+                                        <div style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 900, color: '#FFFFFF', lineHeight: 1, fontFamily: 'monospace' }}>
+                                            {String(timeLeft.days).padStart(2, '0')}
+                                        </div>
+                                        <div style={{ fontSize: 10, fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', marginTop: 4, letterSpacing: '0.04em' }}>
+                                            Días
+                                        </div>
+                                    </div>
+
+                                    <span style={{ fontSize: 20, fontWeight: 900, color: '#EA580C' }}>:</span>
+
+                                    {/* Horas */}
+                                    <div style={{
+                                        backgroundColor: '#0F172A',
+                                        border: '1px solid #334155',
+                                        borderRadius: 12,
+                                        padding: '8px 12px',
+                                        minWidth: 62,
+                                        textAlign: 'center',
+                                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)'
+                                    }}>
+                                        <div style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 900, color: '#FFFFFF', lineHeight: 1, fontFamily: 'monospace' }}>
+                                            {String(timeLeft.hours).padStart(2, '0')}
+                                        </div>
+                                        <div style={{ fontSize: 10, fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', marginTop: 4, letterSpacing: '0.04em' }}>
+                                            Horas
+                                        </div>
+                                    </div>
+
+                                    <span style={{ fontSize: 20, fontWeight: 900, color: '#EA580C' }}>:</span>
+
+                                    {/* Minutos */}
+                                    <div style={{
+                                        backgroundColor: '#0F172A',
+                                        border: '1px solid #334155',
+                                        borderRadius: 12,
+                                        padding: '8px 12px',
+                                        minWidth: 62,
+                                        textAlign: 'center',
+                                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)'
+                                    }}>
+                                        <div style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 900, color: '#FFFFFF', lineHeight: 1, fontFamily: 'monospace' }}>
+                                            {String(timeLeft.minutes).padStart(2, '0')}
+                                        </div>
+                                        <div style={{ fontSize: 10, fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', marginTop: 4, letterSpacing: '0.04em' }}>
+                                            Min
+                                        </div>
+                                    </div>
+
+                                    <span style={{ fontSize: 20, fontWeight: 900, color: '#EA580C' }}>:</span>
+
+                                    {/* Segundos (con resplandor naranja vibrante) */}
+                                    <div style={{
+                                        backgroundColor: '#0F172A',
+                                        border: '1px solid rgba(234, 88, 12, 0.7)',
+                                        borderRadius: 12,
+                                        padding: '8px 12px',
+                                        minWidth: 62,
+                                        textAlign: 'center',
+                                        boxShadow: '0 0 14px rgba(234, 88, 12, 0.3), inset 0 2px 4px rgba(0,0,0,0.5)'
+                                    }}>
+                                        <div style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 900, color: '#FB923C', lineHeight: 1, fontFamily: 'monospace' }}>
+                                            {String(timeLeft.seconds).padStart(2, '0')}
+                                        </div>
+                                        <div style={{ fontSize: 10, fontWeight: 800, color: '#EA580C', textTransform: 'uppercase', marginTop: 4, letterSpacing: '0.04em' }}>
+                                            Seg
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div style={{ color: '#94A3B8', fontSize: 13, fontWeight: 600 }}>
+                                    Cargando cuenta regresiva...
+                                </div>
+                            )}
+
+                            {/* Subtexto con fecha exacta */}
+                            <div style={{ fontSize: 11.5, color: '#94A3B8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+                                <Calendar size={13} style={{ color: '#EA580C' }} />
+                                <span>Cierre del sorteo: <strong>{formatDate(currentGiveaway.end_date)}</strong></span>
+                            </div>
                         </div>
                     </div>
 
