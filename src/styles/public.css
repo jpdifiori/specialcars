@@ -1416,11 +1416,12 @@
   .btn-hero-primary, .btn-hero-whatsapp {
     flex: 1;
     width: auto;
-    padding: 12px 8px;
+    padding: 7px 6px;
     font-size: 13px;
+    border-radius: 10px;
     justify-content: center;
     white-space: nowrap;
-    gap: 6px;
+    gap: 5px;
     min-width: 0;
   }
 
