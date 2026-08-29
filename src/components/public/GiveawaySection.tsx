@@ -227,10 +227,13 @@ export function GiveawaySection({
     const whatsappShareText = encodeURIComponent(`¡Participá del ${currentGiveaway.title} en Special Cars! Ingresá acá: ${shareUrl}`);
 
     return (
-        <section id="sorteos" style={{ padding: '50px 16px', backgroundColor: '#0B1120', position: 'relative', overflow: 'hidden' }}>
+        <section id="sorteos" className="giveaway-section-container" style={{ padding: '50px 16px', backgroundColor: '#0B1120', position: 'relative', overflow: 'hidden' }}>
             {/* CSS Responsivo Incrustado para Mobile */}
             <style dangerouslySetInnerHTML={{ __html: `
                 /* DESKTOP HERO LAYOUT */
+                .giveaway-section-container {
+                    padding: 50px 16px;
+                }
                 .giveaway-hero-grid {
                     display: grid;
                     grid-template-columns: 1.15fr 0.85fr;
@@ -451,31 +454,35 @@ export function GiveawaySection({
 
                 /* RESPONSIVE MOBILE OPTIMIZATIONS (≤ 768px) */
                 @media (max-width: 768px) {
+                    .giveaway-section-container {
+                        padding: 24px 6px !important;
+                    }
                     .giveaway-hero-grid {
                         display: grid !important;
-                        grid-template-columns: 1.15fr 0.85fr !important;
+                        grid-template-columns: 1.05fr 0.95fr !important;
                         grid-template-areas:
                             "title title"
                             "clock hernan" !important;
                         align-items: center !important;
-                        gap: 10px 10px !important;
-                        margin-bottom: 24px !important;
+                        gap: 6px 4px !important;
+                        margin-bottom: 18px !important;
                         padding: 0 !important;
                     }
                     .giveaway-hero-title-wrapper {
                         grid-area: title !important;
                         width: 100% !important;
                         text-align: left !important;
+                        padding: 0 2px !important;
                     }
                     .giveaway-hero-title {
                         display: flex !important;
                         flex-direction: row !important;
                         flex-wrap: nowrap !important;
                         align-items: baseline !important;
-                        gap: 8px !important;
-                        font-size: clamp(1.4rem, 6.2vw, 1.95rem) !important;
+                        gap: 6px !important;
+                        font-size: clamp(1.4rem, 6.5vw, 2.05rem) !important;
                         margin: 0 !important;
-                        line-height: 1.1 !important;
+                        line-height: 1.05 !important;
                         white-space: nowrap !important;
                     }
                     .giveaway-speech-bubble-wrapper {
@@ -489,18 +496,18 @@ export function GiveawaySection({
                         width: 100% !important;
                     }
                     .giveaway-clock-container {
-                        padding: 8px 8px !important;
-                        border-radius: 14px !important;
-                        gap: 6px !important;
+                        padding: 6px 6px !important;
+                        border-radius: 12px !important;
+                        gap: 4px !important;
                         width: 100% !important;
-                        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5) !important;
+                        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5) !important;
                     }
                     .giveaway-clock-header-row {
                         gap: 4px !important;
                         justify-content: flex-start !important;
                     }
                     .giveaway-clock-header-txt {
-                        font-size: 10px !important;
+                        font-size: 9.5px !important;
                     }
                     .giveaway-clock-live-badge {
                         display: none !important;
@@ -511,35 +518,36 @@ export function GiveawaySection({
                     }
                     .giveaway-clock-box {
                         min-width: 0 !important;
-                        padding: 4px 2px !important;
+                        padding: 4px 1px !important;
                         border-radius: 6px !important;
                         flex: 1 !important;
                     }
                     .giveaway-clock-num {
-                        font-size: 13.5px !important;
+                        font-size: 13px !important;
                     }
                     .giveaway-clock-label {
                         font-size: 7px !important;
                         margin-top: 1px !important;
                     }
                     .giveaway-clock-colon {
-                        font-size: 12px !important;
+                        font-size: 11px !important;
                     }
                     .giveaway-clock-footer {
                         display: none !important;
                     }
                     .giveaway-hero-right {
                         grid-area: hernan !important;
-                        max-width: 150px !important;
+                        max-width: 165px !important;
                         justify-self: center !important;
+                        padding: 0 !important;
                     }
                     .giveaway-hernan-wrapper {
-                        height: 180px !important;
-                        max-width: 150px !important;
+                        height: 195px !important;
+                        max-width: 165px !important;
                     }
                     .giveaway-hernan-glow {
-                        width: 140px !important;
-                        height: 140px !important;
+                        width: 155px !important;
+                        height: 155px !important;
                     }
 
                     /* TARJETA DEL PREMIO EN MOBILE: UNO AL LADO DEL OTRO */
