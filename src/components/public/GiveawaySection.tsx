@@ -131,13 +131,24 @@ export function GiveawaySection({
 
     const prizes = (currentGiveaway.prizes || []).sort((a, b) => a.position - b.position);
 
-    const formatDate = (isoString: string) => {
+    const MONTHS_ES = [
+        'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+        'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+    ];
+
+    const formatDate = (isoString?: string | null) => {
+        if (!isoString) return '';
         try {
-            return new Date(isoString).toLocaleDateString('es-AR', {
-                day: '2-digit',
-                month: 'long',
-                year: 'numeric'
-            });
+            const parts = isoString.split('T')[0].split('-');
+            if (parts.length === 3) {
+                const year = parts[0];
+                const monthIdx = parseInt(parts[1], 10) - 1;
+                const day = parseInt(parts[2], 10);
+                const monthName = MONTHS_ES[monthIdx] || parts[1];
+                return `${day} de ${monthName} de ${year}`;
+            }
+            const d = new Date(isoString);
+            return `${d.getDate()} de ${MONTHS_ES[d.getMonth()]} de ${d.getFullYear()}`;
         } catch {
             return isoString;
         }
@@ -218,7 +229,7 @@ export function GiveawaySection({
     return (
         <section id="sorteos" style={{ padding: '50px 16px', backgroundColor: '#0B1120', position: 'relative', overflow: 'hidden' }}>
             {/* CSS Responsivo Incrustado para Mobile */}
-            <style jsx>{`
+            <style dangerouslySetInnerHTML={{ __html: `
                 .giveaway-hero-grid {
                     display: grid;
                     grid-template-columns: 1.15fr 0.85fr;
@@ -516,7 +527,7 @@ export function GiveawaySection({
                         gap: 4px !important;
                     }
                 }
-            `}</style>
+            ` }} />
 
             {/* Elementos visuales de fondo */}
             <div style={{
@@ -548,7 +559,7 @@ export function GiveawaySection({
                         </div>
 
                         {/* RELOJ DE CUENTA REGRESIVA ÉPICO */}
-                        <div className="giveaway-clock-container">
+                        <div className="giveaway-clock-container" suppressHydrationWarning>
                             {/* Cabecera del Reloj */}
                             <div className="giveaway-clock-header-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14 }}>
                                 <div className="giveaway-clock-header-txt" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#FB923C', fontSize: 12, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
@@ -574,7 +585,7 @@ export function GiveawaySection({
 
                             {/* Bloques de Tiempo Digitales */}
                             {mounted ? (
-                                <div className="giveaway-clock-digits-row" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                <div className="giveaway-clock-digits-row" style={{ display: 'flex', alignItems: 'center', gap: 8 }} suppressHydrationWarning>
                                     {/* Días */}
                                     <div className="giveaway-clock-box">
                                         <div className="giveaway-clock-num">
@@ -622,13 +633,13 @@ export function GiveawaySection({
                                     </div>
                                 </div>
                             ) : (
-                                <div style={{ color: '#94A3B8', fontSize: 13, fontWeight: 600 }}>
+                                <div style={{ color: '#94A3B8', fontSize: 13, fontWeight: 600 }} suppressHydrationWarning>
                                     Cargando cuenta regresiva...
                                 </div>
                             )}
 
                             {/* Subtexto con fecha exacta */}
-                            <div className="giveaway-clock-footer" style={{ fontSize: 11.5, color: '#94A3B8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+                            <div className="giveaway-clock-footer" style={{ fontSize: 11.5, color: '#94A3B8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }} suppressHydrationWarning>
                                 <Calendar size={13} style={{ color: '#EA580C' }} />
                                 <span>Cierre del sorteo: <strong>{formatDate(currentGiveaway.end_date)}</strong></span>
                             </div>
