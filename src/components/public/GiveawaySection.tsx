@@ -189,51 +189,108 @@ export function GiveawaySection({
             }} />
 
             <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-                {/* Header de la sección */}
-                <div style={{ textAlign: 'center', marginBottom: 40 }}>
+                {/* Header de la sección al estilo Special Cars */}
+                <div style={{ textAlign: 'center', marginBottom: 44 }}>
+                    {/* Badge superior */}
                     <div style={{
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: 8,
                         padding: '6px 18px',
-                        backgroundColor: isClosed ? 'rgba(34, 197, 94, 0.15)' : 'rgba(234, 88, 12, 0.15)',
-                        border: `1px solid ${isClosed ? 'rgba(34, 197, 94, 0.4)' : 'rgba(234, 88, 12, 0.4)'}`,
+                        backgroundColor: 'rgba(234, 88, 12, 0.15)',
+                        border: '1px solid rgba(234, 88, 12, 0.4)',
                         borderRadius: 30,
-                        color: isClosed ? '#4ADE80' : '#FB923C',
+                        color: '#FB923C',
                         fontWeight: 800,
-                        fontSize: 13,
+                        fontSize: 12.5,
                         marginBottom: 14,
-                        letterSpacing: '0.04em'
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase'
                     }}>
-                        {isClosed ? <PartyPopper size={16} /> : <Gift size={16} />}
-                        <span>{isClosed ? '🏆 RESULTADOS DEL SORTEO' : '🎁 SORTEO ACTIVO'}</span>
+                        <Gift size={15} />
+                        <span>Comunidad & Beneficios</span>
                     </div>
 
-                    <h2 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', fontWeight: 900, color: '#FFFFFF', marginBottom: 12, letterSpacing: '-0.02em' }}>
-                        {currentGiveaway.title}
+                    {/* Título Principal Llamativo */}
+                    <h2 style={{
+                        fontSize: 'clamp(2.2rem, 4.5vw, 3.2rem)',
+                        fontWeight: 900,
+                        color: '#FFFFFF',
+                        marginBottom: 14,
+                        letterSpacing: '-0.03em',
+                        lineHeight: 1.15
+                    }}>
+                        Sorteos <span style={{ color: '#EA580C' }}>Special Cars</span>
                     </h2>
 
-                    {currentGiveaway.description && (
-                        <p style={{ color: '#FFFFFF', maxWidth: 720, margin: '0 auto 16px', fontSize: 16.5, lineHeight: 1.6, fontWeight: 500 }}>
-                            {currentGiveaway.description}
-                        </p>
-                    )}
+                    {/* Subtítulo Claro y Directo */}
+                    <p style={{
+                        color: '#E2E8F0',
+                        maxWidth: 680,
+                        margin: '0 auto 20px',
+                        fontSize: 16,
+                        lineHeight: 1.6,
+                        fontWeight: 400
+                    }}>
+                        {currentGiveaway.description || 'Participá gratis en nuestros sorteos oficiales. Ingresá tus datos para entrar en la selección y llevarte premios exclusivos para tu vehículo.'}
+                    </p>
+
+                    {/* Banner de Invitación de Hernán */}
+                    <div style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 12,
+                        padding: '8px 18px 8px 10px',
+                        backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                        border: '1px solid rgba(234, 88, 12, 0.35)',
+                        borderRadius: 50,
+                        boxShadow: '0 8px 24px -6px rgba(0, 0, 0, 0.4)',
+                        marginBottom: 16
+                    }}>
+                        <div style={{
+                            width: 44,
+                            height: 44,
+                            borderRadius: '50%',
+                            overflow: 'hidden',
+                            border: '2px solid #EA580C',
+                            backgroundColor: '#FFFFFF',
+                            flexShrink: 0,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 2px 8px rgba(234, 88, 12, 0.3)'
+                        }}>
+                            <img
+                                src="/images/hernan-phone-circle.png"
+                                alt="Hernán de Special Cars"
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                        </div>
+                        <div style={{ textAlign: 'left' }}>
+                            <div style={{ fontSize: 13, fontWeight: 800, color: '#FFFFFF' }}>
+                                ¡Hernán te invita a participar!
+                            </div>
+                            <div style={{ fontSize: 11.5, color: '#94A3B8', fontWeight: 600 }}>
+                                100% Gratuito y transparente
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Chip de Vigencia */}
-                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 14 }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
                         <div style={{
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: 8,
-                            padding: '8px 18px',
-                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                            padding: '6px 16px',
+                            backgroundColor: 'rgba(15, 23, 42, 0.85)',
                             borderRadius: 30,
-                            border: '1px solid rgba(255, 255, 255, 0.15)',
-                            color: '#FFFFFF',
-                            fontSize: 14,
-                            fontWeight: 700
+                            border: '1px solid #334155',
+                            color: '#CBD5E1',
+                            fontSize: 13,
+                            fontWeight: 600
                         }}>
-                            <Calendar size={15} style={{ color: '#EA580C' }} />
+                            <Calendar size={14} style={{ color: '#EA580C' }} />
                             <span>Vigencia: {formatDate(currentGiveaway.start_date)} al {formatDate(currentGiveaway.end_date)}</span>
                         </div>
                     </div>
