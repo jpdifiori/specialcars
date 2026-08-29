@@ -189,48 +189,95 @@ export function GiveawaySection({
             }} />
 
             <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-                {/* Header de la sección: Título + Hernán saltando de cuerpo completo */}
-                <div style={{ textAlign: 'center', marginBottom: 40 }}>
-                    {/* Título Principal Arriba de Todo */}
-                    <h2 style={{
-                        fontSize: 'clamp(2.4rem, 5vw, 3.6rem)',
-                        fontWeight: 900,
-                        color: '#FFFFFF',
-                        marginBottom: 18,
-                        letterSpacing: '-0.03em',
-                        lineHeight: 1.1
-                    }}>
-                        Sorteos <span style={{ color: '#EA580C' }}>Special Cars</span>
-                    </h2>
+                {/* Header de la sección: 2 Columnas (Texto Izquierda + Hernán Grande Derecha) */}
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                    alignItems: 'center',
+                    gap: 32,
+                    maxWidth: 1040,
+                    margin: '0 auto 48px',
+                    padding: '0 12px'
+                }}>
+                    {/* Columna Izquierda: Títulos y Datos */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 18, textAlign: 'left' }}>
+                        <h2 style={{
+                            fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
+                            fontWeight: 900,
+                            color: '#FFFFFF',
+                            margin: 0,
+                            letterSpacing: '-0.03em',
+                            lineHeight: 1.1
+                        }}>
+                            Sorteos <span style={{ color: '#EA580C' }}>Special Cars</span>
+                        </h2>
 
-                    {/* Hernán Saltando de Cuerpo Completo (Fondo Transparente) */}
+                        {/* Globo de mensaje divertido */}
+                        <div style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 8,
+                            padding: '8px 18px',
+                            backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                            border: '1px solid rgba(234, 88, 12, 0.45)',
+                            borderRadius: 24,
+                            color: '#FFFFFF',
+                            fontSize: 14,
+                            fontWeight: 800,
+                            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+                            width: 'fit-content'
+                        }}>
+                            <Sparkles size={16} style={{ color: '#F59E0B' }} />
+                            <span>¡Sumate gratis, vos podés ser el próximo ganador!</span>
+                        </div>
+
+                        {/* Chip de Vigencia */}
+                        <div style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 8,
+                            padding: '8px 18px',
+                            backgroundColor: 'rgba(15, 23, 42, 0.85)',
+                            borderRadius: 30,
+                            border: '1px solid #334155',
+                            color: '#E2E8F0',
+                            fontSize: 13.5,
+                            fontWeight: 600,
+                            width: 'fit-content'
+                        }}>
+                            <Calendar size={15} style={{ color: '#EA580C' }} />
+                            <span>Vigencia: {formatDate(currentGiveaway.start_date)} al {formatDate(currentGiveaway.end_date)}</span>
+                        </div>
+                    </div>
+
+                    {/* Columna Derecha: Hernán Saltando 2.5x Más Grande */}
                     <div style={{
                         display: 'flex',
-                        flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        margin: '0 auto 18px',
                         position: 'relative'
                     }}>
+                        {/* Resplandor cálido detrás de Hernán */}
+                        <div style={{
+                            position: 'absolute',
+                            width: 320,
+                            height: 320,
+                            borderRadius: '50%',
+                            background: 'radial-gradient(circle, rgba(234, 88, 12, 0.45) 0%, rgba(234, 88, 12, 0) 70%)',
+                            filter: 'blur(25px)',
+                            zIndex: 0
+                        }} />
+
                         <div style={{
                             position: 'relative',
-                            width: 170,
-                            height: 170,
+                            width: '100%',
+                            maxWidth: 390,
+                            height: 390,
+                            zIndex: 1,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}>
-                            {/* Resplandor sutil detrás de Hernán */}
-                            <div style={{
-                                position: 'absolute',
-                                width: 140,
-                                height: 140,
-                                borderRadius: '50%',
-                                background: 'radial-gradient(circle, rgba(234, 88, 12, 0.35) 0%, rgba(234, 88, 12, 0) 70%)',
-                                filter: 'blur(10px)',
-                                zIndex: 0
-                            }} />
-
                             <img
                                 src="/images/hernan-jumping-winner.png"
                                 alt="Hernán celebrando ganador del sorteo Special Cars"
@@ -238,51 +285,9 @@ export function GiveawaySection({
                                     width: '100%',
                                     height: '100%',
                                     objectFit: 'contain',
-                                    position: 'relative',
-                                    zIndex: 1,
-                                    filter: 'drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5))'
+                                    filter: 'drop-shadow(0 15px 35px rgba(0, 0, 0, 0.6))'
                                 }}
                             />
-                        </div>
-
-                        {/* Globo de mensaje divertido */}
-                        <div style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 6,
-                            marginTop: -6,
-                            padding: '6px 16px',
-                            backgroundColor: 'rgba(30, 41, 59, 0.95)',
-                            border: '1px solid rgba(234, 88, 12, 0.4)',
-                            borderRadius: 20,
-                            color: '#FFFFFF',
-                            fontSize: 13,
-                            fontWeight: 800,
-                            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.4)',
-                            position: 'relative',
-                            zIndex: 2
-                        }}>
-                            <Sparkles size={14} style={{ color: '#F59E0B' }} />
-                            <span>¡Sumate gratis, vos podés ser el próximo ganador!</span>
-                        </div>
-                    </div>
-
-                    {/* Chip de Vigencia */}
-                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 14 }}>
-                        <div style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 8,
-                            padding: '7px 18px',
-                            backgroundColor: 'rgba(15, 23, 42, 0.85)',
-                            borderRadius: 30,
-                            border: '1px solid #334155',
-                            color: '#E2E8F0',
-                            fontSize: 13.5,
-                            fontWeight: 600
-                        }}>
-                            <Calendar size={15} style={{ color: '#EA580C' }} />
-                            <span>Vigencia: {formatDate(currentGiveaway.start_date)} al {formatDate(currentGiveaway.end_date)}</span>
                         </div>
                     </div>
                 </div>
