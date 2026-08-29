@@ -230,20 +230,22 @@ export function GiveawaySection({
         <section id="sorteos" style={{ padding: '50px 16px', backgroundColor: '#0B1120', position: 'relative', overflow: 'hidden' }}>
             {/* CSS Responsivo Incrustado para Mobile */}
             <style dangerouslySetInnerHTML={{ __html: `
+                /* DESKTOP HERO LAYOUT */
                 .giveaway-hero-grid {
                     display: grid;
                     grid-template-columns: 1.15fr 0.85fr;
+                    grid-template-areas:
+                        "title hernan"
+                        "bubble hernan"
+                        "clock hernan";
                     align-items: center;
-                    gap: 32px;
+                    gap: 16px 32px;
                     max-width: 1040px;
                     margin: 0 auto 48px;
                     padding: 0 12px;
                 }
-                .giveaway-hero-left {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 18px;
-                    text-align: left;
+                .giveaway-hero-title-wrapper {
+                    grid-area: title;
                 }
                 .giveaway-hero-title {
                     font-size: clamp(2.4rem, 5vw, 3.8rem);
@@ -253,6 +255,9 @@ export function GiveawaySection({
                     line-height: 1.05;
                     display: flex;
                     flex-direction: column;
+                }
+                .giveaway-speech-bubble-wrapper {
+                    grid-area: bubble;
                 }
                 .giveaway-speech-bubble {
                     display: inline-flex;
@@ -268,6 +273,9 @@ export function GiveawaySection({
                     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
                     width: fit-content;
                 }
+                .giveaway-clock-wrapper {
+                    grid-area: clock;
+                }
                 .giveaway-clock-container {
                     background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
                     border: 1px solid rgba(234, 88, 12, 0.45);
@@ -278,6 +286,39 @@ export function GiveawaySection({
                     flex-direction: column;
                     gap: 12px;
                     width: fit-content;
+                }
+                .giveaway-clock-header-row {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 14px;
+                }
+                .giveaway-clock-header-txt {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    color: #FB923C;
+                    font-size: 12px;
+                    font-weight: 900;
+                    text-transform: uppercase;
+                    letter-spacing: 0.06em;
+                }
+                .giveaway-clock-live-badge {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    padding: 3px 9px;
+                    border-radius: 12px;
+                    background-color: rgba(234, 88, 12, 0.15);
+                    border: 1px solid rgba(234, 88, 12, 0.3);
+                    color: '#EA580C';
+                    font-size: 11px;
+                    font-weight: 900;
+                }
+                .giveaway-clock-digits-row {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
                 }
                 .giveaway-clock-box {
                     background-color: #0F172A;
@@ -315,10 +356,19 @@ export function GiveawaySection({
                     font-weight: 900;
                     color: #EA580C;
                 }
-                .giveaway-hero-right {
+                .giveaway-clock-footer {
+                    font-size: 11.5px;
+                    color: #94A3B8;
+                    font-weight: 600;
                     display: flex;
                     align-items: center;
-                    justifyContent: center;
+                    gap: 6px;
+                }
+                .giveaway-hero-right {
+                    grid-area: hernan;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     position: relative;
                 }
                 .giveaway-hernan-wrapper {
@@ -402,81 +452,94 @@ export function GiveawaySection({
                 /* RESPONSIVE MOBILE OPTIMIZATIONS (≤ 768px) */
                 @media (max-width: 768px) {
                     .giveaway-hero-grid {
-                        display: flex !important;
-                        flex-direction: row !important;
+                        display: grid !important;
+                        grid-template-columns: 1.15fr 0.85fr !important;
+                        grid-template-areas:
+                            "title title"
+                            "clock hernan" !important;
                         align-items: center !important;
-                        justify-content: space-between !important;
-                        gap: 10px !important;
-                        margin-bottom: 28px !important;
+                        gap: 10px 10px !important;
+                        margin-bottom: 24px !important;
                         padding: 0 !important;
                     }
-                    .giveaway-hero-left {
-                        flex: 1 1 58% !important;
-                        min-width: 0 !important;
-                        gap: 8px !important;
+                    .giveaway-hero-title-wrapper {
+                        grid-area: title !important;
+                        width: 100% !important;
+                        text-align: left !important;
                     }
                     .giveaway-hero-title {
-                        font-size: clamp(1.35rem, 5.2vw, 1.95rem) !important;
+                        display: flex !important;
+                        flex-direction: row !important;
+                        flex-wrap: nowrap !important;
+                        align-items: baseline !important;
+                        gap: 8px !important;
+                        font-size: clamp(1.4rem, 6.2vw, 1.95rem) !important;
+                        margin: 0 !important;
+                        line-height: 1.1 !important;
+                        white-space: nowrap !important;
+                    }
+                    .giveaway-speech-bubble-wrapper {
+                        display: none !important;
                     }
                     .giveaway-speech-bubble {
-                        padding: 4px 10px !important;
-                        font-size: 10.5px !important;
-                        border-radius: 14px !important;
-                        gap: 5px !important;
+                        display: none !important;
                     }
-                    .giveaway-speech-bubble span {
-                        white-space: normal;
-                        line-height: 1.2;
+                    .giveaway-clock-wrapper {
+                        grid-area: clock !important;
+                        width: 100% !important;
                     }
                     .giveaway-clock-container {
-                        padding: 8px 10px !important;
+                        padding: 8px 8px !important;
                         border-radius: 14px !important;
                         gap: 6px !important;
                         width: 100% !important;
+                        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5) !important;
                     }
                     .giveaway-clock-header-row {
-                        gap: 6px !important;
+                        gap: 4px !important;
+                        justify-content: flex-start !important;
                     }
                     .giveaway-clock-header-txt {
-                        font-size: 9.5px !important;
+                        font-size: 10px !important;
                     }
                     .giveaway-clock-live-badge {
-                        font-size: 8.5px !important;
-                        padding: 1px 5px !important;
+                        display: none !important;
                     }
                     .giveaway-clock-digits-row {
-                        gap: 3px !important;
+                        gap: 2px !important;
+                        justify-content: space-between !important;
                     }
                     .giveaway-clock-box {
-                        min-width: 32px !important;
+                        min-width: 0 !important;
                         padding: 4px 2px !important;
-                        border-radius: 8px !important;
-                        flex: 1;
+                        border-radius: 6px !important;
+                        flex: 1 !important;
                     }
                     .giveaway-clock-num {
                         font-size: 13.5px !important;
                     }
                     .giveaway-clock-label {
-                        font-size: 7.5px !important;
+                        font-size: 7px !important;
                         margin-top: 1px !important;
                     }
                     .giveaway-clock-colon {
                         font-size: 12px !important;
                     }
                     .giveaway-clock-footer {
-                        font-size: 9px !important;
+                        display: none !important;
                     }
                     .giveaway-hero-right {
-                        flex: 0 0 40% !important;
-                        max-width: 160px !important;
+                        grid-area: hernan !important;
+                        max-width: 150px !important;
+                        justify-self: center !important;
                     }
                     .giveaway-hernan-wrapper {
-                        height: 200px !important;
-                        max-width: 160px !important;
+                        height: 180px !important;
+                        max-width: 150px !important;
                     }
                     .giveaway-hernan-glow {
-                        width: 150px !important;
-                        height: 150px !important;
+                        width: 140px !important;
+                        height: 140px !important;
                     }
 
                     /* TARJETA DEL PREMIO EN MOBILE: UNO AL LADO DEL OTRO */
@@ -543,41 +606,34 @@ export function GiveawaySection({
             }} />
 
             <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-                {/* Header de la sección: 2 Columnas (Texto Izquierda + Hernán Grande Derecha) */}
+                {/* Header de la sección: Título + (Reloj Izquierda + Hernán Derecha) */}
                 <div className="giveaway-hero-grid">
-                    {/* Columna Izquierda: Títulos y Datos */}
-                    <div className="giveaway-hero-left">
+                    {/* Título Principal */}
+                    <div className="giveaway-hero-title-wrapper">
                         <h2 className="giveaway-hero-title">
-                            <span style={{ color: '#FFFFFF', textTransform: 'uppercase' }}>SORTEOS</span>
+                            <span style={{ color: '#FFFFFF', textTransform: 'uppercase' }}>SORTEOS </span>
                             <span style={{ color: '#EA580C' }}>Special Cars</span>
                         </h2>
+                    </div>
 
-                        {/* Globo de mensaje divertido */}
+                    {/* Globo de mensaje divertido */}
+                    <div className="giveaway-speech-bubble-wrapper">
                         <div className="giveaway-speech-bubble">
                             <Sparkles size={15} style={{ color: '#F59E0B', flexShrink: 0 }} />
                             <span>¡Sumate gratis, vos podés ser el próximo ganador!</span>
                         </div>
+                    </div>
 
-                        {/* RELOJ DE CUENTA REGRESIVA ÉPICO */}
+                    {/* RELOJ DE CUENTA REGRESIVA ÉPICO Y MINIMALISTA */}
+                    <div className="giveaway-clock-wrapper">
                         <div className="giveaway-clock-container" suppressHydrationWarning>
                             {/* Cabecera del Reloj */}
-                            <div className="giveaway-clock-header-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14 }}>
-                                <div className="giveaway-clock-header-txt" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#FB923C', fontSize: 12, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                            <div className="giveaway-clock-header-row">
+                                <div className="giveaway-clock-header-txt">
                                     <Clock size={14} style={{ color: '#EA580C' }} />
-                                    <span>{timeLeft.isExpired ? '⏳ Sorteo en Proceso' : '⏳ El sorteo finaliza en:'}</span>
+                                    <span>{timeLeft.isExpired ? '⏳ Sorteo en Proceso' : '⏳ Finaliza en:'}</span>
                                 </div>
-                                <div className="giveaway-clock-live-badge" style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 5,
-                                    padding: '3px 9px',
-                                    borderRadius: 12,
-                                    backgroundColor: 'rgba(234, 88, 12, 0.15)',
-                                    border: '1px solid rgba(234, 88, 12, 0.3)',
-                                    color: '#EA580C',
-                                    fontSize: 11,
-                                    fontWeight: 900
-                                }}>
+                                <div className="giveaway-clock-live-badge">
                                     <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#22C55E', boxShadow: '0 0 8px #22C55E' }} />
                                     <span>EN VIVO</span>
                                 </div>
@@ -585,7 +641,7 @@ export function GiveawaySection({
 
                             {/* Bloques de Tiempo Digitales */}
                             {mounted ? (
-                                <div className="giveaway-clock-digits-row" style={{ display: 'flex', alignItems: 'center', gap: 8 }} suppressHydrationWarning>
+                                <div className="giveaway-clock-digits-row" suppressHydrationWarning>
                                     {/* Días */}
                                     <div className="giveaway-clock-box">
                                         <div className="giveaway-clock-num">
@@ -639,7 +695,7 @@ export function GiveawaySection({
                             )}
 
                             {/* Subtexto con fecha exacta */}
-                            <div className="giveaway-clock-footer" style={{ fontSize: 11.5, color: '#94A3B8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }} suppressHydrationWarning>
+                            <div className="giveaway-clock-footer" suppressHydrationWarning>
                                 <Calendar size={13} style={{ color: '#EA580C' }} />
                                 <span>Cierre del sorteo: <strong>{formatDate(currentGiveaway.end_date)}</strong></span>
                             </div>
