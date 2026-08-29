@@ -10,15 +10,15 @@ export function BrandLogo({ variant = 'light', size = 'md', showText = true }: B
     const isDark = variant === 'dark';
 
     const iconSizes = {
-        sm: 41, // +20% para mobile
-        md: 60,
-        lg: 74
+        sm: 46, // +5px
+        md: 65,
+        lg: 79
     };
 
     const textSizes = {
-        sm: { special: 22, cars: 23 }, // +20% para mobile
-        md: { special: 29, cars: 30 },
-        lg: { special: 38, cars: 39 }
+        sm: { special: 27, cars: 28 }, // +5px
+        md: { special: 34, cars: 35 },
+        lg: { special: 43, cars: 44 }
     };
 
     const s = iconSizes[size] || 40;
