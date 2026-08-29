@@ -48,7 +48,7 @@ export default async function PublicHomePage() {
                             Encontrá tu próximo auto con <span>total confianza</span> y transparencia.
                         </h1>
 
-                        <p className="hero-subtitle">
+                        <p className="hero-subtitle desktop-only-block">
                             En <strong>{settings.name || 'Special Cars'}</strong> encontrá vehículos seleccionados y verificados. Elegí tu próximo auto y entregá el tuyo en parte de pago con una excelente tasación.
                         </p>
 
