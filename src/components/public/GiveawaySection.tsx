@@ -483,11 +483,11 @@ export function GiveawaySection({
                                 <div style={{
                                     backgroundColor: '#1E293B',
                                     borderRadius: 24,
-                                    border: '2px solid rgba(245, 158, 11, 0.4)',
+                                    border: '2px solid rgba(234, 88, 12, 0.5)',
                                     overflow: 'hidden',
                                     display: 'grid',
                                     gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                                    boxShadow: '0 25px 50px -10px rgba(0, 0, 0, 0.6)',
+                                    boxShadow: '0 25px 60px -10px rgba(0, 0, 0, 0.7), 0 0 30px rgba(234, 88, 12, 0.15)',
                                     position: 'relative'
                                 }}>
                                     {/* Imagen del Premio (Doble de grande) */}
@@ -541,49 +541,171 @@ export function GiveawaySection({
                                         )}
                                     </div>
 
-                                    {/* Información del Premio */}
+                                    {/* Información del Premio con Franjas y Estilo Festejos */}
                                     <div style={{
                                         padding: '40px 32px',
                                         display: 'flex',
                                         flexDirection: 'column',
                                         justifyContent: 'center',
-                                        backgroundColor: '#1E293B'
+                                        position: 'relative',
+                                        background: 'linear-gradient(135deg, #1E293B 0%, #0F172A 100%)',
+                                        overflow: 'hidden'
                                     }}>
+                                        {/* Franjas diagonales de competición / festejo decorativas */}
                                         <div style={{
-                                            display: 'inline-flex',
+                                            position: 'absolute',
+                                            top: 0,
+                                            right: 0,
+                                            width: '180px',
+                                            height: '100%',
+                                            background: 'repeating-linear-gradient(-45deg, rgba(234, 88, 12, 0.05) 0, rgba(234, 88, 12, 0.05) 12px, transparent 12px, transparent 24px)',
+                                            pointerEvents: 'none',
+                                            zIndex: 0
+                                        }} />
+
+                                        {/* Cinta / Banner superior de celebración */}
+                                        <div style={{
+                                            display: 'flex',
                                             alignItems: 'center',
-                                            gap: 6,
-                                            color: '#F59E0B',
-                                            fontSize: 12.5,
-                                            fontWeight: 800,
-                                            textTransform: 'uppercase',
-                                            letterSpacing: '0.05em',
-                                            marginBottom: 10
+                                            justifyContent: 'space-between',
+                                            flexWrap: 'wrap',
+                                            gap: 8,
+                                            marginBottom: 14,
+                                            position: 'relative',
+                                            zIndex: 1
                                         }}>
-                                            <Sparkles size={16} />
-                                            <span>Premio Principal en Juego</span>
+                                            <div style={{
+                                                display: 'inline-flex',
+                                                alignItems: 'center',
+                                                gap: 6,
+                                                padding: '4px 12px',
+                                                backgroundColor: 'rgba(245, 158, 11, 0.15)',
+                                                border: '1px solid rgba(245, 158, 11, 0.4)',
+                                                borderRadius: 20,
+                                                color: '#F59E0B',
+                                                fontSize: 12,
+                                                fontWeight: 900,
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.06em'
+                                            }}>
+                                                <Sparkles size={14} />
+                                                <span>Premio Principal en Juego</span>
+                                            </div>
+
+                                            <div style={{
+                                                display: 'inline-flex',
+                                                alignItems: 'center',
+                                                gap: 4,
+                                                fontSize: 11,
+                                                fontWeight: 800,
+                                                color: '#EA580C',
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.04em'
+                                            }}>
+                                                <Flame size={13} />
+                                                <span>Edición Especial</span>
+                                            </div>
                                         </div>
 
-                                        <h3 style={{ fontSize: 26, fontWeight: 900, color: '#FFFFFF', marginBottom: 14, lineHeight: 1.3 }}>
+                                        {/* Título del Premio */}
+                                        <h3 style={{
+                                            fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)',
+                                            fontWeight: 900,
+                                            color: '#FFFFFF',
+                                            marginBottom: 12,
+                                            lineHeight: 1.2,
+                                            letterSpacing: '-0.02em',
+                                            position: 'relative',
+                                            zIndex: 1
+                                        }}>
                                             {prize.title}
                                         </h3>
 
+                                        {/* Descripción del Premio en tarjeta destacada */}
                                         {prize.description && (
-                                            <p style={{ color: '#E2E8F0', fontSize: 16, lineHeight: 1.6, margin: 0 }}>
-                                                {prize.description}
-                                            </p>
+                                            <div style={{
+                                                padding: '12px 16px',
+                                                backgroundColor: 'rgba(15, 23, 42, 0.6)',
+                                                border: '1px solid rgba(255, 255, 255, 0.08)',
+                                                borderLeft: '4px solid #EA580C',
+                                                borderRadius: '0 12px 12px 0',
+                                                marginBottom: 20,
+                                                position: 'relative',
+                                                zIndex: 1
+                                            }}>
+                                                <p style={{ color: '#F1F5F9', fontSize: 15, lineHeight: 1.5, margin: 0, fontWeight: 500 }}>
+                                                    {prize.description}
+                                                </p>
+                                            </div>
                                         )}
+
+                                        {/* Franja de Beneficios / Características del Sorteo */}
+                                        <div style={{
+                                            display: 'grid',
+                                            gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+                                            gap: 10,
+                                            marginBottom: 20,
+                                            position: 'relative',
+                                            zIndex: 1
+                                        }}>
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: 8,
+                                                padding: '8px 12px',
+                                                backgroundColor: 'rgba(30, 41, 59, 0.7)',
+                                                borderRadius: 10,
+                                                border: '1px solid rgba(255, 255, 255, 0.06)'
+                                            }}>
+                                                <Gift size={16} style={{ color: '#EA580C', flexShrink: 0 }} />
+                                                <span style={{ fontSize: 12, color: '#E2E8F0', fontWeight: 700 }}>
+                                                    100% Gratuito
+                                                </span>
+                                            </div>
+
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: 8,
+                                                padding: '8px 12px',
+                                                backgroundColor: 'rgba(30, 41, 59, 0.7)',
+                                                borderRadius: 10,
+                                                border: '1px solid rgba(255, 255, 255, 0.06)'
+                                            }}>
+                                                <Trophy size={16} style={{ color: '#F59E0B', flexShrink: 0 }} />
+                                                <span style={{ fontSize: 12, color: '#E2E8F0', fontWeight: 700 }}>
+                                                    Entrega Directa
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {/* Indicador para completar formulario abajo */}
+                                        <div style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 8,
+                                            color: '#FB923C',
+                                            fontSize: 13,
+                                            fontWeight: 800,
+                                            position: 'relative',
+                                            zIndex: 1
+                                        }}>
+                                            <PartyPopper size={16} style={{ color: '#EA580C' }} />
+                                            <span>¡Completá tus datos abajo para participar!</span>
+                                        </div>
 
                                         {isWinnerAssigned && (
                                             <div style={{
-                                                marginTop: 24,
+                                                marginTop: 20,
                                                 padding: '14px 18px',
                                                 backgroundColor: 'rgba(34, 197, 94, 0.15)',
                                                 borderRadius: 14,
                                                 border: '1px solid rgba(34, 197, 94, 0.4)',
                                                 display: 'flex',
                                                 alignItems: 'center',
-                                                gap: 12
+                                                gap: 12,
+                                                position: 'relative',
+                                                zIndex: 1
                                             }}>
                                                 <Trophy size={24} style={{ color: '#4ADE80', flexShrink: 0 }} />
                                                 <div>
