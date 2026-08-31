@@ -85,6 +85,23 @@ export function AIChatbot({
             setTimeout(() => {
                 inputRef.current?.focus();
             }, 200);
+
+            // Soporte para botón "Atrás" en Android y tecla Escape
+            const handleKeyDown = (e: KeyboardEvent) => {
+                if (e.key === 'Escape') setIsOpen(false);
+            };
+
+            const handlePopState = () => {
+                setIsOpen(false);
+            };
+
+            window.addEventListener('keydown', handleKeyDown);
+            window.addEventListener('popstate', handlePopState);
+
+            return () => {
+                window.removeEventListener('keydown', handleKeyDown);
+                window.removeEventListener('popstate', handlePopState);
+            };
         }
     }, [isOpen, messages]);
 
