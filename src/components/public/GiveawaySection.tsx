@@ -560,7 +560,20 @@ export function GiveawaySection({
                     .giveaway-spotlight-img-box {
                         flex: 0 0 42% !important;
                         min-height: 180px !important;
-                        padding: 8px !important;
+                        padding: 26px 6px 6px 6px !important;
+                        position: relative !important;
+                    }
+                    .giveaway-medal-badge {
+                        top: 6px !important;
+                        left: 6px !important;
+                        padding: 2px 7px !important;
+                        font-size: 9px !important;
+                        gap: 3px !important;
+                        border-radius: 10px !important;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+                    }
+                    .giveaway-medal-icon {
+                        font-size: 11px !important;
                     }
                     .giveaway-spotlight-info-box {
                         flex: 1 1 58% !important;
@@ -767,7 +780,7 @@ export function GiveawaySection({
                                     {/* Imagen del Premio */}
                                     <div className="giveaway-spotlight-img-box">
                                         {/* Badge de Medalla */}
-                                        <div style={{
+                                        <div className="giveaway-medal-badge" style={{
                                             position: 'absolute',
                                             top: 14,
                                             left: 14,
@@ -784,7 +797,7 @@ export function GiveawaySection({
                                             boxShadow: '0 6px 16px rgba(0, 0, 0, 0.5)',
                                             border: `1px solid ${badge.border}`
                                         }}>
-                                            <span style={{ fontSize: 15 }}>{badge.icon}</span>
+                                            <span className="giveaway-medal-icon" style={{ fontSize: 15 }}>{badge.icon}</span>
                                             <span>{badge.label}</span>
                                         </div>
 
@@ -983,7 +996,7 @@ export function GiveawaySection({
                                         boxShadow: '0 12px 30px -5px rgba(0, 0, 0, 0.45)'
                                     }}
                                 >
-                                    <div style={{
+                                    <div className="giveaway-medal-badge" style={{
                                         position: 'absolute',
                                         top: 14,
                                         left: 14,
@@ -1000,7 +1013,7 @@ export function GiveawaySection({
                                         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
                                         border: `1px solid ${badge.border}`
                                     }}>
-                                        <span style={{ fontSize: 15 }}>{badge.icon}</span>
+                                        <span className="giveaway-medal-icon" style={{ fontSize: 15 }}>{badge.icon}</span>
                                         <span>{badge.label}</span>
                                     </div>
 
@@ -1090,7 +1103,7 @@ export function GiveawaySection({
                                         boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.4)'
                                     }}
                                 >
-                                    <div style={{
+                                    <div className="giveaway-medal-badge" style={{
                                         position: 'absolute',
                                         top: 14,
                                         left: 14,
@@ -1107,7 +1120,7 @@ export function GiveawaySection({
                                         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
                                         border: `1px solid ${badge.border}`
                                     }}>
-                                        <span style={{ fontSize: 15 }}>{badge.icon}</span>
+                                        <span className="giveaway-medal-icon" style={{ fontSize: 15 }}>{badge.icon}</span>
                                         <span>{badge.label}</span>
                                     </div>
 
