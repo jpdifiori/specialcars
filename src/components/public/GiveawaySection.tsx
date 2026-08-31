@@ -20,7 +20,9 @@ import {
     Send,
     MessageCircle,
     Clock,
-    Flame
+    Flame,
+    Star,
+    ChevronRight
 } from 'lucide-react';
 
 interface GiveawaySectionProps {
@@ -402,7 +404,7 @@ export function GiveawaySection({
                     z-index: 0;
                 }
                 .giveaway-spotlight-card {
-                    background-color: #1E293B;
+                    background-color: #0F172A;
                     border-radius: 24px;
                     border: 2px solid rgba(234, 88, 12, 0.5);
                     overflow: hidden;
@@ -422,49 +424,161 @@ export function GiveawaySection({
                 }
                 .giveaway-spotlight-img-box {
                     min-height: 420px;
-                    background-color: #0F172A;
+                    background-color: #070B14;
                     position: relative;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    padding: 24px;
+                    padding: 16px;
+                }
+                .giveaway-spotlight-img-inner {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                    min-height: 380px;
+                    border-radius: 16px;
+                    overflow: hidden;
+                }
+                .giveaway-medal-badge {
+                    position: absolute;
+                    top: 24px;
+                    left: 24px;
+                    z-index: 10;
+                    background: linear-gradient(135deg, #FF6B00 0%, #EA580C 100%);
+                    color: #FFFFFF;
+                    padding: 6px 14px;
+                    border-radius: 30px;
+                    font-weight: 900;
+                    font-size: 12.5px;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+                }
+                .giveaway-top-principal-badge {
+                    position: absolute;
+                    top: 24px;
+                    right: 24px;
+                    z-index: 10;
+                    background: rgba(15, 23, 42, 0.85);
+                    border: 1.5px solid rgba(234, 88, 12, 0.6);
+                    color: #FB923C;
+                    padding: 6px 12px;
+                    border-radius: 10px;
+                    font-weight: 900;
+                    font-size: 11px;
+                    letter-spacing: 0.04em;
+                    text-transform: uppercase;
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    backdrop-filter: blur(8px);
+                    -webkit-backdrop-filter: blur(8px);
+                    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
                 }
                 .giveaway-spotlight-info-box {
-                    padding: 40px 32px;
+                    padding: 36px 32px;
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
                     position: relative;
-                    background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+                    background: linear-gradient(135deg, #0F172A 0%, #0B1120 100%);
                     overflow: hidden;
+                }
+                .giveaway-spotlight-edition-tag {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 5px;
+                    color: #EA580C;
+                    font-size: 12px;
+                    font-weight: 900;
+                    letter-spacing: 0.05em;
+                    text-transform: uppercase;
+                    margin-bottom: 6px;
                 }
                 .giveaway-spotlight-title {
                     font-size: clamp(1.6rem, 2.5vw, 2.2rem);
                     font-weight: 900;
                     color: #FFFFFF;
-                    margin-bottom: 12px;
+                    margin: 0 0 12px 0;
                     line-height: 1.2;
                     letter-spacing: -0.02em;
-                    position: relative;
-                    z-index: 1;
                 }
                 .giveaway-spotlight-desc-box {
                     padding: 12px 16px;
-                    background-color: rgba(15, 23, 42, 0.6);
+                    background-color: rgba(15, 23, 42, 0.85);
                     border: 1px solid rgba(255, 255, 255, 0.08);
                     border-left: 4px solid #EA580C;
-                    border-radius: 0 12px 12px 0;
-                    margin-bottom: 20px;
-                    position: relative;
-                    z-index: 1;
+                    border-radius: 12px;
+                    margin-bottom: 14px;
                 }
-                .giveaway-spotlight-perks-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-                    gap: 10px;
-                    margin-bottom: 20px;
-                    position: relative;
-                    z-index: 1;
+                .giveaway-spotlight-desc-box p {
+                    color: #CBD5E1;
+                    font-size: 14px;
+                    line-height: 1.45;
+                    margin: 0;
+                    font-weight: 500;
+                }
+                .giveaway-spotlight-perk-card {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 12px 16px;
+                    background-color: rgba(15, 23, 42, 0.85);
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    border-radius: 14px;
+                    margin-bottom: 16px;
+                }
+                .giveaway-perk-icon-circle {
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 50%;
+                    background-color: rgba(234, 88, 12, 0.15);
+                    border: 1.5px solid rgba(234, 88, 12, 0.35);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+                }
+                .giveaway-perk-title {
+                    font-size: 14.5px;
+                    font-weight: 900;
+                    color: #FFFFFF;
+                }
+                .giveaway-perk-subtitle {
+                    font-size: 12px;
+                    color: #94A3B8;
+                    margin-top: 2px;
+                }
+                .giveaway-spotlight-cta {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 12px 18px;
+                    background: linear-gradient(135deg, #FF6B00 0%, #EA580C 100%);
+                    color: #FFFFFF;
+                    border-radius: 16px;
+                    box-shadow: 0 6px 20px rgba(234, 88, 12, 0.4);
+                    cursor: pointer;
+                    margin-top: auto;
+                }
+                .giveaway-cta-popper-badge {
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    background-color: rgba(255, 255, 255, 0.22);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+                }
+                .giveaway-cta-text {
+                    font-size: 14px;
+                    font-weight: 900;
+                    color: #FFFFFF;
+                    text-align: center;
+                    flex: 1;
+                    padding: 0 8px;
                 }
 
                 /* RESPONSIVE MOBILE OPTIMIZATIONS (≤ 768px) */
@@ -565,71 +679,120 @@ export function GiveawaySection({
                         height: 155px !important;
                     }
 
-                    /* TARJETA DEL PREMIO EN MOBILE: UNO AL LADO DEL OTRO */
+                    /* TARJETA DEL PREMIO EN MOBILE (VERTICAL / STACKED COMO MOCKUP) */
                     .giveaway-spotlight-card {
                         display: flex !important;
-                        flex-direction: row !important;
-                        border-radius: 16px !important;
+                        flex-direction: column !important;
+                        border-radius: 24px !important;
+                        border: 1.5px solid rgba(234, 88, 12, 0.45) !important;
+                        background-color: #070B14 !important;
                         margin-bottom: 28px !important;
+                        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 25px rgba(234, 88, 12, 0.15) !important;
+                        overflow: hidden !important;
                     }
                     .giveaway-spotlight-img-box {
-                        flex: 0 0 42% !important;
-                        min-height: 180px !important;
-                        padding: 26px 6px 6px 6px !important;
+                        flex: none !important;
+                        width: 100% !important;
+                        min-height: 360px !important;
+                        height: 360px !important;
+                        padding: 12px !important;
                         position: relative !important;
+                        background-color: #070B14 !important;
+                    }
+                    .giveaway-spotlight-img-inner {
+                        position: relative !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                        border-radius: 18px !important;
+                        overflow: hidden !important;
                     }
                     .giveaway-medal-badge {
-                        top: 6px !important;
-                        left: 6px !important;
-                        padding: 2px 7px !important;
-                        font-size: 9px !important;
-                        gap: 3px !important;
-                        border-radius: 10px !important;
-                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+                        position: absolute !important;
+                        top: 20px !important;
+                        left: 20px !important;
+                        z-index: 10 !important;
+                        padding: 6px 14px !important;
+                        font-size: 12px !important;
+                        border-radius: 30px !important;
+                        gap: 6px !important;
+                        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7) !important;
+                        border: none !important;
                     }
                     .giveaway-medal-icon {
-                        font-size: 11px !important;
+                        font-size: 14px !important;
+                    }
+                    .giveaway-top-principal-badge {
+                        position: absolute !important;
+                        top: 20px !important;
+                        right: 20px !important;
+                        z-index: 10 !important;
+                        padding: 6px 12px !important;
+                        font-size: 10px !important;
+                        border-radius: 10px !important;
+                        gap: 5px !important;
                     }
                     .giveaway-spotlight-info-box {
-                        flex: 1 1 58% !important;
-                        padding: 12px 10px !important;
+                        flex: none !important;
+                        width: 100% !important;
+                        padding: 16px 14px 18px 14px !important;
+                        background: #0B1120 !important;
+                        display: flex !important;
+                        flex-direction: column !important;
+                        gap: 10px !important;
                     }
-                    .giveaway-spotlight-badge {
-                        font-size: 9.5px !important;
-                        padding: 2px 7px !important;
+                    .giveaway-spotlight-edition-tag {
+                        font-size: 11px !important;
+                        margin-bottom: 2px !important;
+                        gap: 5px !important;
                     }
                     .giveaway-spotlight-title {
-                        font-size: 14px !important;
-                        margin-bottom: 4px !important;
+                        font-size: 22px !important;
+                        font-weight: 900 !important;
+                        color: #FFFFFF !important;
+                        margin: 0 0 6px 0 !important;
+                        line-height: 1.2 !important;
                     }
                     .giveaway-spotlight-desc-box {
-                        padding: 6px 8px !important;
-                        margin-bottom: 8px !important;
+                        padding: 12px 14px !important;
+                        margin-bottom: 4px !important;
+                        border-radius: 12px !important;
+                        border-left: 4px solid #EA580C !important;
+                        background: rgba(15, 23, 42, 0.85) !important;
                     }
                     .giveaway-spotlight-desc-box p {
-                        font-size: 11px !important;
-                        line-height: 1.35 !important;
+                        font-size: 13.5px !important;
+                        color: #CBD5E1 !important;
+                        line-height: 1.45 !important;
                     }
-                    .giveaway-spotlight-perks-grid {
-                        grid-template-columns: 1fr 1fr !important;
-                        gap: 4px !important;
-                        margin-bottom: 8px !important;
+                    .giveaway-spotlight-perk-card {
+                        padding: 12px 14px !important;
+                        margin-bottom: 6px !important;
+                        border-radius: 14px !important;
+                        gap: 12px !important;
+                        background: rgba(15, 23, 42, 0.85) !important;
                     }
-                    .giveaway-spotlight-perk-item {
-                        padding: 6px 8px !important;
-                        font-size: 11px !important;
-                        gap: 6px !important;
-                        border-radius: 8px !important;
-                        margin-bottom: 8px !important;
+                    .giveaway-perk-icon-circle {
+                        width: 42px !important;
+                        height: 42px !important;
+                    }
+                    .giveaway-perk-title {
+                        font-size: 14px !important;
+                    }
+                    .giveaway-perk-subtitle {
+                        font-size: 12px !important;
                     }
                     .giveaway-spotlight-cta {
-                        font-size: 11.5px !important;
-                        padding: 8px 10px !important;
-                        gap: 6px !important;
-                        border-radius: 10px !important;
+                        padding: 12px 16px !important;
+                        border-radius: 16px !important;
                         width: 100% !important;
-                        text-align: center !important;
-                        box-shadow: 0 4px 12px rgba(234, 88, 12, 0.35) !important;
+                        margin-top: 4px !important;
+                    }
+                    .giveaway-cta-popper-badge {
+                        width: 36px !important;
+                        height: 36px !important;
+                    }
+                    .giveaway-cta-text {
+                        font-size: 13.5px !important;
                     }
                 }
             ` }} />
@@ -806,36 +969,26 @@ export function GiveawaySection({
                                 >
                                     {/* Imagen del Premio */}
                                     <div className="giveaway-spotlight-img-box">
-                                        {/* Badge de Medalla */}
-                                        <div className="giveaway-medal-badge" style={{
-                                            position: 'absolute',
-                                            top: 14,
-                                            left: 14,
-                                            zIndex: 2,
-                                            background: badge.bg,
-                                            color: badge.color,
-                                            padding: '6px 14px',
-                                            borderRadius: 30,
-                                            fontWeight: 900,
-                                            fontSize: 12,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: 6,
-                                            boxShadow: '0 6px 16px rgba(0, 0, 0, 0.5)',
-                                            border: `1px solid ${badge.border}`
-                                        }}>
-                                            <span className="giveaway-medal-icon" style={{ fontSize: 15 }}>{badge.icon}</span>
+                                        {/* Badge de Medalla (1° Premio) */}
+                                        <div className="giveaway-medal-badge">
+                                            <span className="giveaway-medal-icon">{badge.icon}</span>
                                             <span>{badge.label}</span>
                                         </div>
 
+                                        {/* Badge Premio Principal Superior Derecho */}
+                                        <div className="giveaway-top-principal-badge">
+                                            <Star size={13} style={{ color: '#F59E0B' }} fill="#F59E0B" />
+                                            <span>PREMIO PRINCIPAL</span>
+                                        </div>
+
                                         {prize.image_url ? (
-                                            <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 200 }}>
+                                            <div className="giveaway-spotlight-img-inner">
                                                 <Image
                                                     src={prize.image_url}
                                                     alt={prize.title}
                                                     fill
-                                                    style={{ objectFit: 'contain' }}
-                                                    sizes="(max-width: 768px) 50vw, 50vw"
+                                                    style={{ objectFit: 'cover' }}
+                                                    sizes="(max-width: 768px) 100vw, 50vw"
                                                     priority
                                                 />
                                             </div>
@@ -847,62 +1000,12 @@ export function GiveawaySection({
                                         )}
                                     </div>
 
-                                    {/* Información del Premio con Franjas y Estilo Festejos */}
+                                    {/* Información del Premio */}
                                     <div className="giveaway-spotlight-info-box">
-                                        {/* Franjas diagonales de competición / festejo decorativas */}
-                                        <div style={{
-                                            position: 'absolute',
-                                            top: 0,
-                                            right: 0,
-                                            width: '180px',
-                                            height: '100%',
-                                            background: 'repeating-linear-gradient(-45deg, rgba(234, 88, 12, 0.05) 0, rgba(234, 88, 12, 0.05) 12px, transparent 12px, transparent 24px)',
-                                            pointerEvents: 'none',
-                                            zIndex: 0
-                                        }} />
-
-                                        {/* Cinta / Banner superior de celebración */}
-                                        <div style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'space-between',
-                                            flexWrap: 'wrap',
-                                            gap: 6,
-                                            marginBottom: 10,
-                                            position: 'relative',
-                                            zIndex: 1
-                                        }}>
-                                            <div className="giveaway-spotlight-badge" style={{
-                                                display: 'inline-flex',
-                                                alignItems: 'center',
-                                                gap: 5,
-                                                padding: '3px 10px',
-                                                backgroundColor: 'rgba(245, 158, 11, 0.15)',
-                                                border: '1px solid rgba(245, 158, 11, 0.4)',
-                                                borderRadius: 20,
-                                                color: '#F59E0B',
-                                                fontSize: 11,
-                                                fontWeight: 900,
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '0.05em'
-                                            }}>
-                                                <Sparkles size={13} />
-                                                <span>Premio Principal</span>
-                                            </div>
-
-                                            <div style={{
-                                                display: 'inline-flex',
-                                                alignItems: 'center',
-                                                gap: 4,
-                                                fontSize: 10.5,
-                                                fontWeight: 800,
-                                                color: '#EA580C',
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '0.04em'
-                                            }}>
-                                                <Flame size={12} />
-                                                <span>Edición Especial</span>
-                                            </div>
+                                        {/* Tag Edición Especial */}
+                                        <div className="giveaway-spotlight-edition-tag">
+                                            <Flame size={14} style={{ color: '#EA580C' }} />
+                                            <span>EDICIÓN ESPECIAL</span>
                                         </div>
 
                                         {/* Título del Premio */}
@@ -913,53 +1016,34 @@ export function GiveawaySection({
                                         {/* Descripción del Premio en tarjeta destacada */}
                                         {prize.description && (
                                             <div className="giveaway-spotlight-desc-box">
-                                                <p style={{ color: '#F1F5F9', fontSize: 14, lineHeight: 1.45, margin: 0, fontWeight: 500 }}>
-                                                    {prize.description}
-                                                </p>
+                                                <p>{prize.description}</p>
                                             </div>
                                         )}
 
-                                        {/* Franja: ¡Participá gratis y GANÁ! (Ancho Completo) */}
-                                        <div className="giveaway-spotlight-perk-item" style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            gap: 8,
-                                            padding: '8px 14px',
-                                            backgroundColor: 'rgba(234, 88, 12, 0.15)',
-                                            borderRadius: 10,
-                                            border: '1px solid rgba(234, 88, 12, 0.4)',
-                                            marginBottom: 16,
-                                            width: '100%',
-                                            boxShadow: '0 4px 14px rgba(234, 88, 12, 0.15)'
-                                        }}>
-                                            <Gift size={16} style={{ color: '#FB923C', flexShrink: 0 }} />
-                                            <span style={{ fontSize: 13, color: '#FFFFFF', fontWeight: 900, letterSpacing: '0.02em' }}>
-                                                ¡Participá gratis y GANÁ!
-                                            </span>
+                                        {/* Beneficio: ¡Participá gratis y GANÁ! con ícono circular */}
+                                        <div className="giveaway-spotlight-perk-card">
+                                            <div className="giveaway-perk-icon-circle">
+                                                <Gift size={22} style={{ color: '#EA580C' }} />
+                                            </div>
+                                            <div style={{ flex: 1, minWidth: 0 }}>
+                                                <div className="giveaway-perk-title">
+                                                    ¡Participá gratis y <span style={{ color: '#EA580C' }}>GANÁ!</span>
+                                                </div>
+                                                <div className="giveaway-perk-subtitle">
+                                                    Sorteamos entre todos los participantes.
+                                                </div>
+                                            </div>
                                         </div>
 
                                         {/* Barra inferior destacada de ancho completo: ¡Completá abajo para participar! */}
-                                        <div className="giveaway-spotlight-cta" style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            gap: 8,
-                                            width: '100%',
-                                            padding: '11px 16px',
-                                            backgroundColor: '#EA580C',
-                                            color: '#FFFFFF',
-                                            borderRadius: 12,
-                                            fontWeight: 900,
-                                            fontSize: 13.5,
-                                            letterSpacing: '0.02em',
-                                            boxShadow: '0 4px 18px rgba(234, 88, 12, 0.45)',
-                                            position: 'relative',
-                                            zIndex: 1,
-                                            marginTop: 4
-                                        }}>
-                                            <PartyPopper size={17} style={{ color: '#FFFFFF', flexShrink: 0 }} />
-                                            <span>¡Completá abajo para participar! 👇</span>
+                                        <div className="giveaway-spotlight-cta">
+                                            <div className="giveaway-cta-popper-badge">
+                                                <PartyPopper size={18} style={{ color: '#FFFFFF' }} />
+                                            </div>
+                                            <div className="giveaway-cta-text">
+                                                ¡Completá abajo para participar! 👇
+                                            </div>
+                                            <ChevronRight size={22} style={{ color: '#FFFFFF', flexShrink: 0 }} />
                                         </div>
 
                                         {isWinnerAssigned && (
