@@ -226,6 +226,14 @@ export function GiveawaySection({
     const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/sorteos` : 'https://specialcarsnecochea.com/sorteos';
     const whatsappShareText = encodeURIComponent(`¡Participá del ${currentGiveaway.title} en Special Cars! Ingresá acá: ${shareUrl}`);
 
+    const scrollToForm = () => {
+        if (isClosed) return;
+        const formElement = document.getElementById('formulario-sorteo');
+        if (formElement) {
+            formElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+
     return (
         <section id="sorteos" className="giveaway-section-container" style={{ padding: '50px 16px', backgroundColor: '#0B1120', position: 'relative', overflow: 'hidden' }}>
             {/* CSS Responsivo Incrustado para Mobile */}
@@ -404,6 +412,13 @@ export function GiveawaySection({
                     position: relative;
                     max-width: 940px;
                     margin: 0 auto 48px;
+                    cursor: pointer;
+                    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+                }
+                .giveaway-spotlight-card:hover {
+                    transform: translateY(-4px);
+                    border-color: #EA580C;
+                    box-shadow: 0 30px 70px -10px rgba(0, 0, 0, 0.8), 0 0 40px rgba(234, 88, 12, 0.3);
                 }
                 .giveaway-spotlight-img-box {
                     min-height: 420px;
@@ -608,8 +623,13 @@ export function GiveawaySection({
                         margin-bottom: 8px !important;
                     }
                     .giveaway-spotlight-cta {
-                        font-size: 10px !important;
-                        gap: 4px !important;
+                        font-size: 11.5px !important;
+                        padding: 8px 10px !important;
+                        gap: 6px !important;
+                        border-radius: 10px !important;
+                        width: 100% !important;
+                        text-align: center !important;
+                        box-shadow: 0 4px 12px rgba(234, 88, 12, 0.35) !important;
                     }
                 }
             ` }} />
@@ -777,7 +797,13 @@ export function GiveawaySection({
                             const isWinnerAssigned = Boolean(prize.winner_name && prize.winner_name.trim());
 
                             return (
-                                <div className="giveaway-spotlight-card">
+                                <div 
+                                    className="giveaway-spotlight-card" 
+                                    onClick={scrollToForm}
+                                    role="button"
+                                    tabIndex={0}
+                                    title="Hacé clic para ir al formulario de participación"
+                                >
                                     {/* Imagen del Premio */}
                                     <div className="giveaway-spotlight-img-box">
                                         {/* Badge de Medalla */}
@@ -913,19 +939,27 @@ export function GiveawaySection({
                                             </span>
                                         </div>
 
-                                        {/* Indicador para completar formulario abajo */}
+                                        {/* Barra inferior destacada de ancho completo: ¡Completá abajo para participar! */}
                                         <div className="giveaway-spotlight-cta" style={{
                                             display: 'flex',
                                             alignItems: 'center',
-                                            gap: 6,
-                                            color: '#FB923C',
-                                            fontSize: 12,
-                                            fontWeight: 800,
+                                            justifyContent: 'center',
+                                            gap: 8,
+                                            width: '100%',
+                                            padding: '11px 16px',
+                                            backgroundColor: '#EA580C',
+                                            color: '#FFFFFF',
+                                            borderRadius: 12,
+                                            fontWeight: 900,
+                                            fontSize: 13.5,
+                                            letterSpacing: '0.02em',
+                                            boxShadow: '0 4px 18px rgba(234, 88, 12, 0.45)',
                                             position: 'relative',
-                                            zIndex: 1
+                                            zIndex: 1,
+                                            marginTop: 4
                                         }}>
-                                            <PartyPopper size={15} style={{ color: '#EA580C' }} />
-                                            <span>¡Completá abajo para participar!</span>
+                                            <PartyPopper size={17} style={{ color: '#FFFFFF', flexShrink: 0 }} />
+                                            <span>¡Completá abajo para participar! 👇</span>
                                         </div>
 
                                         {isWinnerAssigned && (
@@ -973,6 +1007,10 @@ export function GiveawaySection({
                             return (
                                 <div
                                     key={prize.id}
+                                    onClick={scrollToForm}
+                                    role="button"
+                                    tabIndex={0}
+                                    title="Hacé clic para ir al formulario de participación"
                                     style={{
                                         backgroundColor: '#1E293B',
                                         borderRadius: 20,
@@ -981,7 +1019,8 @@ export function GiveawaySection({
                                         display: 'flex',
                                         flexDirection: 'column',
                                         position: 'relative',
-                                        boxShadow: '0 12px 30px -5px rgba(0, 0, 0, 0.45)'
+                                        boxShadow: '0 12px 30px -5px rgba(0, 0, 0, 0.45)',
+                                        cursor: 'pointer'
                                     }}
                                 >
                                     <div className="giveaway-medal-badge" style={{
@@ -1080,6 +1119,10 @@ export function GiveawaySection({
                             return (
                                 <div
                                     key={prize.id}
+                                    onClick={scrollToForm}
+                                    role="button"
+                                    tabIndex={0}
+                                    title="Hacé clic para ir al formulario de participación"
                                     style={{
                                         backgroundColor: '#1E293B',
                                         borderRadius: 18,
@@ -1088,7 +1131,8 @@ export function GiveawaySection({
                                         display: 'flex',
                                         flexDirection: 'column',
                                         position: 'relative',
-                                        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.4)'
+                                        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.4)',
+                                        cursor: 'pointer'
                                     }}
                                 >
                                     <div className="giveaway-medal-badge" style={{
@@ -1176,7 +1220,7 @@ export function GiveawaySection({
 
                 {/* Formulario de Participación Luminoso y de Alto Contraste (Solo si el sorteo está ACTIVO) */}
                 {!isClosed && (
-                    <div style={{
+                    <div id="formulario-sorteo" style={{
                         maxWidth: 720,
                         margin: '0 auto',
                         backgroundColor: '#FFFFFF',
