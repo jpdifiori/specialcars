@@ -601,10 +601,11 @@ export function GiveawaySection({
                         margin-bottom: 8px !important;
                     }
                     .giveaway-spotlight-perk-item {
-                        padding: 4px 6px !important;
-                        font-size: 9px !important;
-                        gap: 4px !important;
-                        border-radius: 6px !important;
+                        padding: 6px 8px !important;
+                        font-size: 11px !important;
+                        gap: 6px !important;
+                        border-radius: 8px !important;
+                        margin-bottom: 8px !important;
                     }
                     .giveaway-spotlight-cta {
                         font-size: 10px !important;
@@ -892,37 +893,24 @@ export function GiveawaySection({
                                             </div>
                                         )}
 
-                                        {/* Franja de Beneficios / Características del Sorteo */}
-                                        <div className="giveaway-spotlight-perks-grid">
-                                            <div className="giveaway-spotlight-perk-item" style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: 6,
-                                                padding: '6px 10px',
-                                                backgroundColor: 'rgba(30, 41, 59, 0.7)',
-                                                borderRadius: 8,
-                                                border: '1px solid rgba(255, 255, 255, 0.06)'
-                                            }}>
-                                                <Gift size={14} style={{ color: '#EA580C', flexShrink: 0 }} />
-                                                <span style={{ fontSize: 11, color: '#E2E8F0', fontWeight: 700 }}>
-                                                    100% Gratuito
-                                                </span>
-                                            </div>
-
-                                            <div className="giveaway-spotlight-perk-item" style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: 6,
-                                                padding: '6px 10px',
-                                                backgroundColor: 'rgba(30, 41, 59, 0.7)',
-                                                borderRadius: 8,
-                                                border: '1px solid rgba(255, 255, 255, 0.06)'
-                                            }}>
-                                                <Trophy size={14} style={{ color: '#F59E0B', flexShrink: 0 }} />
-                                                <span style={{ fontSize: 11, color: '#E2E8F0', fontWeight: 700 }}>
-                                                    Entrega Directa
-                                                </span>
-                                            </div>
+                                        {/* Franja: ¡Participá gratis y GANÁ! (Ancho Completo) */}
+                                        <div className="giveaway-spotlight-perk-item" style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: 8,
+                                            padding: '8px 14px',
+                                            backgroundColor: 'rgba(234, 88, 12, 0.15)',
+                                            borderRadius: 10,
+                                            border: '1px solid rgba(234, 88, 12, 0.4)',
+                                            marginBottom: 16,
+                                            width: '100%',
+                                            boxShadow: '0 4px 14px rgba(234, 88, 12, 0.15)'
+                                        }}>
+                                            <Gift size={16} style={{ color: '#FB923C', flexShrink: 0 }} />
+                                            <span style={{ fontSize: 13, color: '#FFFFFF', fontWeight: 900, letterSpacing: '0.02em' }}>
+                                                ¡Participá gratis y GANÁ!
+                                            </span>
                                         </div>
 
                                         {/* Indicador para completar formulario abajo */}
