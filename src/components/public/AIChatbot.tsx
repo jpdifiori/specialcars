@@ -239,12 +239,12 @@ export function AIChatbot({
             {/* TOOLTIP GLOBO DE DIÁLOGO / PROMPT DE CHAT */}
             {!isOpen && showBubbleTip && (
                 <div
-                    onClick={() => setIsOpen(true)}
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(true); setShowBubbleTip(false); }}
                     style={{
                         position: 'fixed',
-                        bottom: 104,
-                        right: 24,
-                        zIndex: 99,
+                        bottom: 'calc(104px + env(safe-area-inset-bottom, 0px))',
+                        right: 'calc(20px + env(safe-area-inset-right, 0px))',
+                        zIndex: 99998,
                         backgroundColor: '#FFFFFF',
                         color: '#0F172A',
                         padding: '10px 18px',
@@ -257,7 +257,9 @@ export function AIChatbot({
                         cursor: 'pointer',
                         maxWidth: 'calc(100vw - 48px)',
                         width: 'max-content',
-                        animation: 'fadeIn 0.3s ease-out'
+                        animation: 'fadeIn 0.3s ease-out',
+                        touchAction: 'manipulation',
+                        WebkitTapHighlightColor: 'transparent'
                     }}
                 >
                     <div style={{
@@ -306,10 +308,27 @@ export function AIChatbot({
             )}
 
             {/* BOTÓN FLOTANTE TRIGGER (65px, Fondo Blanco, Borde Naranja, Efecto de Chat) */}
-            <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 99 }}>
+            <div 
+                className="floating-chatbot-container"
+                style={{ 
+                    position: 'fixed', 
+                    bottom: 'calc(24px + env(safe-area-inset-bottom, 0px))', 
+                    right: 'calc(20px + env(safe-area-inset-right, 0px))', 
+                    zIndex: 99999,
+                    touchAction: 'manipulation'
+                }}
+            >
                 {!isOpen && <div className="chat-pulse-ring" />}
                 <button
-                    onClick={() => setIsOpen(!isOpen)}
+                    type="button"
+                    onClick={(e) => { 
+                        e.preventDefault(); 
+                        e.stopPropagation(); 
+                        setIsOpen(prev => !prev); 
+                    }}
+                    onTouchEnd={(e) => {
+                        e.stopPropagation();
+                    }}
                     className="floating-chatbot-btn"
                     style={{
                         width: 65,
@@ -325,8 +344,13 @@ export function AIChatbot({
                         boxShadow: '0 8px 25px rgba(234, 88, 12, 0.35), 0 4px 12px rgba(0,0,0,0.12)',
                         transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                         padding: 0,
-                        position: 'relative'
+                        position: 'relative',
+                        touchAction: 'manipulation',
+                        WebkitTapHighlightColor: 'transparent',
+                        userSelect: 'none',
+                        WebkitUserSelect: 'none'
                     }}
+                    aria-label={isOpen ? 'Cerrar Asistente' : 'Hablar con Hernán (Asesor Virtual IA)'}
                     title={isOpen ? 'Cerrar Asistente' : 'Hablar con Hernán (Asesor Virtual IA)'}
                 >
                     {isOpen ? (
@@ -337,12 +361,13 @@ export function AIChatbot({
                             backgroundColor: '#0F172A',
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center'
+                            justifyContent: 'center',
+                            pointerEvents: 'none'
                         }}>
                             <ChevronDown size={30} style={{ color: '#FFFFFF' }} />
                         </div>
                     ) : (
-                        <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden' }}>
+                        <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', pointerEvents: 'none' }}>
                             <img 
                                 src="/images/franco-avatar.jpg" 
                                 alt="Hernán Asesor" 
@@ -350,7 +375,10 @@ export function AIChatbot({
                                     width: '100%', 
                                     height: '100%', 
                                     objectFit: 'cover', 
-                                    display: 'block' 
+                                    display: 'block',
+                                    pointerEvents: 'none',
+                                    userSelect: 'none',
+                                    WebkitUserSelect: 'none'
                                 }} 
                             />
                         </div>
@@ -360,32 +388,18 @@ export function AIChatbot({
 
             {/* VENTANA DEL CHATBOT */}
             {isOpen && (
-                <div
-                    style={{
-                        position: 'fixed',
-                        bottom: 96,
-                        right: 24,
-                        zIndex: 100,
-                        width: 'min(410px, calc(100vw - 32px))',
-                        height: 'min(580px, calc(100vh - 120px))',
-                        backgroundColor: '#FFFFFF',
-                        borderRadius: 20,
-                        boxShadow: '0 20px 60px rgba(0,0,0,0.22), 0 0 0 1px rgba(0,0,0,0.06)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        overflow: 'hidden',
-                        animation: 'chatSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
-                    }}
-                >
+                <div className="chatbot-window-container">
                     {/* CABECERA */}
                     <div style={{
                         background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
                         padding: '16px 20px',
+                        paddingTop: 'calc(16px + env(safe-area-inset-top, 0px))',
                         color: '#FFFFFF',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        borderBottom: '1px solid rgba(255,255,255,0.08)'
+                        borderBottom: '1px solid rgba(255,255,255,0.08)',
+                        flexShrink: 0
                     }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                             <div style={{
@@ -422,34 +436,46 @@ export function AIChatbot({
                             </div>
                         </div>
 
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                             <button
+                                type="button"
                                 onClick={handleReset}
                                 title="Reiniciar conversación"
                                 style={{
                                     color: '#94A3B8',
-                                    padding: 6,
+                                    padding: '8px 10px',
                                     borderRadius: 8,
                                     cursor: 'pointer',
                                     background: 'transparent',
-                                    border: 'none'
+                                    border: 'none',
+                                    touchAction: 'manipulation',
+                                    WebkitTapHighlightColor: 'transparent',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
                                 }}
                             >
-                                <RotateCcw size={16} />
+                                <RotateCcw size={17} />
                             </button>
                             <button
+                                type="button"
                                 onClick={() => setIsOpen(false)}
                                 title="Cerrar"
                                 style={{
                                     color: '#94A3B8',
-                                    padding: 6,
+                                    padding: '8px 10px',
                                     borderRadius: 8,
                                     cursor: 'pointer',
                                     background: 'transparent',
-                                    border: 'none'
+                                    border: 'none',
+                                    touchAction: 'manipulation',
+                                    WebkitTapHighlightColor: 'transparent',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
                                 }}
                             >
-                                <X size={18} />
+                                <X size={20} />
                             </button>
                         </div>
                     </div>
@@ -603,7 +629,8 @@ export function AIChatbot({
                         borderTop: '1px solid #E2E8F0',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: 8
+                        gap: 8,
+                        flexShrink: 0
                     }}>
                         <input
                             ref={inputRef}
@@ -621,7 +648,7 @@ export function AIChatbot({
                             style={{
                                 flex: 1,
                                 padding: '10px 14px',
-                                fontSize: 13.5,
+                                fontSize: 16,
                                 borderRadius: 12,
                                 border: '1px solid #CBD5E1',
                                 outline: 'none',
@@ -631,11 +658,12 @@ export function AIChatbot({
                         />
 
                         <button
+                            type="button"
                             onClick={() => handleSend()}
                             disabled={!input.trim() || isLoading}
                             style={{
-                                width: 40,
-                                height: 40,
+                                width: 42,
+                                height: 42,
                                 borderRadius: 12,
                                 backgroundColor: input.trim() && !isLoading ? '#EA580C' : '#E2E8F0',
                                 color: '#FFFFFF',
@@ -645,7 +673,9 @@ export function AIChatbot({
                                 justifyContent: 'center',
                                 cursor: input.trim() && !isLoading ? 'pointer' : 'default',
                                 transition: 'all 0.2s',
-                                flexShrink: 0
+                                flexShrink: 0,
+                                touchAction: 'manipulation',
+                                WebkitTapHighlightColor: 'transparent'
                             }}
                         >
                             <Send size={18} style={{ transform: 'translateX(1px)' }} />
@@ -656,8 +686,9 @@ export function AIChatbot({
                         fontSize: 10,
                         color: '#94A3B8',
                         textAlign: 'center',
-                        padding: '4px 8px 8px',
-                        backgroundColor: '#FFFFFF'
+                        padding: '4px 8px calc(8px + env(safe-area-inset-bottom, 0px))',
+                        backgroundColor: '#FFFFFF',
+                        flexShrink: 0
                     }}>
                         Potenciado por DeepSeek IA • Special Cars
                     </div>
