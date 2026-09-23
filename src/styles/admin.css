@@ -400,6 +400,13 @@
   border: 1px solid #E9D5FF;
 }
 
+.badge-own,
+.badge-propio {
+  background-color: #0F172A;
+  color: #FFFFFF !important;
+  border: 1px solid #1E293B;
+}
+
 /* BUTTONS */
 .btn-primary {
   display: inline-flex;

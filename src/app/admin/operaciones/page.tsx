@@ -53,7 +53,7 @@ export default function AdminOperationsPage() {
             case 'CONSIGNMENT':
                 return <span className="badge badge-consignment">Venta Consignación</span>;
             case 'PURCHASE':
-                return <span className="badge" style={{ background: '#1e293b', color: '#000000' }}>Compra Directa</span>;
+                return <span className="badge badge-own" style={{ backgroundColor: '#0F172A', color: '#FFFFFF', border: '1px solid #1E293B' }}>Compra Directa</span>;
             default:
                 return <span className="badge">{opType}</span>;
         }

@@ -87,7 +87,7 @@ export default function AdminVehiclesPage() {
             case 'CONSIGNMENT':
                 return <span className="badge badge-consignment">Consignación</span>;
             default:
-                return <span className="badge" style={{ background: '#1e293b', color: '#000000' }}>Propio</span>;
+                return <span className="badge badge-own" style={{ backgroundColor: '#0F172A', color: '#FFFFFF', border: '1px solid #1E293B' }}>Propio</span>;
         }
     };
 
