@@ -102,6 +102,32 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                     </div>
 
                     <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                        {client.phone && (
+                            <a
+                                href={buildWhatsAppUrl(
+                                    client.phone,
+                                    `Hola${client.first_name ? ' ' + client.first_name : ''}, te escribo de Special Cars. ¿Cómo estás?`
+                                )}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: 6,
+                                    backgroundColor: '#25D366',
+                                    color: '#FFFFFF',
+                                    padding: '8px 16px',
+                                    borderRadius: 8,
+                                    fontWeight: 700,
+                                    fontSize: 13,
+                                    textDecoration: 'none',
+                                    boxShadow: '0 2px 6px rgba(37, 211, 102, 0.3)'
+                                }}
+                            >
+                                <MessageCircle size={16} strokeWidth={2.4} />
+                                <span>WhatsApp</span>
+                            </a>
+                        )}
                         <Link 
                             href={`/admin/vehiculos-buscados/nuevo?client_id=${client.id}`} 
                             className="btn-secondary"
@@ -143,8 +169,8 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                         {client.phone && (
                             <div>
                                 <div style={{ fontSize: 11, color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>Teléfono / WhatsApp</div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 2 }}>
-                                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#0F172A', fontWeight: 700 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 4 }}>
+                                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#0F172A', fontWeight: 700, fontSize: 14 }}>
                                         <Phone size={14} style={{ color: '#64748B' }} />
                                         <span>{client.phone}</span>
                                     </span>
@@ -159,19 +185,20 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                                         style={{
                                             display: 'inline-flex',
                                             alignItems: 'center',
-                                            justifyContent: 'center',
-                                            width: 22,
-                                            height: 22,
-                                            borderRadius: '50%',
+                                            gap: 5,
+                                            padding: '3px 10px',
+                                            borderRadius: 14,
                                             backgroundColor: '#25D366',
                                             color: '#FFFFFF',
-                                            boxShadow: '0 1px 3px rgba(37, 211, 102, 0.35)',
+                                            fontSize: 12,
+                                            fontWeight: 700,
+                                            boxShadow: '0 1px 4px rgba(37, 211, 102, 0.35)',
                                             textDecoration: 'none',
-                                            transition: 'transform 0.15s ease, box-shadow 0.15s ease',
                                             flexShrink: 0
                                         }}
                                     >
                                         <MessageCircle size={13} strokeWidth={2.4} />
+                                        <span>WhatsApp</span>
                                     </a>
                                 </div>
                             </div>
