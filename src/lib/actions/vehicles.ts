@@ -544,8 +544,27 @@ export async function updateVehicle(id: string, formData: Partial<Vehicle>) {
         });
     }
 
+    // Limpieza de campos de fecha y valores vacíos para evitar error en Postgres "invalid input syntax for type date: """
+    payload.offer_start_date = payload.offer_start_date && String(payload.offer_start_date).trim() !== '' ? payload.offer_start_date : null;
+    payload.offer_end_date = payload.offer_end_date && String(payload.offer_end_date).trim() !== '' ? payload.offer_end_date : null;
+    if (payload.purchase_date === '') delete payload.purchase_date;
+    if (payload.sale_date === '') payload.sale_date = null;
+
+    if (!payload.is_offer) {
+        payload.offer_price = null;
+        payload.offer_start_date = null;
+        payload.offer_end_date = null;
+        payload.offer_label = null;
+    } else {
+        payload.offer_price = payload.offer_price ? Number(payload.offer_price) : null;
+    }
+
     if (payload.plate) payload.plate = payload.plate.trim().toUpperCase();
+    else payload.plate = null;
     if (payload.vin) payload.vin = payload.vin.trim().toUpperCase();
+    else payload.vin = null;
+    if (payload.engine_number) payload.engine_number = payload.engine_number.trim();
+    else payload.engine_number = null;
 
     let updateRes = await adminClient
         .from('vehicles')

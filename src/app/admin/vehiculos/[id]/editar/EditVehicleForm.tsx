@@ -67,7 +67,21 @@ export function EditVehicleForm({ vehicle }: { vehicle: Vehicle }) {
         setError(null);
 
         try {
-            const res = await updateVehicle(vehicle.id, formData);
+            const dataToSubmit = {
+                ...formData,
+                mileage: Number(formData.mileage) || 0,
+                year: Number(formData.year) || new Date().getFullYear(),
+                doors: Number(formData.doors) || 4,
+                purchase_price: Number(formData.purchase_price) || 0,
+                sale_price: Number(formData.sale_price) || 0,
+                minimum_price: Number(formData.minimum_price) || 0,
+                offer_price: formData.is_offer && formData.offer_price ? Number(formData.offer_price) : null,
+                offer_start_date: formData.is_offer && formData.offer_start_date?.trim() ? formData.offer_start_date : null,
+                offer_end_date: formData.is_offer && formData.offer_end_date?.trim() ? formData.offer_end_date : null,
+                offer_label: formData.is_offer ? (formData.offer_label?.trim() || 'OFERTA') : null,
+            };
+
+            const res = await updateVehicle(vehicle.id, dataToSubmit);
             if (!res.success) {
                 setError(res.error || 'Error al actualizar vehículo');
                 setLoading(false);
