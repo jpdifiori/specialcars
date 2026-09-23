@@ -18,7 +18,8 @@ import {
     Sparkles, 
     Edit, 
     CheckCircle2,
-    ExternalLink
+    ExternalLink,
+    Printer
 } from 'lucide-react';
 
 export default async function VehicleDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -76,6 +77,16 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                     </div>
 
                     <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                        <Link 
+                            href={`/admin/vehiculos/${vehicle.id}/imprimir`} 
+                            target="_blank"
+                            className="btn-secondary"
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#EA580C', fontWeight: 700 }}
+                            title="Imprimir Cartel A4 para Parabrisas"
+                        >
+                            <Printer size={15} />
+                            <span>Cartel A4 Parabrisas</span>
+                        </Link>
                         <Link href={`/admin/vehiculos/${vehicle.id}/editar`} className="btn-secondary">
                             <Edit size={15} />
                             <span>Editar Datos</span>

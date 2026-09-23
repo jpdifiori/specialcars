@@ -19,13 +19,16 @@ import {
     Clock, 
     CheckCircle2, 
     Flame,
-    Image as ImageIcon
+    Image as ImageIcon,
+    Printer
 } from 'lucide-react';
+import { VehicleA4PosterModal } from '@/components/admin/VehicleA4PosterModal';
 
 export default function AdminVehiclesPage() {
     const [vehicles, setVehicles] = useState<Vehicle[]>([]);
     const [loading, setLoading] = useState(true);
     const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
+    const [printModalVehicle, setPrintModalVehicle] = useState<Vehicle | null>(null);
     
     // Filtros
     const [search, setSearch] = useState('');
@@ -311,6 +314,15 @@ export default function AdminVehiclesPage() {
                                         </td>
                                         <td style={{ textAlign: 'right' }}>
                                             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setPrintModalVehicle(v)}
+                                                    className="btn-secondary"
+                                                    style={{ padding: '6px 10px', fontSize: 12, color: '#EA580C' }}
+                                                    title="Imprimir Cartel de Parabrisas A4"
+                                                >
+                                                    <Printer size={14} />
+                                                </button>
                                                 <Link 
                                                     href={`/admin/vehiculos/${v.id}`}
                                                     className="btn-secondary"
@@ -407,9 +419,21 @@ export default function AdminVehiclesPage() {
                                                     </div>
                                                 )}
                                             </div>
-                                            <Link href={`/admin/vehiculos/${v.id}`} className="btn-secondary" style={{ padding: '6px 12px', fontSize: 12 }}>
-                                                Ver Ficha
-                                            </Link>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setPrintModalVehicle(v)}
+                                                    className="btn-secondary"
+                                                    style={{ padding: '6px 10px', fontSize: 12, color: '#EA580C', display: 'flex', alignItems: 'center', gap: 4 }}
+                                                    title="Imprimir Cartel de Parabrisas A4"
+                                                >
+                                                    <Printer size={13} />
+                                                    <span>A4</span>
+                                                </button>
+                                                <Link href={`/admin/vehiculos/${v.id}`} className="btn-secondary" style={{ padding: '6px 12px', fontSize: 12 }}>
+                                                    Ver Ficha
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -418,6 +442,13 @@ export default function AdminVehiclesPage() {
                     </div>
                 )}
             </div>
+
+            {/* MODAL DE CARTEL DE PARABRISAS A4 */}
+            <VehicleA4PosterModal
+                vehicle={printModalVehicle}
+                isOpen={Boolean(printModalVehicle)}
+                onClose={() => setPrintModalVehicle(null)}
+            />
         </div>
     );
 }
