@@ -71,7 +71,21 @@ export function AdminHeader() {
                 {query && (
                     <button 
                         onClick={() => { setQuery(''); setIsOpen(false); }}
-                        style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', color: '#000000' }}
+                        style={{ 
+                            position: 'absolute', 
+                            right: 12, 
+                            top: '50%', 
+                            transform: 'translateY(-50%)', 
+                            color: '#64748B',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: 4
+                        }}
+                        title="Limpiar búsqueda"
                     >
                         <X size={14} />
                     </button>
@@ -81,13 +95,13 @@ export function AdminHeader() {
                 {isOpen && results && (
                     <div className="admin-search-dropdown">
                         {isLoading && (
-                            <div style={{ padding: '12px', textAlign: 'center', color: '#000000', fontSize: 13 }}>
+                            <div style={{ padding: '12px', textAlign: 'center', color: '#64748B', fontSize: 13 }}>
                                 Buscando...
                             </div>
                         )}
 
                         {!isLoading && results.vehicles.length === 0 && results.clients.length === 0 && results.operations.length === 0 && (
-                            <div style={{ padding: '16px', textAlign: 'center', color: '#000000', fontSize: 13 }}>
+                            <div style={{ padding: '16px', textAlign: 'center', color: '#64748B', fontSize: 13 }}>
                                 No se encontraron resultados para &quot;{query}&quot;
                             </div>
                         )}
@@ -104,11 +118,11 @@ export function AdminHeader() {
                                         onClick={() => handleSelect(`/admin/vehiculos/${v.id}`)}
                                     >
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                            <Car size={14} style={{ color: '#3b82f6' }} />
+                                            <Car size={14} style={{ color: '#2563EB' }} />
                                             <span><strong>{v.stock_code}</strong> — {v.title}</span>
-                                            {v.plate && <span style={{ color: '#000000', fontSize: 11 }}>({v.plate})</span>}
+                                            {v.plate && <span style={{ color: '#64748B', fontSize: 11 }}>({v.plate})</span>}
                                         </div>
-                                        <span style={{ color: '#34d399', fontWeight: 600, fontSize: 12 }}>
+                                        <span style={{ color: '#16A34A', fontWeight: 700, fontSize: 12 }}>
                                             {formatARS(v.sale_price)}
                                         </span>
                                     </div>
@@ -128,11 +142,11 @@ export function AdminHeader() {
                                         onClick={() => handleSelect(`/admin/clientes/${c.id}`)}
                                     >
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                            <User size={14} style={{ color: '#10b981' }} />
+                                            <User size={14} style={{ color: '#059669' }} />
                                             <span><strong>{c.name}</strong></span>
-                                            {c.dni && <span style={{ color: '#000000', fontSize: 11 }}>DNI: {c.dni}</span>}
+                                            {c.dni && <span style={{ color: '#64748B', fontSize: 11 }}>DNI: {c.dni}</span>}
                                         </div>
-                                        {c.phone && <span style={{ color: '#000000', fontSize: 12 }}>{c.phone}</span>}
+                                        {c.phone && <span style={{ color: '#475569', fontSize: 12 }}>{c.phone}</span>}
                                     </div>
                                 ))}
                             </div>
@@ -150,10 +164,10 @@ export function AdminHeader() {
                                         onClick={() => handleSelect(`/admin/operaciones/${o.id}`)}
                                     >
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                            <ArrowLeftRight size={14} style={{ color: '#f59e0b' }} />
+                                            <ArrowLeftRight size={14} style={{ color: '#D97706' }} />
                                             <span><strong>{o.operation_code}</strong> — {o.client_name}</span>
                                         </div>
-                                        <span style={{ color: '#60a5fa', fontWeight: 600, fontSize: 12 }}>
+                                        <span style={{ color: '#2563EB', fontWeight: 700, fontSize: 12 }}>
                                             {formatARS(o.agreed_price)}
                                         </span>
                                     </div>
@@ -175,13 +189,26 @@ export function AdminHeader() {
                     <span>Ver Catálogo Web</span>
                 </Link>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingLeft: 12, borderLeft: '1px solid rgba(255,255,255,0.1)' }}>
-                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#1e293b', border: '1px solid rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#60a5fa' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingLeft: 16, borderLeft: '1px solid #E2E8F0' }}>
+                    <div style={{
+                        width: 34,
+                        height: 34,
+                        borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #1E293B, #0F172A)',
+                        border: '1px solid #CBD5E1',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: 12.5,
+                        fontWeight: 800,
+                        color: '#FFFFFF',
+                        flexShrink: 0
+                    }}>
                         JP
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <span style={{ fontSize: 13, fontWeight: 600, color: '#f8fafc' }}>Juan Pablo</span>
-                        <span style={{ fontSize: 11, color: '#000000' }}>Administrador</span>
+                    <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.25 }}>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: '#0F172A' }}>Juan Pablo</span>
+                        <span style={{ fontSize: 11, fontWeight: 500, color: '#64748B' }}>Administrador</span>
                     </div>
                 </div>
             </div>
