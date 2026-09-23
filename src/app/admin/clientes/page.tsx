@@ -14,13 +14,16 @@ import {
     Mail, 
     Eye, 
     Clock, 
-    CheckCircle2
+    CheckCircle2,
+    Globe,
+    UserCheck
 } from 'lucide-react';
 
 export default function AdminClientsPage() {
     const [clients, setClients] = useState<Client[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
+    const [originFilter, setOriginFilter] = useState<'ALL' | 'WEB' | 'ADMIN'>('ALL');
 
     const loadClients = async () => {
         setLoading(true);
@@ -73,6 +76,18 @@ export default function AdminClientsPage() {
                             <Search size={15} />
                         </button>
                     </form>
+
+                    <div className="table-filters">
+                        <select
+                            className="admin-select"
+                            value={originFilter}
+                            onChange={(e) => setOriginFilter(e.target.value as any)}
+                        >
+                            <option value="ALL">Todos los orígenes</option>
+                            <option value="WEB">🌐 Registrados en la Web</option>
+                            <option value="ADMIN">👤 Cargados por Admin</option>
+                        </select>
+                    </div>
                 </div>
 
                 {loading ? (
@@ -102,37 +117,83 @@ export default function AdminClientsPage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {clients.map((c) => (
-                                <tr key={c.id}>
-                                    <td>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                            <div style={{
-                                                width: 34,
-                                                height: 34,
-                                                borderRadius: '50%',
-                                                backgroundColor: '#FFF7ED',
-                                                border: '1px solid #FFEDD5',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                color: '#EA580C',
-                                                fontWeight: 700,
-                                                fontSize: 13
-                                            }}>
-                                                {c.first_name[0]}{c.last_name[0]}
-                                            </div>
-                                            <div>
-                                                <Link href={`/admin/clientes/${c.id}`} style={{ fontWeight: 600, color: '#000000' }}>
-                                                    {c.first_name} {c.last_name}
-                                                </Link>
-                                                {c.notes && (
-                                                    <div style={{ fontSize: 11, color: '#000000', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                                        {c.notes}
+                            {clients
+                                .filter((c) => {
+                                    const isWeb = Boolean(c.notes && (c.notes.includes('Landing Page') || c.notes.toLowerCase().includes('automáticamente')));
+                                    if (originFilter === 'WEB') return isWeb;
+                                    if (originFilter === 'ADMIN') return !isWeb;
+                                    return true;
+                                })
+                                .map((c) => {
+                                    const isWeb = Boolean(c.notes && (c.notes.includes('Landing Page') || c.notes.toLowerCase().includes('automáticamente')));
+                                    const customNote = isWeb ? null : c.notes;
+
+                                    return (
+                                        <tr key={c.id}>
+                                            <td>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                                    <div style={{
+                                                        width: 34,
+                                                        height: 34,
+                                                        borderRadius: '50%',
+                                                        backgroundColor: isWeb ? '#EFF6FF' : '#FFF7ED',
+                                                        border: `1px solid ${isWeb ? '#BFDBFE' : '#FFEDD5'}`,
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        color: isWeb ? '#2563EB' : '#EA580C',
+                                                        fontWeight: 700,
+                                                        fontSize: 13
+                                                    }}>
+                                                        {c.first_name[0]}{c.last_name[0]}
                                                     </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </td>
+                                                    <div>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                                                            <Link href={`/admin/clientes/${c.id}`} style={{ fontWeight: 700, color: '#0F172A' }}>
+                                                                {c.first_name} {c.last_name}
+                                                            </Link>
+                                                            {isWeb ? (
+                                                                <span style={{
+                                                                    fontSize: 10,
+                                                                    fontWeight: 800,
+                                                                    backgroundColor: '#EFF6FF',
+                                                                    color: '#1D4ED8',
+                                                                    border: '1px solid #BFDBFE',
+                                                                    padding: '1px 6px',
+                                                                    borderRadius: 10,
+                                                                    display: 'inline-flex',
+                                                                    alignItems: 'center',
+                                                                    gap: 3
+                                                                }}>
+                                                                    <Globe size={10} />
+                                                                    <span>Web / Landing</span>
+                                                                </span>
+                                                            ) : (
+                                                                <span style={{
+                                                                    fontSize: 10,
+                                                                    fontWeight: 700,
+                                                                    backgroundColor: '#F1F5F9',
+                                                                    color: '#475569',
+                                                                    border: '1px solid #CBD5E1',
+                                                                    padding: '1px 6px',
+                                                                    borderRadius: 10,
+                                                                    display: 'inline-flex',
+                                                                    alignItems: 'center',
+                                                                    gap: 3
+                                                                }}>
+                                                                    <UserCheck size={10} />
+                                                                    <span>Admin</span>
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                        {customNote && (
+                                                            <div style={{ fontSize: 11, color: '#64748B', maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginTop: 2 }}>
+                                                                {customNote}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </td>
                                     <td style={{ fontFamily: 'var(--font-mono)' }}>
                                         {c.dni ? `DNI: ${c.dni}` : (c.cuit_cuil ? `CUIT: ${c.cuit_cuil}` : '-')}
                                     </td>
@@ -169,7 +230,8 @@ export default function AdminClientsPage() {
                                         </Link>
                                     </td>
                                 </tr>
-                            ))}
+                            );
+                        })}
                         </tbody>
                     </table>
                 )}

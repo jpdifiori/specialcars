@@ -13,7 +13,9 @@ import {
     Car, 
     Clock, 
     BookmarkCheck,
-    FileSpreadsheet
+    FileSpreadsheet,
+    Globe,
+    UserCheck
 } from 'lucide-react';
 
 export default async function ClientDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -23,6 +25,8 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
     if (!client) {
         notFound();
     }
+
+    const isWebClient = Boolean(client.notes && (client.notes.includes('Landing Page') || client.notes.toLowerCase().includes('automáticamente')));
 
     return (
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
@@ -39,7 +43,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                             width: 52,
                             height: 52,
                             borderRadius: '50%',
-                            backgroundColor: '#1d4ed8',
+                            backgroundColor: isWebClient ? '#1E40AF' : '#1d4ed8',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -51,10 +55,45 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                             {client.first_name[0]}{client.last_name[0]}
                         </div>
                         <div>
-                            <h1 className="admin-page-title" style={{ marginBottom: 2 }}>
-                                {client.first_name} {client.last_name}
-                            </h1>
-                            <div style={{ fontSize: 13, color: '#000000' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                                <h1 className="admin-page-title" style={{ margin: 0 }}>
+                                    {client.first_name} {client.last_name}
+                                </h1>
+                                {isWebClient ? (
+                                    <span style={{
+                                        fontSize: 11,
+                                        fontWeight: 800,
+                                        backgroundColor: '#EFF6FF',
+                                        color: '#1D4ED8',
+                                        border: '1px solid #BFDBFE',
+                                        padding: '2px 8px',
+                                        borderRadius: 12,
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: 4
+                                    }}>
+                                        <Globe size={11} />
+                                        <span>Registrado desde Web (Landing Page)</span>
+                                    </span>
+                                ) : (
+                                    <span style={{
+                                        fontSize: 11,
+                                        fontWeight: 700,
+                                        backgroundColor: '#F1F5F9',
+                                        color: '#475569',
+                                        border: '1px solid #CBD5E1',
+                                        padding: '2px 8px',
+                                        borderRadius: 12,
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: 4
+                                    }}>
+                                        <UserCheck size={11} />
+                                        <span>Cargado por Admin</span>
+                                    </span>
+                                )}
+                            </div>
+                            <div style={{ fontSize: 13, color: '#64748B', marginTop: 4 }}>
                                 Cliente desde el {formatDate(client.created_at)} • {client.operations_count || 0} operaciones registradas
                             </div>
                         </div>
