@@ -17,7 +17,8 @@ import {
     Settings, 
     LogOut,
     ExternalLink,
-    Gift
+    Gift,
+    Smartphone
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -75,6 +76,15 @@ export function AdminSidebar() {
             </nav>
 
             <div className="admin-sidebar-footer">
+                <Link
+                    href="/vendedor"
+                    className="admin-nav-item"
+                    style={{ color: '#FB923C' }}
+                >
+                    <Smartphone size={16} />
+                    <span>App Salón (PWA)</span>
+                </Link>
+
                 <Link
                     href="/"
                     target="_blank"

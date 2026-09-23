@@ -39,11 +39,11 @@ export async function updateSession(request: NextRequest) {
         user = null;
     }
 
-    const isAccessingAdmin = request.nextUrl.pathname.startsWith('/admin');
+    const isAccessingProtected = request.nextUrl.pathname.startsWith('/admin') || request.nextUrl.pathname.startsWith('/vendedor');
     const isLoginPage = request.nextUrl.pathname === '/login';
 
-    if (isAccessingAdmin && !user) {
-        // Redirigir a login si intenta entrar a /admin sin auth
+    if (isAccessingProtected && !user) {
+        // Redirigir a login si intenta entrar a /admin o /vendedor sin auth
         const url = request.nextUrl.clone();
         url.pathname = '/login';
         url.searchParams.set('redirectTo', request.nextUrl.pathname);
@@ -51,9 +51,11 @@ export async function updateSession(request: NextRequest) {
     }
 
     if (isLoginPage && user) {
-        // Redirigir a /admin si ya está logueado
+        // Redirigir si ya está logueado
+        const redirectTo = request.nextUrl.searchParams.get('redirectTo') || '/admin';
         const url = request.nextUrl.clone();
-        url.pathname = '/admin';
+        url.pathname = redirectTo.startsWith('/') ? redirectTo : '/admin';
+        url.searchParams.delete('redirectTo');
         return NextResponse.redirect(url);
     }
 
