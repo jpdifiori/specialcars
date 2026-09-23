@@ -12,6 +12,7 @@ import {
     Search, 
     User, 
     Phone, 
+    MessageCircle,
     Mail, 
     Eye, 
     Clock, 
@@ -201,24 +202,52 @@ export default function AdminClientsPage() {
                                     <td>
                                         <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                                             {c.phone && (
-                                                <a
-                                                    href={buildWhatsAppUrl(c.phone)}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    style={{
+                                                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                                                    <span style={{
                                                         fontSize: 13,
                                                         color: '#0F172A',
                                                         fontWeight: 700,
                                                         display: 'inline-flex',
                                                         alignItems: 'center',
-                                                        gap: 6,
-                                                        textDecoration: 'none'
-                                                    }}
-                                                    title="Escribir por WhatsApp"
-                                                >
-                                                    <Phone size={13} style={{ color: '#16A34A', flexShrink: 0 }} />
-                                                    <span>{c.phone}</span>
-                                                </a>
+                                                        gap: 5
+                                                    }}>
+                                                        <Phone size={13} style={{ color: '#64748B', flexShrink: 0 }} />
+                                                        <span>{c.phone}</span>
+                                                    </span>
+                                                    <a
+                                                        href={buildWhatsAppUrl(
+                                                            c.phone,
+                                                            `Hola${c.first_name ? ' ' + c.first_name : ''}, te escribo de Special Cars. ¿Cómo estás?`
+                                                        )}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        title="Abrir chat en WhatsApp Web"
+                                                        style={{
+                                                            display: 'inline-flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                            width: 20,
+                                                            height: 20,
+                                                            borderRadius: '50%',
+                                                            backgroundColor: '#25D366',
+                                                            color: '#FFFFFF',
+                                                            boxShadow: '0 1px 3px rgba(37, 211, 102, 0.35)',
+                                                            textDecoration: 'none',
+                                                            transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+                                                            flexShrink: 0
+                                                        }}
+                                                        onMouseEnter={(e) => {
+                                                            e.currentTarget.style.transform = 'scale(1.15)';
+                                                            e.currentTarget.style.boxShadow = '0 2px 6px rgba(37, 211, 102, 0.5)';
+                                                        }}
+                                                        onMouseLeave={(e) => {
+                                                            e.currentTarget.style.transform = 'scale(1)';
+                                                            e.currentTarget.style.boxShadow = '0 1px 3px rgba(37, 211, 102, 0.35)';
+                                                        }}
+                                                    >
+                                                        <MessageCircle size={12} strokeWidth={2.4} />
+                                                    </a>
+                                                </div>
                                             )}
                                             {c.email && (
                                                 <a

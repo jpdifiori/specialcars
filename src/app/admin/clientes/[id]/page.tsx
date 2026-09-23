@@ -2,10 +2,12 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getClient360 } from '@/lib/actions/clients';
 import { formatDate } from '@/lib/utils/dates';
+import { buildWhatsAppUrl } from '@/lib/utils/phone';
 import { 
     ArrowLeft, 
     User, 
     Phone, 
+    MessageCircle,
     Mail, 
     MapPin, 
     Calendar, 
@@ -141,9 +143,36 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                         {client.phone && (
                             <div>
                                 <div style={{ fontSize: 11, color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>Teléfono / WhatsApp</div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#059669', fontWeight: 700 }}>
-                                    <Phone size={14} />
-                                    <span>{client.phone}</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 2 }}>
+                                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#0F172A', fontWeight: 700 }}>
+                                        <Phone size={14} style={{ color: '#64748B' }} />
+                                        <span>{client.phone}</span>
+                                    </span>
+                                    <a
+                                        href={buildWhatsAppUrl(
+                                            client.phone,
+                                            `Hola${client.first_name ? ' ' + client.first_name : ''}, te escribo de Special Cars. ¿Cómo estás?`
+                                        )}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        title="Abrir chat en WhatsApp Web"
+                                        style={{
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            width: 22,
+                                            height: 22,
+                                            borderRadius: '50%',
+                                            backgroundColor: '#25D366',
+                                            color: '#FFFFFF',
+                                            boxShadow: '0 1px 3px rgba(37, 211, 102, 0.35)',
+                                            textDecoration: 'none',
+                                            transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+                                            flexShrink: 0
+                                        }}
+                                    >
+                                        <MessageCircle size={13} strokeWidth={2.4} />
+                                    </a>
                                 </div>
                             </div>
                         )}
