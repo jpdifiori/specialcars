@@ -1,13 +1,20 @@
-import { getSellerWantedVehicles, getSellerClients } from '@/lib/actions/seller';
+import { getSellerWantedVehicles, getSellerClients, getSellerStockDemand } from '@/lib/actions/seller';
 import { SellerWantedView } from '@/components/seller/SellerWantedView';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SellerWantedPage() {
-    const [wanted, clients] = await Promise.all([
+    const [wanted, clients, demand] = await Promise.all([
         getSellerWantedVehicles(),
-        getSellerClients()
+        getSellerClients(),
+        getSellerStockDemand()
     ]);
 
-    return <SellerWantedView initialWanted={wanted} initialClients={clients} />;
+    return (
+        <SellerWantedView
+            initialWanted={wanted}
+            initialClients={clients}
+            initialDemand={demand}
+        />
+    );
 }

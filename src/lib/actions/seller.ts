@@ -287,20 +287,47 @@ export async function getSellerReservations(): Promise<Reservation[]> {
 }
 
 /**
- * Obtiene los vehículos buscados activos para el salón.
+ * Obtiene los vehículos buscados activos para el salón (Web y Admin).
  */
-export async function getSellerWantedVehicles(): Promise<WantedVehicle[]> {
+export async function getSellerWantedVehicles(params: {
+    status?: string;
+    source?: string;
+    priority?: string;
+    search?: string;
+} = {}): Promise<WantedVehicle[]> {
     const supabase = await createServerSupabaseClient();
+    const { status, source, priority, search } = params;
 
-    const { data, error } = await supabase
+    let query = supabase
         .from('wanted_vehicles')
         .select(`
             *,
-            client:clients(id, first_name, last_name, phone, whatsapp)
+            client:clients(id, first_name, last_name, phone, whatsapp, email, city)
         `)
-        .eq('status', 'ACTIVE')
-        .order('created_at', { ascending: false })
-        .limit(40);
+        .eq('is_deleted', false);
+
+    if (status && status !== 'ALL') {
+        query = query.eq('status', status);
+    } else if (!status) {
+        query = query.in('status', ['SEARCHING', 'CONTACTED']);
+    }
+
+    if (source && source !== 'ALL') {
+        query = query.eq('source', source);
+    }
+
+    if (priority && priority !== 'ALL') {
+        query = query.eq('priority', priority);
+    }
+
+    if (search && search.trim() !== '') {
+        const q = search.trim();
+        query = query.or(`brand.ilike.%${q}%,model.ilike.%${q}%,code.ilike.%${q}%,notes.ilike.%${q}%,trade_in_details.ilike.%${q}%`);
+    }
+
+    query = query.order('created_at', { ascending: false }).limit(60);
+
+    const { data, error } = await query;
 
     if (error) {
         console.error('Error fetching seller wanted vehicles:', error);
@@ -308,6 +335,22 @@ export async function getSellerWantedVehicles(): Promise<WantedVehicle[]> {
     }
 
     return (data || []) as WantedVehicle[];
+}
+
+/**
+ * Obtiene coincidencias de stock para un vehículo buscado.
+ */
+export async function getSellerWantedMatches(wantedId: string) {
+    const { getMatchingStockForWanted } = await import('@/lib/actions/wanted-vehicles');
+    return await getMatchingStockForWanted(wantedId);
+}
+
+/**
+ * Obtiene el resumen de demanda de stock para vendedores.
+ */
+export async function getSellerStockDemand() {
+    const { getStockDemandSummary } = await import('@/lib/actions/wanted-vehicles');
+    return await getStockDemandSummary();
 }
 
 /**
@@ -346,3 +389,4 @@ export async function createSellerWantedVehicle(payload: {
 
     return result;
 }
+
