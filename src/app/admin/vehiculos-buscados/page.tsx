@@ -7,6 +7,7 @@ import { WantedVehicle, StockDemandItem, WantedVehicleStatus, WantedVehicleCance
 import { getWantedVehicles, getStockDemandSummary, updateWantedVehicleStatus, deleteWantedVehicle } from '@/lib/actions/wanted-vehicles';
 import { formatARS } from '@/lib/utils/currency';
 import { formatDate } from '@/lib/utils/dates';
+import { buildWhatsAppUrl } from '@/lib/utils/phone';
 import { WhatsAppPreparationModal } from '@/components/admin/WhatsAppPreparationModal';
 import { 
     SearchCheck, 
@@ -526,9 +527,44 @@ export default function WantedVehiclesPage() {
                                                     {w.client ? `${w.client.first_name} ${w.client.last_name}` : 'Cliente no asignado'}
                                                 </div>
                                                 {w.client?.phone && (
-                                                    <div style={{ fontSize: 12, color: '#64748B', display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-                                                        <Phone size={12} />
-                                                        <span>{w.client.phone}</span>
+                                                    <div style={{ fontSize: 12, color: '#334155', display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+                                                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontWeight: 600 }}>
+                                                            <Phone size={12} style={{ color: '#64748B' }} />
+                                                            <span>{w.client.phone}</span>
+                                                        </span>
+                                                        <a
+                                                            href={buildWhatsAppUrl(
+                                                                w.client.phone,
+                                                                `Hola${w.client.first_name ? ' ' + w.client.first_name : ''}, te escribo de Special Cars por tu pedido de búsqueda (${w.brand} ${w.model}). ¿Cómo estás?`
+                                                            )}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            title="Abrir chat en WhatsApp Web"
+                                                            style={{
+                                                                display: 'inline-flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                width: 20,
+                                                                height: 20,
+                                                                borderRadius: '50%',
+                                                                backgroundColor: '#25D366',
+                                                                color: '#FFFFFF',
+                                                                boxShadow: '0 1px 3px rgba(37, 211, 102, 0.35)',
+                                                                textDecoration: 'none',
+                                                                transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+                                                                flexShrink: 0
+                                                            }}
+                                                            onMouseEnter={(e) => {
+                                                                e.currentTarget.style.transform = 'scale(1.15)';
+                                                                e.currentTarget.style.boxShadow = '0 2px 6px rgba(37, 211, 102, 0.5)';
+                                                            }}
+                                                            onMouseLeave={(e) => {
+                                                                e.currentTarget.style.transform = 'scale(1)';
+                                                                e.currentTarget.style.boxShadow = '0 1px 3px rgba(37, 211, 102, 0.35)';
+                                                            }}
+                                                        >
+                                                            <MessageCircle size={12} strokeWidth={2.4} />
+                                                        </a>
                                                     </div>
                                                 )}
                                             </td>

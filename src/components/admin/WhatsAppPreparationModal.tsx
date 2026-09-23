@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Vehicle } from '@/lib/types';
 import { formatARS } from '@/lib/utils/currency';
 import { buildWhatsAppMatchMessage } from '@/lib/utils/matching';
+import { formatWhatsAppNumber, buildWhatsAppUrl } from '@/lib/utils/phone';
 import { X, Send, Copy, Check, MessageCircle, Phone, User, ExternalLink, Sparkles } from 'lucide-react';
 
 interface WhatsAppPreparationModalProps {
@@ -37,17 +38,7 @@ export function WhatsAppPreparationModal({
 
     useEffect(() => {
         if (isOpen && client && vehicle) {
-            const rawPhone = client.whatsapp || client.phone || '';
-            const cleaned = rawPhone.replace(/[^0-9]/g, '');
-            // Si no tiene prefijo de país 549, lo agregamos para Argentina
-            const formatted = cleaned.startsWith('549') 
-                ? cleaned 
-                : cleaned.startsWith('54') 
-                    ? `549${cleaned.slice(2)}` 
-                    : cleaned.length >= 10 
-                        ? `549${cleaned}` 
-                        : cleaned;
-
+            const formatted = formatWhatsAppNumber(client.whatsapp || client.phone || '');
             setRecipientNumber(formatted);
 
             const initialText = buildWhatsAppMatchMessage({
@@ -81,7 +72,7 @@ export function WhatsAppPreparationModal({
             return;
         }
 
-        const url = `https://wa.me/${recipientNumber}?text=${encodeURIComponent(message)}`;
+        const url = buildWhatsAppUrl(recipientNumber, message);
         window.open(url, '_blank', 'noopener,noreferrer');
         
         if (onMessageSent) {

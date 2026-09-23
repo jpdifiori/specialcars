@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getClients } from '@/lib/actions/clients';
 import { Client } from '@/lib/types';
 import { formatDate } from '@/lib/utils/dates';
+import { buildWhatsAppUrl } from '@/lib/utils/phone';
 import { 
     Users, 
     Plus, 
@@ -201,7 +202,7 @@ export default function AdminClientsPage() {
                                         <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                                             {c.phone && (
                                                 <a
-                                                    href={`https://wa.me/${c.phone.replace(/[^0-9]/g, '')}`}
+                                                    href={buildWhatsAppUrl(c.phone)}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     style={{
