@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getReservations, cancelReservation } from '@/lib/actions/reservations';
+import { getReservations, cancelReservation, deleteReservation } from '@/lib/actions/reservations';
 import { Reservation } from '@/lib/types';
 import { formatARS } from '@/lib/utils/currency';
 import { formatDate } from '@/lib/utils/dates';
@@ -15,7 +15,8 @@ import {
     CheckCircle2, 
     XCircle,
     Clock,
-    AlertCircle
+    AlertCircle,
+    Trash2
 } from 'lucide-react';
 
 export default function AdminReservationsPage() {
@@ -42,6 +43,12 @@ export default function AdminReservationsPage() {
     const handleCancel = async (id: string) => {
         if (!confirm('¿Seguro que deseas cancelar esta reserva? El vehículo volverá a estar disponible para la venta.')) return;
         await cancelReservation(id);
+        loadReservations();
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm('¿Seguro que deseas eliminar definitivamente esta reserva?')) return;
+        await deleteReservation(id);
         loadReservations();
     };
 
@@ -140,25 +147,46 @@ export default function AdminReservationsPage() {
                                         </span>
                                     </td>
                                     <td style={{ textAlign: 'right' }}>
-                                        {r.status === 'ACTIVE' && (
-                                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 6 }}>
-                                                <Link 
-                                                    href={`/admin/operaciones/nueva?clientId=${r.client_id}&vehicleId=${r.vehicle_id}`}
-                                                    className="btn-primary"
-                                                    style={{ padding: '4px 10px', fontSize: 11 }}
-                                                >
-                                                    Cerrar Venta
-                                                </Link>
-                                                <button
-                                                    onClick={() => handleCancel(r.id)}
-                                                    className="btn-danger"
-                                                    style={{ padding: '4px 8px', fontSize: 11 }}
-                                                    title="Cancelar seña y liberar vehículo"
-                                                >
-                                                    Cancelar
-                                                </button>
-                                            </div>
-                                        )}
+                                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 6, alignItems: 'center' }}>
+                                            {r.status === 'ACTIVE' && (
+                                                <>
+                                                    <Link 
+                                                        href={`/admin/operaciones/nueva?clientId=${r.client_id}&vehicleId=${r.vehicle_id}`}
+                                                        className="btn-primary"
+                                                        style={{ padding: '4px 10px', fontSize: 11 }}
+                                                    >
+                                                        Cerrar Venta
+                                                    </Link>
+                                                    <button
+                                                        onClick={() => handleCancel(r.id)}
+                                                        className="btn-danger"
+                                                        style={{ padding: '4px 8px', fontSize: 11 }}
+                                                        title="Cancelar seña y liberar vehículo"
+                                                    >
+                                                        Cancelar
+                                                    </button>
+                                                </>
+                                            )}
+                                            <button
+                                                onClick={() => handleDelete(r.id)}
+                                                style={{
+                                                    background: 'transparent',
+                                                    border: 'none',
+                                                    color: '#94A3B8',
+                                                    padding: '4px 6px',
+                                                    cursor: 'pointer',
+                                                    borderRadius: 4,
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    transition: 'color 0.15s ease'
+                                                }}
+                                                onMouseEnter={(e) => { e.currentTarget.style.color = '#EF4444'; }}
+                                                onMouseLeave={(e) => { e.currentTarget.style.color = '#94A3B8'; }}
+                                                title="Eliminar reserva"
+                                            >
+                                                <Trash2 size={14} />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

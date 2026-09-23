@@ -142,3 +142,43 @@ export async function cancelReservation(id: string) {
 
     return { success: true };
 }
+
+/**
+ * Elimina una reserva y libera el vehículo si estaba activa.
+ */
+export async function deleteReservation(id: string) {
+    const adminClient = createAdminClient();
+
+    const { data: res, error: resErr } = await adminClient
+        .from('reservations')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+    if (resErr || !res) {
+        return { success: false, error: 'Reserva no encontrada.' };
+    }
+
+    if (res.status === 'ACTIVE') {
+        await adminClient.from('vehicles').update({
+            status: 'AVAILABLE',
+            updated_at: new Date().toISOString()
+        }).eq('id', res.vehicle_id).eq('status', 'RESERVED');
+    }
+
+    const { error } = await adminClient
+        .from('reservations')
+        .delete()
+        .eq('id', id);
+
+    if (error) {
+        return { success: false, error: error.message };
+    }
+
+    revalidatePath('/admin/reservas');
+    revalidatePath('/admin/vehiculos');
+    revalidatePath('/vehiculos');
+    revalidatePath('/');
+
+    return { success: true };
+}
