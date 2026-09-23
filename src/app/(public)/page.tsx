@@ -400,7 +400,7 @@ export default async function PublicHomePage() {
                                 </div>
                                 <div>
                                     <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>Horarios de Atención</span>
-                                    <div style={{ color: '#334155', marginTop: 2 }}>{settings.business_hours || 'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 08:00 a 12:30 hs.'}</div>
+                                    <div style={{ color: '#334155', marginTop: 2 }}>{settings.business_hours || 'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 9:00 a 12:30 hs.'}</div>
                                 </div>
                                 <div>
                                     <span style={{ color: '#64748B', fontSize: 12, textTransform: 'uppercase', fontWeight: 700 }}>WhatsApp Directo</span>

@@ -44,7 +44,7 @@ Tu misión es atender a los visitantes de nuestra web con extrema calidez, rapid
 - Teléfono de Atención: ${settings.phone || '+54 2262 57-4254'}
 - WhatsApp Oficial: ${settings.whatsapp || '5492262574254'} (+54 9 2262 57-4254)
 - Enlace directo a WhatsApp: https://wa.me/${settings.whatsapp || '5492262574254'}
-- Horarios de Atención: ${settings.business_hours || 'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 08:00 a 12:30 hs.'}
+- Horarios de Atención: ${settings.business_hours || 'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 9:00 a 12:30 hs.'}
 - Email: ${settings.email || 'contacto@specialcars.com.ar'}
 - Servicios que brindamos:
   1. Venta de autos usados seleccionados y garantizados.

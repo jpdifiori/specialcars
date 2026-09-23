@@ -152,7 +152,7 @@ export function PublicFooter({ settings }: { settings: AgencySettings }) {
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 7, color: '#94A3B8', fontSize: 12 }}>
                             <Clock size={14} style={{ color: '#EA580C', flexShrink: 0 }} />
-                            <span>Lun a Vie 8-17 hs • Sáb 8-12:30 hs</span>
+                            <span>Lun a Vie 8-17 hs • Sáb 9-12:30 hs</span>
                         </div>
                     </div>
                 </div>

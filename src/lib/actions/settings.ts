@@ -33,7 +33,7 @@ export async function getAgencySettings(): Promise<AgencySettings> {
             facebook: 'https://facebook.com/specialcars',
             tiktok: 'https://www.tiktok.com/@specialcars_necochea',
             google_maps_url: null,
-            business_hours: 'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 08:00 a 12:30 hs.',
+            business_hours: 'Lunes a Viernes de 8:00 a 17:00 hs. Sábados de 9:00 a 12:30 hs.',
             legal_info: null,
             updated_at: new Date().toISOString()
         };
