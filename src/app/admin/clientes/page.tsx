@@ -194,29 +194,57 @@ export default function AdminClientsPage() {
                                                     </div>
                                                 </div>
                                             </td>
-                                    <td style={{ fontFamily: 'var(--font-mono)' }}>
-                                        {c.dni ? `DNI: ${c.dni}` : (c.cuit_cuil ? `CUIT: ${c.cuit_cuil}` : '-')}
+                                    <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#0F172A', fontSize: 13 }}>
+                                        {c.dni ? `DNI: ${c.dni}` : (c.cuit_cuil ? `CUIT: ${c.cuit_cuil}` : <span style={{ color: '#94A3B8' }}>—</span>)}
                                     </td>
                                     <td>
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                                             {c.phone && (
-                                                <span style={{ fontSize: 13, color: '#e2e8f0', display: 'flex', alignItems: 'center', gap: 4 }}>
-                                                    <Phone size={12} style={{ color: '#10b981' }} />
+                                                <a
+                                                    href={`https://wa.me/${c.phone.replace(/[^0-9]/g, '')}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    style={{
+                                                        fontSize: 13,
+                                                        color: '#0F172A',
+                                                        fontWeight: 700,
+                                                        display: 'inline-flex',
+                                                        alignItems: 'center',
+                                                        gap: 6,
+                                                        textDecoration: 'none'
+                                                    }}
+                                                    title="Escribir por WhatsApp"
+                                                >
+                                                    <Phone size={13} style={{ color: '#16A34A', flexShrink: 0 }} />
                                                     <span>{c.phone}</span>
-                                                </span>
+                                                </a>
                                             )}
                                             {c.email && (
-                                                <span style={{ fontSize: 12, color: '#000000', display: 'flex', alignItems: 'center', gap: 4 }}>
-                                                    <Mail size={12} />
+                                                <a
+                                                    href={`mailto:${c.email}`}
+                                                    style={{
+                                                        fontSize: 12,
+                                                        color: '#334155',
+                                                        fontWeight: 500,
+                                                        display: 'inline-flex',
+                                                        alignItems: 'center',
+                                                        gap: 6,
+                                                        textDecoration: 'none'
+                                                    }}
+                                                >
+                                                    <Mail size={13} style={{ color: '#64748B', flexShrink: 0 }} />
                                                     <span>{c.email}</span>
-                                                </span>
+                                                </a>
+                                            )}
+                                            {!c.phone && !c.email && (
+                                                <span style={{ color: '#94A3B8', fontSize: 12 }}>Sin contacto</span>
                                             )}
                                         </div>
                                     </td>
-                                    <td style={{ color: '#000000' }}>
-                                        {c.city || c.province ? `${c.city || ''} ${c.province ? `(${c.province})` : ''}` : '-'}
+                                    <td style={{ color: '#0F172A', fontSize: 13, fontWeight: 600 }}>
+                                        {c.city || c.province ? `${c.city || ''} ${c.province ? `(${c.province})` : ''}` : <span style={{ color: '#94A3B8' }}>—</span>}
                                     </td>
-                                    <td style={{ color: '#000000', fontSize: 12 }}>
+                                    <td style={{ color: '#334155', fontSize: 12.5, fontWeight: 700 }}>
                                         {formatDate(c.created_at)}
                                     </td>
                                     <td style={{ textAlign: 'right' }}>
