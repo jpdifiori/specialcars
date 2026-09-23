@@ -6,6 +6,7 @@ import { getConsignments } from '@/lib/actions/consignments';
 import { Consignment } from '@/lib/types';
 import { formatARS } from '@/lib/utils/currency';
 import { formatDate } from '@/lib/utils/dates';
+import { buildWhatsAppUrl } from '@/lib/utils/phone';
 import { 
     FileSpreadsheet, 
     Plus, 
@@ -14,7 +15,9 @@ import {
     DollarSign, 
     CheckCircle2, 
     Clock, 
-    AlertTriangle 
+    AlertTriangle,
+    Phone,
+    MessageCircle
 } from 'lucide-react';
 
 export default function AdminConsignmentsPage() {
@@ -100,44 +103,103 @@ export default function AdminConsignmentsPage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {consignments.map((c) => (
-                                <tr key={c.id}>
-                                    <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#EA580C' }}>
-                                        {c.consignment_code}
-                                    </td>
-                                    <td>
-                                        {c.vehicle ? (
-                                            <Link href={`/admin/vehiculos/${c.vehicle.id}`} style={{ fontWeight: 600, color: '#000000' }}>
-                                                {c.vehicle.brand} {c.vehicle.model} ({c.vehicle.year})
-                                            </Link>
-                                        ) : '-'}
-                                    </td>
-                                    <td>
-                                        {c.client ? (
-                                            <Link href={`/admin/clientes/${c.client.id}`} style={{ color: '#000000' }}>
-                                                {c.client.first_name} {c.client.last_name}
-                                            </Link>
-                                        ) : '-'}
-                                    </td>
-                                    <td style={{ fontFamily: 'var(--font-mono)', color: '#000000' }}>
-                                        {formatARS(c.requested_price)}
-                                    </td>
-                                    <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#34d399' }}>
-                                        {formatARS(c.listing_price)}
-                                    </td>
-                                    <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#fbbf24' }}>
-                                        {formatARS(c.commission_amount || (c.listing_price - c.requested_price))}
-                                    </td>
-                                    <td>
-                                        <span className={`badge ${c.status === 'ACTIVE' ? 'badge-available' : (c.status === 'SOLD' ? 'badge-sold' : 'badge-reserved')}`}>
-                                            {c.status}
-                                        </span>
-                                    </td>
-                                    <td style={{ color: '#000000', fontSize: 12 }}>
-                                        {formatDate(c.start_date)}
-                                    </td>
-                                </tr>
-                            ))}
+                            {consignments.map((c) => {
+                                const statusLabels: Record<string, { label: string; bg: string; color: string; border: string }> = {
+                                    ACTIVE: { label: 'Activa', bg: '#ECFDF5', color: '#047857', border: '#A7F3D0' },
+                                    SOLD: { label: 'Vendida', bg: '#EFF6FF', color: '#1D4ED8', border: '#BFDBFE' },
+                                    RESERVED: { label: 'Reservada', bg: '#FFFBEB', color: '#B45309', border: '#FDE68A' },
+                                    EXPIRED: { label: 'Vencida', bg: '#FEF2F2', color: '#B91C1C', border: '#FECACA' },
+                                    WITHDRAWN: { label: 'Retirada', bg: '#F1F5F9', color: '#475569', border: '#CBD5E1' }
+                                };
+                                const st = statusLabels[c.status] || { label: c.status, bg: '#F1F5F9', color: '#475569', border: '#CBD5E1' };
+
+                                return (
+                                    <tr key={c.id}>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#EA580C' }}>
+                                            {c.consignment_code}
+                                        </td>
+                                        <td>
+                                            {c.vehicle ? (
+                                                <div>
+                                                    <Link href={`/admin/vehiculos/${c.vehicle.id}`} style={{ fontWeight: 800, color: '#0F172A', textDecoration: 'none' }}>
+                                                        {c.vehicle.brand} {c.vehicle.model}
+                                                    </Link>
+                                                    <div style={{ fontSize: 12, color: '#64748B', marginTop: 2 }}>
+                                                        Año: {c.vehicle.year} {c.vehicle.plate ? `• Patente: ${c.vehicle.plate}` : ''}
+                                                    </div>
+                                                </div>
+                                            ) : '-'}
+                                        </td>
+                                        <td>
+                                            {c.client ? (
+                                                <div>
+                                                    <Link href={`/admin/clientes/${c.client.id}`} style={{ fontWeight: 700, color: '#0F172A', textDecoration: 'none' }}>
+                                                        {c.client.first_name} {c.client.last_name}
+                                                    </Link>
+                                                    {c.client.phone && (
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, marginTop: 3 }}>
+                                                            <span style={{ color: '#475569', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                                                <Phone size={12} style={{ color: '#64748B' }} />
+                                                                <span>{c.client.phone}</span>
+                                                            </span>
+                                                            <a
+                                                                href={buildWhatsAppUrl(
+                                                                    c.client.phone,
+                                                                    `Hola${c.client.first_name ? ' ' + c.client.first_name : ''}, te escribo de Special Cars respecto a la consignación de tu vehículo (${c.vehicle ? c.vehicle.brand + ' ' + c.vehicle.model : ''}). ¿Cómo estás?`
+                                                                )}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                title="Abrir chat en WhatsApp Web"
+                                                                style={{
+                                                                    display: 'inline-flex',
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'center',
+                                                                    width: 18,
+                                                                    height: 18,
+                                                                    borderRadius: '50%',
+                                                                    backgroundColor: '#25D366',
+                                                                    color: '#FFFFFF',
+                                                                    boxShadow: '0 1px 3px rgba(37, 211, 102, 0.35)',
+                                                                    textDecoration: 'none',
+                                                                    flexShrink: 0
+                                                                }}
+                                                            >
+                                                                <MessageCircle size={11} strokeWidth={2.4} />
+                                                            </a>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ) : '-'}
+                                        </td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', color: '#334155', fontWeight: 600 }}>
+                                            {formatARS(c.requested_price)}
+                                        </td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#16A34A' }}>
+                                            {formatARS(c.listing_price)}
+                                        </td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#D97706' }}>
+                                            {formatARS(c.commission_amount || (c.listing_price - c.requested_price))}
+                                        </td>
+                                        <td>
+                                            <span style={{
+                                                fontSize: 11,
+                                                fontWeight: 800,
+                                                padding: '3px 9px',
+                                                borderRadius: 12,
+                                                backgroundColor: st.bg,
+                                                color: st.color,
+                                                border: `1px solid ${st.border}`,
+                                                display: 'inline-block'
+                                            }}>
+                                                {st.label}
+                                            </span>
+                                        </td>
+                                        <td style={{ color: '#475569', fontSize: 12, fontWeight: 500 }}>
+                                            {formatDate(c.start_date)}
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 )}

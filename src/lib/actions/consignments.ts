@@ -9,14 +9,14 @@ import { revalidatePath } from 'next/cache';
  * Obtiene lista de consignaciones con cliente y vehículo asociado.
  */
 export async function getConsignments(params: { status?: string; page?: number; limit?: number } = {}) {
-    const supabase = await createServerSupabaseClient();
+    const adminClient = createAdminClient();
     const { status, page = 1, limit = 20 } = params;
 
-    let query = supabase
+    let query = adminClient
         .from('consignments')
         .select(`
             *,
-            client:clients(id, first_name, last_name, phone, email),
+            client:clients!consignments_client_id_fkey(id, first_name, last_name, phone, email),
             vehicle:vehicles(id, stock_code, brand, model, version, year, plate, sale_price, status, published),
             buyer_client:clients!consignments_buyer_client_id_fkey(id, first_name, last_name, phone)
         `, { count: 'exact' })
