@@ -7,6 +7,7 @@ import { Consignment } from '@/lib/types';
 import { formatARS } from '@/lib/utils/currency';
 import { formatDate } from '@/lib/utils/dates';
 import { buildWhatsAppUrl } from '@/lib/utils/phone';
+import { WhatsAppIcon } from '@/components/common/WhatsAppIcon';
 import { 
     FileSpreadsheet, 
     Plus, 
@@ -16,8 +17,7 @@ import {
     CheckCircle2, 
     Clock, 
     AlertTriangle,
-    Phone,
-    MessageCircle
+    Phone
 } from 'lucide-react';
 
 export default function AdminConsignmentsPage() {
@@ -154,17 +154,16 @@ export default function AdminConsignmentsPage() {
                                                                     display: 'inline-flex',
                                                                     alignItems: 'center',
                                                                     justifyContent: 'center',
-                                                                    width: 18,
-                                                                    height: 18,
+                                                                    width: 20,
+                                                                    height: 20,
                                                                     borderRadius: '50%',
                                                                     backgroundColor: '#25D366',
-                                                                    color: '#FFFFFF',
                                                                     boxShadow: '0 1px 3px rgba(37, 211, 102, 0.35)',
                                                                     textDecoration: 'none',
                                                                     flexShrink: 0
                                                                 }}
                                                             >
-                                                                <MessageCircle size={11} strokeWidth={2.4} />
+                                                                <WhatsAppIcon size={12} color="#FFFFFF" />
                                                             </a>
                                                         </div>
                                                     )}

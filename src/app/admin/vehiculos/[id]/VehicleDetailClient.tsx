@@ -26,11 +26,11 @@ import {
     Wrench,
     Crop,
     Flame,
-    MessageCircle,
     User,
     Phone,
     CheckCircle2
 } from 'lucide-react';
+import { WhatsAppIcon } from '@/components/common/WhatsAppIcon';
 import { ImagePositionModal } from '@/components/admin/ImagePositionModal';
 import { WhatsAppPreparationModal } from '@/components/admin/WhatsAppPreparationModal';
 
@@ -642,7 +642,7 @@ export function VehicleDetailClient({
                                                         transition: 'transform 0.15s'
                                                     }}
                                                 >
-                                                    <MessageCircle size={16} />
+                                                    <WhatsAppIcon size={16} color="#FFFFFF" />
                                                     <span>Preparar WhatsApp</span>
                                                 </button>
                                             )}

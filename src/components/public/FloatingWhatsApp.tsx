@@ -1,6 +1,6 @@
 'use client';
 
-import { MessageCircle } from 'lucide-react';
+import { WhatsAppIcon } from '@/components/common/WhatsAppIcon';
 
 export function FloatingWhatsApp({ whatsappNumber }: { whatsappNumber?: string }) {
     const wp = whatsappNumber || '5492262574254';
@@ -13,7 +13,7 @@ export function FloatingWhatsApp({ whatsappNumber }: { whatsappNumber?: string }
             className="floating-whatsapp"
             title="Consultar por WhatsApp"
         >
-            <MessageCircle size={32} />
+            <WhatsAppIcon size={32} color="#FFFFFF" />
         </a>
     );
 }

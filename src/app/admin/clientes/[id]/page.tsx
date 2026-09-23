@@ -3,11 +3,11 @@ import Link from 'next/link';
 import { getClient360 } from '@/lib/actions/clients';
 import { formatDate } from '@/lib/utils/dates';
 import { buildWhatsAppUrl } from '@/lib/utils/phone';
+import { WhatsAppIcon } from '@/components/common/WhatsAppIcon';
 import { 
     ArrowLeft, 
     User, 
     Phone, 
-    MessageCircle,
     Mail, 
     MapPin, 
     Calendar, 
@@ -124,7 +124,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                                     boxShadow: '0 2px 6px rgba(37, 211, 102, 0.3)'
                                 }}
                             >
-                                <MessageCircle size={16} strokeWidth={2.4} />
+                                <WhatsAppIcon size={16} color="#FFFFFF" />
                                 <span>WhatsApp</span>
                             </a>
                         )}
@@ -197,7 +197,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                                             flexShrink: 0
                                         }}
                                     >
-                                        <MessageCircle size={13} strokeWidth={2.4} />
+                                        <WhatsAppIcon size={14} color="#FFFFFF" />
                                         <span>WhatsApp</span>
                                     </a>
                                 </div>

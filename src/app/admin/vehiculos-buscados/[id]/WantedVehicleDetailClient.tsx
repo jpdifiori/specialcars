@@ -8,6 +8,7 @@ import { updateWantedVehicleStatus, deleteWantedVehicle } from '@/lib/actions/wa
 import { formatARS } from '@/lib/utils/currency';
 import { formatDate } from '@/lib/utils/dates';
 import { buildWhatsAppUrl } from '@/lib/utils/phone';
+import { WhatsAppIcon } from '@/components/common/WhatsAppIcon';
 import { WhatsAppPreparationModal } from '@/components/admin/WhatsAppPreparationModal';
 import { 
     SearchCheck, 
@@ -18,7 +19,6 @@ import {
     Check, 
     AlertCircle, 
     Phone, 
-    MessageCircle, 
     Sparkles, 
     SlidersHorizontal, 
     Trash2, 
@@ -391,7 +391,7 @@ export function WantedVehicleDetailClient({
                                                             boxShadow: '0 2px 8px rgba(37, 211, 102, 0.3)'
                                                         }}
                                                     >
-                                                        <MessageCircle size={16} />
+                                                        <WhatsAppIcon size={16} color="#FFFFFF" />
                                                         <span>Preparar WhatsApp de Ofrecimiento</span>
                                                     </button>
                                                 </div>
@@ -466,7 +466,7 @@ export function WantedVehicleDetailClient({
                                                     e.currentTarget.style.boxShadow = '0 1px 3px rgba(37, 211, 102, 0.35)';
                                                 }}
                                             >
-                                                <MessageCircle size={13} strokeWidth={2.4} />
+                                                <WhatsAppIcon size={14} color="#FFFFFF" />
                                             </a>
                                         </div>
                                     )}

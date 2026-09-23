@@ -8,6 +8,7 @@ import { getWantedVehicles, getStockDemandSummary, updateWantedVehicleStatus, de
 import { formatARS } from '@/lib/utils/currency';
 import { formatDate } from '@/lib/utils/dates';
 import { buildWhatsAppUrl } from '@/lib/utils/phone';
+import { WhatsAppIcon } from '@/components/common/WhatsAppIcon';
 import { WhatsAppPreparationModal } from '@/components/admin/WhatsAppPreparationModal';
 import { 
     SearchCheck, 
@@ -18,7 +19,6 @@ import {
     User, 
     Car, 
     Phone, 
-    MessageCircle, 
     ArrowRight, 
     CheckCircle2, 
     XCircle, 
@@ -544,26 +544,25 @@ export default function WantedVehiclesPage() {
                                                                 display: 'inline-flex',
                                                                 alignItems: 'center',
                                                                 justifyContent: 'center',
-                                                                width: 20,
-                                                                height: 20,
+                                                                width: 22,
+                                                                height: 22,
                                                                 borderRadius: '50%',
                                                                 backgroundColor: '#25D366',
-                                                                color: '#FFFFFF',
-                                                                boxShadow: '0 1px 3px rgba(37, 211, 102, 0.35)',
+                                                                boxShadow: '0 1px 4px rgba(37, 211, 102, 0.4)',
                                                                 textDecoration: 'none',
                                                                 transition: 'transform 0.15s ease, box-shadow 0.15s ease',
                                                                 flexShrink: 0
                                                             }}
                                                             onMouseEnter={(e) => {
                                                                 e.currentTarget.style.transform = 'scale(1.15)';
-                                                                e.currentTarget.style.boxShadow = '0 2px 6px rgba(37, 211, 102, 0.5)';
+                                                                e.currentTarget.style.boxShadow = '0 2px 6px rgba(37, 211, 102, 0.6)';
                                                             }}
                                                             onMouseLeave={(e) => {
                                                                 e.currentTarget.style.transform = 'scale(1)';
-                                                                e.currentTarget.style.boxShadow = '0 1px 3px rgba(37, 211, 102, 0.35)';
+                                                                e.currentTarget.style.boxShadow = '0 1px 4px rgba(37, 211, 102, 0.4)';
                                                             }}
                                                         >
-                                                            <MessageCircle size={12} strokeWidth={2.4} />
+                                                            <WhatsAppIcon size={14} color="#FFFFFF" />
                                                         </a>
                                                     </div>
                                                 )}
@@ -892,7 +891,7 @@ export default function WantedVehiclesPage() {
                                                                     boxShadow: '0 2px 6px rgba(37, 211, 102, 0.3)'
                                                                 }}
                                                             >
-                                                                <MessageCircle size={14} />
+                                                                <WhatsAppIcon size={14} color="#FFFFFF" />
                                                                 <span>WhatsApp</span>
                                                             </button>
                                                         )}

@@ -5,7 +5,8 @@ import { Vehicle } from '@/lib/types';
 import { formatARS } from '@/lib/utils/currency';
 import { buildWhatsAppMatchMessage } from '@/lib/utils/matching';
 import { formatWhatsAppNumber, buildWhatsAppUrl } from '@/lib/utils/phone';
-import { X, Send, Copy, Check, MessageCircle, Phone, User, ExternalLink, Sparkles } from 'lucide-react';
+import { WhatsAppIcon } from '@/components/common/WhatsAppIcon';
+import { X, Send, Copy, Check, Phone, User, ExternalLink, Sparkles } from 'lucide-react';
 
 interface WhatsAppPreparationModalProps {
     isOpen: boolean;
@@ -125,7 +126,7 @@ export function WhatsAppPreparationModal({
                             justifyContent: 'center',
                             boxShadow: '0 4px 12px rgba(37, 211, 102, 0.35)'
                         }}>
-                            <MessageCircle size={20} />
+                            <WhatsAppIcon size={20} color="#FFFFFF" />
                         </div>
                         <div>
                             <h3 style={{ fontSize: 16, fontWeight: 900, color: '#0F172A', margin: 0 }}>
@@ -323,7 +324,7 @@ export function WhatsAppPreparationModal({
                                 transition: 'all 0.2s'
                             }}
                         >
-                            <MessageCircle size={17} />
+                            <WhatsAppIcon size={18} color="#FFFFFF" />
                             <span>Abrir WhatsApp</span>
                             <ExternalLink size={14} style={{ opacity: 0.8 }} />
                         </button>
