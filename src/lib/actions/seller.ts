@@ -325,7 +325,7 @@ export async function getSellerWantedVehicles(params: {
         query = query.or(`brand.ilike.%${q}%,model.ilike.%${q}%,code.ilike.%${q}%,notes.ilike.%${q}%,trade_in_details.ilike.%${q}%`);
     }
 
-    query = query.order('created_at', { ascending: false }).limit(60);
+    query = query.order('created_at', { ascending: false }).limit(100);
 
     const { data, error } = await query;
 

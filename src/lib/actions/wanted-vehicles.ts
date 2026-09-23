@@ -345,6 +345,7 @@ export async function updateWantedVehicleStatus(
 
     revalidatePath('/admin/vehiculos-buscados');
     revalidatePath(`/admin/vehiculos-buscados/${id}`);
+    revalidatePath('/vendedor/buscados');
 
     return { success: true, data: data as WantedVehicle };
 }

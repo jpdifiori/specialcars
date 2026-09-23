@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function SellerWantedPage() {
     const [wanted, clients, demand] = await Promise.all([
-        getSellerWantedVehicles(),
+        getSellerWantedVehicles({ status: 'ALL' }),
         getSellerClients(),
         getSellerStockDemand()
     ]);

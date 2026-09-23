@@ -4,11 +4,13 @@ import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import { WantedVehicle, Client, StockDemandItem } from '@/lib/types';
 import { createSellerWantedVehicle, getSellerClients, createSellerClient } from '@/lib/actions/seller';
+import { updateWantedVehicleStatus } from '@/lib/actions/wanted-vehicles';
 import { formatARS } from '@/lib/utils/currency';
-import { formatDate } from '@/lib/utils/dates';
+import { formatDate, formatRelativeContact } from '@/lib/utils/dates';
 import { buildWhatsAppUrl } from '@/lib/utils/phone';
 import { WhatsAppIcon } from '@/components/common/WhatsAppIcon';
 import { SellerMatchesModal } from '@/components/seller/SellerMatchesModal';
+import { SellerStatusModal } from '@/components/seller/SellerStatusModal';
 import { 
     SearchCheck, 
     Plus, 
@@ -28,7 +30,11 @@ import {
     ArrowRight, 
     CheckCircle2, 
     TrendingUp,
-    RefreshCw
+    RefreshCw,
+    MessageSquare,
+    SlidersHorizontal,
+    Clock,
+    XCircle
 } from 'lucide-react';
 
 interface SellerWantedViewProps {
@@ -52,11 +58,15 @@ export function SellerWantedView({
     // Filtros
     const [search, setSearch] = useState('');
     const [sourceFilter, setSourceFilter] = useState<'ALL' | 'WEB' | 'ADMIN'>('ALL');
-    const [statusFilter, setStatusFilter] = useState<'SEARCHING' | 'ALL'>('SEARCHING');
+    const [statusFilter, setStatusFilter] = useState<string>('ACTIVE');
     const [priorityFilter, setPriorityFilter] = useState('ALL');
 
     // Modal de Coincidencias de Stock
     const [matchingWanted, setMatchingWanted] = useState<WantedVehicle | null>(null);
+
+    // Modal de Gestión de Estado
+    const [statusModalWanted, setStatusModalWanted] = useState<WantedVehicle | null>(null);
+    const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
 
     // Modal nuevo pedido
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -79,15 +89,57 @@ export function SellerWantedView({
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    // Conteo por estados para los chips de filtro
+    const counts = useMemo(() => {
+        const total = wantedList.length;
+        const active = wantedList.filter(w => w.status === 'SEARCHING' || w.status === 'CONTACTED' || w.status === 'FOUND').length;
+        const searching = wantedList.filter(w => w.status === 'SEARCHING').length;
+        const contacted = wantedList.filter(w => w.status === 'CONTACTED').length;
+        const found = wantedList.filter(w => w.status === 'FOUND').length;
+        const closed = wantedList.filter(w => w.status === 'CLOSED').length;
+        const cancelled = wantedList.filter(w => w.status === 'CANCELLED').length;
+        return { total, active, searching, contacted, found, closed, cancelled };
+    }, [wantedList]);
+
+    // Actualización de estado en memoria
+    const handleStatusUpdated = (updated: WantedVehicle) => {
+        setWantedList((prev) => prev.map((w) => (w.id === updated.id ? { ...w, ...updated } : w)));
+    };
+
+    // Apertura de WhatsApp con auto-actualización a "Contactado" si estaba en "Buscando"
+    const handleWhatsAppClick = (e: React.MouseEvent, w: WantedVehicle, phone: string, initialMsg: string) => {
+        e.stopPropagation();
+        window.open(buildWhatsAppUrl(phone, initialMsg), '_blank');
+
+        if (w.status === 'SEARCHING') {
+            updateWantedVehicleStatus(w.id, 'CONTACTED', {
+                touchLastContact: true,
+                notes: w.notes 
+                    ? `${w.notes}\n[${new Date().toLocaleDateString('es-AR')} - Salón]: Contactado por WhatsApp`.trim() 
+                    : '[Salón]: Contactado por WhatsApp'
+            }).then((res) => {
+                if (res.success && res.data) {
+                    handleStatusUpdated(res.data);
+                }
+            });
+        }
+    };
+
     // Filtrado de búsquedas
     const filteredWanted = useMemo(() => {
         return wantedList.filter((w) => {
-            if (statusFilter !== 'ALL' && w.status !== statusFilter) return false;
+            if (statusFilter === 'ACTIVE') {
+                if (w.status !== 'SEARCHING' && w.status !== 'CONTACTED' && w.status !== 'FOUND') return false;
+            } else if (statusFilter !== 'ALL' && w.status !== statusFilter) {
+                return false;
+            }
+
             if (sourceFilter !== 'ALL') {
                 const isWeb = w.source === 'WEB';
                 if (sourceFilter === 'WEB' && !isWeb) return false;
                 if (sourceFilter === 'ADMIN' && isWeb) return false;
             }
+
             if (priorityFilter !== 'ALL' && w.priority !== priorityFilter) return false;
 
             if (search.trim()) {
@@ -106,7 +158,7 @@ export function SellerWantedView({
         });
     }, [wantedList, search, sourceFilter, statusFilter, priorityFilter]);
 
-    const activeCount = wantedList.filter((w) => w.status === 'SEARCHING').length;
+    const activeCount = counts.active;
 
     // Crear nueva búsqueda
     const handleCreateWanted = async (e: React.FormEvent) => {
@@ -183,6 +235,145 @@ export function SellerWantedView({
             setError(err.message || 'Error al guardar búsqueda.');
         } finally {
             setSubmitting(false);
+        }
+    };
+
+    // Renderizado del badge dinámico de estado
+    const renderStatusBadge = (w: WantedVehicle) => {
+        const openModal = (e: React.MouseEvent) => {
+            e.stopPropagation();
+            setStatusModalWanted(w);
+            setIsStatusModalOpen(true);
+        };
+
+        switch (w.status) {
+            case 'SEARCHING':
+                return (
+                    <button
+                        type="button"
+                        onClick={openModal}
+                        title="Tocar para cambiar estado"
+                        style={{
+                            backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                            border: '1px solid rgba(59, 130, 246, 0.35)',
+                            color: '#60A5FA',
+                            fontSize: 10.5,
+                            fontWeight: 800,
+                            padding: '2px 8px',
+                            borderRadius: 6,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 4
+                        }}
+                    >
+                        <Search size={11} />
+                        <span>Buscando</span>
+                    </button>
+                );
+            case 'CONTACTED':
+                return (
+                    <button
+                        type="button"
+                        onClick={openModal}
+                        title="Tocar para cambiar estado"
+                        style={{
+                            backgroundColor: 'rgba(251, 191, 36, 0.15)',
+                            border: '1px solid rgba(251, 191, 36, 0.35)',
+                            color: '#FBBF24',
+                            fontSize: 10.5,
+                            fontWeight: 800,
+                            padding: '2px 8px',
+                            borderRadius: 6,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 4
+                        }}
+                    >
+                        <MessageSquare size={11} />
+                        <span>Contactado</span>
+                    </button>
+                );
+            case 'FOUND':
+                return (
+                    <button
+                        type="button"
+                        onClick={openModal}
+                        title="Tocar para cambiar estado"
+                        style={{
+                            backgroundColor: 'rgba(167, 139, 250, 0.15)',
+                            border: '1px solid rgba(167, 139, 250, 0.35)',
+                            color: '#C4B5FD',
+                            fontSize: 10.5,
+                            fontWeight: 800,
+                            padding: '2px 8px',
+                            borderRadius: 6,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 4
+                        }}
+                    >
+                        <Car size={11} />
+                        <span>Auto Ofrecido</span>
+                    </button>
+                );
+            case 'CLOSED':
+                return (
+                    <button
+                        type="button"
+                        onClick={openModal}
+                        title="Tocar para cambiar estado"
+                        style={{
+                            backgroundColor: 'rgba(52, 211, 153, 0.15)',
+                            border: '1px solid rgba(52, 211, 153, 0.35)',
+                            color: '#34D399',
+                            fontSize: 10.5,
+                            fontWeight: 800,
+                            padding: '2px 8px',
+                            borderRadius: 6,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 4
+                        }}
+                    >
+                        <CheckCircle2 size={11} />
+                        <span>Cerrado (Compró)</span>
+                    </button>
+                );
+            case 'CANCELLED':
+                const reasonLabel = w.cancellation_reason === 'BOUGHT_ELSEWHERE' ? 'Compró afuera'
+                    : w.cancellation_reason === 'DECIDED_NOT_TO_CHANGE' ? 'Ya no cambia'
+                    : w.cancellation_reason === 'BUDGET_CHANGED' ? 'Cambió ppto'
+                    : w.cancellation_reason === 'FOUND_WITH_US' ? 'Compró con nosotros'
+                    : 'Descartado';
+                return (
+                    <button
+                        type="button"
+                        onClick={openModal}
+                        title="Tocar para cambiar estado"
+                        style={{
+                            backgroundColor: 'rgba(248, 113, 113, 0.12)',
+                            border: '1px solid rgba(248, 113, 113, 0.3)',
+                            color: '#F87171',
+                            fontSize: 10.5,
+                            fontWeight: 800,
+                            padding: '2px 8px',
+                            borderRadius: 6,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 4
+                        }}
+                    >
+                        <XCircle size={11} />
+                        <span>{reasonLabel}</span>
+                    </button>
+                );
+            default:
+                return null;
         }
     };
 
@@ -364,6 +555,7 @@ export function SellerWantedView({
                             return (
                                 <button
                                     key={chip.val}
+                                    type="button"
                                     onClick={() => setSourceFilter(chip.val as any)}
                                     style={{
                                         whiteSpace: 'nowrap',
@@ -374,7 +566,8 @@ export function SellerWantedView({
                                         border: active ? '1px solid #38BDF8' : '1px solid rgba(255, 255, 255, 0.08)',
                                         backgroundColor: active ? 'rgba(56, 189, 248, 0.2)' : '#111622',
                                         color: active ? '#38BDF8' : '#94A3B8',
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
+                                        flexShrink: 0
                                     }}
                                 >
                                     {chip.label}
@@ -382,26 +575,35 @@ export function SellerWantedView({
                             );
                         })}
 
-                        {/* Filtro Estado */}
+                        <div style={{ width: 1, height: 20, backgroundColor: 'rgba(255, 255, 255, 0.1)', alignSelf: 'center', margin: '0 4px', flexShrink: 0 }} />
+
+                        {/* Filtro Estado Dinámico con Conteo */}
                         {[
-                            { label: 'Buscando (Activas)', val: 'SEARCHING' },
-                            { label: 'Todas', val: 'ALL' }
+                            { label: `Activas (${counts.active})`, val: 'ACTIVE', color: '#EA580C' },
+                            { label: `🔍 Buscando (${counts.searching})`, val: 'SEARCHING', color: '#60A5FA' },
+                            { label: `💬 Contactados (${counts.contacted})`, val: 'CONTACTED', color: '#FBBF24' },
+                            { label: `🚗 Ofrecido (${counts.found})`, val: 'FOUND', color: '#A78BFA' },
+                            { label: `🏁 Cerrados (${counts.closed})`, val: 'CLOSED', color: '#34D399' },
+                            { label: `❌ Descartados (${counts.cancelled})`, val: 'CANCELLED', color: '#F87171' },
+                            { label: `Todas (${counts.total})`, val: 'ALL', color: '#94A3B8' }
                         ].map((chip) => {
                             const active = statusFilter === chip.val;
                             return (
                                 <button
                                     key={chip.val}
-                                    onClick={() => setStatusFilter(chip.val as any)}
+                                    type="button"
+                                    onClick={() => setStatusFilter(chip.val)}
                                     style={{
                                         whiteSpace: 'nowrap',
                                         padding: '5px 11px',
                                         borderRadius: 20,
                                         fontSize: 11.5,
                                         fontWeight: 700,
-                                        border: active ? '1px solid #EA580C' : '1px solid rgba(255, 255, 255, 0.08)',
-                                        backgroundColor: active ? '#EA580C' : '#111622',
-                                        color: active ? '#FFFFFF' : '#94A3B8',
-                                        cursor: 'pointer'
+                                        border: active ? `1px solid ${chip.color}` : '1px solid rgba(255, 255, 255, 0.08)',
+                                        backgroundColor: active ? chip.color : '#111622',
+                                        color: active ? (chip.val === 'CONTACTED' ? '#0B0E14' : '#FFFFFF') : '#94A3B8',
+                                        cursor: 'pointer',
+                                        flexShrink: 0
                                     }}
                                 >
                                     {chip.label}
@@ -531,19 +733,7 @@ export function SellerWantedView({
                                                     </span>
                                                 )}
 
-                                                <span
-                                                    style={{
-                                                        backgroundColor: 'rgba(59, 130, 246, 0.15)',
-                                                        border: '1px solid rgba(59, 130, 246, 0.3)',
-                                                        color: '#60A5FA',
-                                                        fontSize: 10.5,
-                                                        fontWeight: 800,
-                                                        padding: '2px 7px',
-                                                        borderRadius: 6
-                                                    }}
-                                                >
-                                                    Buscando
-                                                </span>
+                                                {renderStatusBadge(w)}
                                             </div>
                                         </div>
 
@@ -557,6 +747,12 @@ export function SellerWantedView({
                                                     <div style={{ fontSize: 12.5, color: '#94A3B8', marginTop: 2, display: 'flex', alignItems: 'center', gap: 4 }}>
                                                         <Phone size={12} style={{ color: '#64748B' }} />
                                                         <span>{phone}</span>
+                                                    </div>
+                                                )}
+                                                {w.last_contact_date && (
+                                                    <div style={{ fontSize: 11, color: '#FBBF24', marginTop: 3, display: 'flex', alignItems: 'center', gap: 4, fontWeight: 600 }}>
+                                                        <Clock size={11} />
+                                                        <span>Último contacto: {formatRelativeContact(w.last_contact_date)}</span>
                                                     </div>
                                                 )}
                                             </div>
@@ -582,11 +778,10 @@ export function SellerWantedView({
                                                         <Phone size={15} />
                                                     </a>
 
-                                                    <a
-                                                        href={buildWhatsAppUrl(phone, initialMessage)}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        title="Responder por WhatsApp"
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => handleWhatsAppClick(e, w, phone, initialMessage)}
+                                                        title="Responder por WhatsApp (marca como contactado automáticamente)"
                                                         style={{
                                                             backgroundColor: '#25D366',
                                                             borderRadius: '50%',
@@ -596,11 +791,12 @@ export function SellerWantedView({
                                                             alignItems: 'center',
                                                             justifyContent: 'center',
                                                             boxShadow: '0 2px 8px rgba(37, 211, 102, 0.35)',
-                                                            textDecoration: 'none'
+                                                            border: 'none',
+                                                            cursor: 'pointer'
                                                         }}
                                                     >
                                                         <WhatsAppIcon size={18} color="#FFFFFF" />
-                                                    </a>
+                                                    </button>
                                                 </div>
                                             )}
                                         </div>
@@ -661,17 +857,41 @@ export function SellerWantedView({
                                             </div>
                                         </div>
 
+                                        {/* NOTAS RECIENTES DE SEGUIMIENTO */}
+                                        {w.notes && (
+                                            <div
+                                                style={{
+                                                    backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                                                    borderLeft: '2px solid rgba(251, 146, 60, 0.6)',
+                                                    padding: '5px 9px',
+                                                    borderRadius: 4,
+                                                    fontSize: 11.5,
+                                                    color: '#94A3B8',
+                                                    fontStyle: 'italic',
+                                                    display: 'flex',
+                                                    alignItems: 'flex-start',
+                                                    gap: 6
+                                                }}
+                                            >
+                                                <span>📝</span>
+                                                <span style={{ whiteSpace: 'pre-wrap', lineHeight: 1.35 }}>
+                                                    {w.notes.split('\n').filter(Boolean).slice(-1)[0]}
+                                                </span>
+                                            </div>
+                                        )}
+
                                         {/* ACCIONES DEL VENDEDOR */}
-                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 8, marginTop: 4, paddingTop: 10, borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1.25fr 1fr', gap: 8, marginTop: 4, paddingTop: 10, borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
                                             <button
+                                                type="button"
                                                 onClick={() => setMatchingWanted(w)}
                                                 style={{
                                                     backgroundColor: 'rgba(234, 88, 12, 0.15)',
                                                     border: '1px solid #EA580C',
                                                     color: '#FB923C',
                                                     borderRadius: 10,
-                                                    padding: '10px 14px',
-                                                    fontSize: 13,
+                                                    padding: '10px 12px',
+                                                    fontSize: 12.5,
                                                     fontWeight: 800,
                                                     display: 'flex',
                                                     alignItems: 'center',
@@ -681,7 +901,32 @@ export function SellerWantedView({
                                                 }}
                                             >
                                                 <Eye size={15} />
-                                                <span>Ver Coincidencias en Stock</span>
+                                                <span>Coincidencias</span>
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setStatusModalWanted(w);
+                                                    setIsStatusModalOpen(true);
+                                                }}
+                                                style={{
+                                                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                                                    color: '#F1F5F9',
+                                                    borderRadius: 10,
+                                                    padding: '10px 12px',
+                                                    fontSize: 12.5,
+                                                    fontWeight: 800,
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    gap: 6,
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <SlidersHorizontal size={14} />
+                                                <span>Estado</span>
                                             </button>
                                         </div>
                                     </div>
@@ -852,6 +1097,17 @@ export function SellerWantedView({
                 isOpen={!!matchingWanted}
                 wanted={matchingWanted}
                 onClose={() => setMatchingWanted(null)}
+            />
+
+            {/* MODAL GESTIONAR ESTADO */}
+            <SellerStatusModal
+                isOpen={isStatusModalOpen}
+                wanted={statusModalWanted}
+                onClose={() => {
+                    setIsStatusModalOpen(false);
+                    setStatusModalWanted(null);
+                }}
+                onStatusUpdated={handleStatusUpdated}
             />
         </div>
     );
