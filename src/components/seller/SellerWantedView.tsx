@@ -33,8 +33,7 @@ import {
     RefreshCw,
     MessageSquare,
     SlidersHorizontal,
-    Clock,
-    XCircle
+    Clock
 } from 'lucide-react';
 
 interface SellerWantedViewProps {
@@ -235,145 +234,6 @@ export function SellerWantedView({
             setError(err.message || 'Error al guardar búsqueda.');
         } finally {
             setSubmitting(false);
-        }
-    };
-
-    // Renderizado del badge dinámico de estado
-    const renderStatusBadge = (w: WantedVehicle) => {
-        const openModal = (e: React.MouseEvent) => {
-            e.stopPropagation();
-            setStatusModalWanted(w);
-            setIsStatusModalOpen(true);
-        };
-
-        switch (w.status) {
-            case 'SEARCHING':
-                return (
-                    <button
-                        type="button"
-                        onClick={openModal}
-                        title="Tocar para cambiar estado"
-                        style={{
-                            backgroundColor: 'rgba(59, 130, 246, 0.15)',
-                            border: '1px solid rgba(59, 130, 246, 0.35)',
-                            color: '#60A5FA',
-                            fontSize: 10.5,
-                            fontWeight: 800,
-                            padding: '2px 8px',
-                            borderRadius: 6,
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 4
-                        }}
-                    >
-                        <Search size={11} />
-                        <span>Buscando</span>
-                    </button>
-                );
-            case 'CONTACTED':
-                return (
-                    <button
-                        type="button"
-                        onClick={openModal}
-                        title="Tocar para cambiar estado"
-                        style={{
-                            backgroundColor: 'rgba(251, 191, 36, 0.15)',
-                            border: '1px solid rgba(251, 191, 36, 0.35)',
-                            color: '#FBBF24',
-                            fontSize: 10.5,
-                            fontWeight: 800,
-                            padding: '2px 8px',
-                            borderRadius: 6,
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 4
-                        }}
-                    >
-                        <MessageSquare size={11} />
-                        <span>Contactado</span>
-                    </button>
-                );
-            case 'FOUND':
-                return (
-                    <button
-                        type="button"
-                        onClick={openModal}
-                        title="Tocar para cambiar estado"
-                        style={{
-                            backgroundColor: 'rgba(167, 139, 250, 0.15)',
-                            border: '1px solid rgba(167, 139, 250, 0.35)',
-                            color: '#C4B5FD',
-                            fontSize: 10.5,
-                            fontWeight: 800,
-                            padding: '2px 8px',
-                            borderRadius: 6,
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 4
-                        }}
-                    >
-                        <Car size={11} />
-                        <span>Auto Ofrecido</span>
-                    </button>
-                );
-            case 'CLOSED':
-                return (
-                    <button
-                        type="button"
-                        onClick={openModal}
-                        title="Tocar para cambiar estado"
-                        style={{
-                            backgroundColor: 'rgba(52, 211, 153, 0.15)',
-                            border: '1px solid rgba(52, 211, 153, 0.35)',
-                            color: '#34D399',
-                            fontSize: 10.5,
-                            fontWeight: 800,
-                            padding: '2px 8px',
-                            borderRadius: 6,
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 4
-                        }}
-                    >
-                        <CheckCircle2 size={11} />
-                        <span>Cerrado (Compró)</span>
-                    </button>
-                );
-            case 'CANCELLED':
-                const reasonLabel = w.cancellation_reason === 'BOUGHT_ELSEWHERE' ? 'Compró afuera'
-                    : w.cancellation_reason === 'DECIDED_NOT_TO_CHANGE' ? 'Ya no cambia'
-                    : w.cancellation_reason === 'BUDGET_CHANGED' ? 'Cambió ppto'
-                    : w.cancellation_reason === 'FOUND_WITH_US' ? 'Compró con nosotros'
-                    : 'Descartado';
-                return (
-                    <button
-                        type="button"
-                        onClick={openModal}
-                        title="Tocar para cambiar estado"
-                        style={{
-                            backgroundColor: 'rgba(248, 113, 113, 0.12)',
-                            border: '1px solid rgba(248, 113, 113, 0.3)',
-                            color: '#F87171',
-                            fontSize: 10.5,
-                            fontWeight: 800,
-                            padding: '2px 8px',
-                            borderRadius: 6,
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 4
-                        }}
-                    >
-                        <XCircle size={11} />
-                        <span>{reasonLabel}</span>
-                    </button>
-                );
-            default:
-                return null;
         }
     };
 
@@ -715,26 +575,6 @@ export function SellerWantedView({
                                                     </span>
                                                 )}
                                             </div>
-
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                                {w.priority === 'HIGH' && (
-                                                    <span
-                                                        style={{
-                                                            color: '#F87171',
-                                                            fontSize: 11,
-                                                            fontWeight: 800,
-                                                            display: 'inline-flex',
-                                                            alignItems: 'center',
-                                                            gap: 3
-                                                        }}
-                                                    >
-                                                        <Flame size={12} />
-                                                        <span>Alta</span>
-                                                    </span>
-                                                )}
-
-                                                {renderStatusBadge(w)}
-                                            </div>
                                         </div>
 
                                         {/* CLIENTE Y TELÉFONO */}
@@ -744,9 +584,9 @@ export function SellerWantedView({
                                                     {clientName}
                                                 </div>
                                                 {phone && (
-                                                    <div style={{ fontSize: 12.5, color: '#94A3B8', marginTop: 2, display: 'flex', alignItems: 'center', gap: 4 }}>
-                                                        <Phone size={12} style={{ color: '#64748B' }} />
-                                                        <span>{phone}</span>
+                                                    <div style={{ fontSize: 14.5, fontWeight: 700, color: '#FFFFFF', marginTop: 3, display: 'flex', alignItems: 'center', gap: 5 }}>
+                                                        <Phone size={13} style={{ color: '#FFFFFF' }} />
+                                                        <span style={{ color: '#FFFFFF', letterSpacing: '0.2px' }}>{phone}</span>
                                                     </div>
                                                 )}
                                                 {w.last_contact_date && (
