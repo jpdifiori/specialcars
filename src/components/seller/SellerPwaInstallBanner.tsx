@@ -1,11 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Download, X, Share } from 'lucide-react';
+import { Download, X } from 'lucide-react';
 
 export function SellerPwaInstallBanner() {
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-    const [isIOS, setIsIOS] = useState(false);
     const [isStandalone, setIsStandalone] = useState(false);
     const [dismissed, setDismissed] = useState(true);
     const [isMounted, setIsMounted] = useState(false);
@@ -24,16 +23,18 @@ export function SellerPwaInstallBanner() {
         const wasDismissed = sessionStorage.getItem('pwa_banner_dismissed') === 'true';
         if (wasDismissed) return;
 
-        // Detectar iOS
+        // Detectar iPhone / iPad / iOS
+        // Apple (Safari/iOS) restringe la instalación y no permite automatizarla por código (no existe beforeinstallprompt).
+        // En iPhone se oculta completamente para no mostrar una funcionalidad que no se puede automatizar con 1 clic.
         const userAgent = window.navigator.userAgent.toLowerCase();
-        const iOSDevice = /iphone|ipad|ipod/.test(userAgent);
-        setIsIOS(iOSDevice);
+        const isAppleDevice = /iphone|ipad|ipod/.test(userAgent) ||
+            (window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1);
 
-        if (iOSDevice) {
-            setDismissed(false);
+        if (isAppleDevice) {
+            return;
         }
 
-        // Listener de Chrome/Android
+        // Listener de Chrome/Android (donde la instalación sí está 100% automatizada con 1 clic)
         const handleBeforeInstallPrompt = (e: Event) => {
             e.preventDefault();
             setDeferredPrompt(e);
@@ -62,7 +63,7 @@ export function SellerPwaInstallBanner() {
         sessionStorage.setItem('pwa_banner_dismissed', 'true');
     };
 
-    if (!isMounted || isStandalone || dismissed) return null;
+    if (!isMounted || isStandalone || dismissed || !deferredPrompt) return null;
 
     return (
         <div
@@ -100,33 +101,27 @@ export function SellerPwaInstallBanner() {
                         Instalar App Salón
                     </div>
                     <div style={{ fontSize: 11, color: '#CBD5E1', lineHeight: 1.3 }}>
-                        {isIOS ? (
-                            <span>Tocá <Share size={11} style={{ display: 'inline', verticalAlign: 'middle' }} /> y <strong>"Agregar a inicio"</strong></span>
-                        ) : (
-                            <span>Abrí el catálogo directo desde tu pantalla de inicio</span>
-                        )}
+                        Instalá el catálogo en tu pantalla de inicio para acceso directo
                     </div>
                 </div>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-                {!isIOS && deferredPrompt && (
-                    <button
-                        onClick={handleInstallClick}
-                        style={{
-                            backgroundColor: '#EA580C',
-                            color: '#FFFFFF',
-                            border: 'none',
-                            padding: '6px 12px',
-                            borderRadius: 6,
-                            fontSize: 12,
-                            fontWeight: 700,
-                            cursor: 'pointer'
-                        }}
-                    >
-                        Instalar
-                    </button>
-                )}
+                <button
+                    onClick={handleInstallClick}
+                    style={{
+                        backgroundColor: '#EA580C',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        padding: '6px 12px',
+                        borderRadius: 6,
+                        fontSize: 12,
+                        fontWeight: 700,
+                        cursor: 'pointer'
+                    }}
+                >
+                    Instalar
+                </button>
                 <button
                     onClick={handleDismiss}
                     style={{
