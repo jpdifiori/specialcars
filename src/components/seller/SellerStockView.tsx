@@ -248,80 +248,162 @@ export function SellerStockView({ initialVehicles }: SellerStockViewProps) {
                                     border: isReserved ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid rgba(255, 255, 255, 0.08)',
                                     overflow: 'hidden',
                                     boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
-                                    position: 'relative'
+                                    padding: '12px 14px'
                                 }}
                             >
-                                {/* FOTO Y BADGES */}
+                                {/* PARTE SUPERIOR: 50% DATOS (LETRA BLANCA) Y 50% IMAGEN AJUSTADA */}
                                 <Link
                                     href={`/vendedor/vehiculos/${v.id}`}
-                                    style={{ display: 'block', position: 'relative', width: '100%', height: 190, backgroundColor: '#05070B', textDecoration: 'none' }}
+                                    style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: '1fr 1fr',
+                                        gap: 12,
+                                        alignItems: 'stretch',
+                                        textDecoration: 'none'
+                                    }}
                                 >
-                                    {mainImage ? (
-                                        <Image
-                                            src={mainImage}
-                                            alt={`${v.brand} ${v.model}`}
-                                            fill
-                                            sizes="(max-width: 768px) 100vw, 600px"
-                                            style={{ objectFit: 'cover' }}
-                                        />
-                                    ) : (
-                                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569' }}>
-                                            <Car size={48} style={{ opacity: 0.3 }} />
-                                        </div>
-                                    )}
+                                    {/* MITAD 1: DATOS DEL VEHÍCULO CON LETRA BLANCA */}
+                                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: 0 }}>
+                                        {/* Badges superiores: Estado y Código */}
+                                        <div>
+                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, flexWrap: 'wrap', marginBottom: 6 }}>
+                                                {isReserved ? (
+                                                    <span
+                                                        style={{
+                                                            backgroundColor: '#D97706',
+                                                            color: '#FFFFFF',
+                                                            fontSize: 10,
+                                                            fontWeight: 800,
+                                                            padding: '2px 6px',
+                                                            borderRadius: 5,
+                                                            letterSpacing: 0.3
+                                                        }}
+                                                    >
+                                                        SEÑADO
+                                                    </span>
+                                                ) : (
+                                                    <span
+                                                        style={{
+                                                            backgroundColor: '#16A34A',
+                                                            color: '#FFFFFF',
+                                                            fontSize: 10,
+                                                            fontWeight: 800,
+                                                            padding: '2px 6px',
+                                                            borderRadius: 5,
+                                                            letterSpacing: 0.3
+                                                        }}
+                                                    >
+                                                        DISPONIBLE
+                                                    </span>
+                                                )}
 
-                                    {/* Gradiente para resaltar textos */}
+                                                <span
+                                                    style={{
+                                                        backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                                                        color: '#FFFFFF',
+                                                        fontSize: 10,
+                                                        fontFamily: 'var(--font-mono)',
+                                                        fontWeight: 700,
+                                                        padding: '2px 5px',
+                                                        borderRadius: 5
+                                                    }}
+                                                >
+                                                    {v.stock_code}
+                                                </span>
+                                            </div>
+
+                                            {/* Título: Marca y Modelo */}
+                                            <div style={{ fontSize: 15, fontWeight: 900, color: '#FFFFFF', lineHeight: 1.2 }}>
+                                                {v.brand} {v.model}
+                                            </div>
+
+                                            {/* Versión */}
+                                            {v.version && (
+                                                <div
+                                                    style={{
+                                                        fontSize: 11.5,
+                                                        fontWeight: 500,
+                                                        color: '#FFFFFF',
+                                                        opacity: 0.9,
+                                                        marginTop: 2,
+                                                        lineHeight: 1.25,
+                                                        display: '-webkit-box',
+                                                        WebkitLineClamp: 2,
+                                                        WebkitBoxOrient: 'vertical',
+                                                        overflow: 'hidden'
+                                                    }}
+                                                >
+                                                    {v.version}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Ficha técnica compacta */}
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 3, marginTop: 8 }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: '#FFFFFF', fontWeight: 600 }}>
+                                                <Calendar size={12} style={{ color: '#FFFFFF' }} />
+                                                <span>{v.year}</span>
+                                                <span style={{ opacity: 0.4 }}>•</span>
+                                                <Gauge size={12} style={{ color: '#FFFFFF' }} />
+                                                <span>{v.mileage ? `${(v.mileage / 1000).toFixed(0)}k km` : '0 km'}</span>
+                                            </div>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: '#FFFFFF', fontWeight: 600 }}>
+                                                <Cog size={12} style={{ color: '#FFFFFF' }} />
+                                                <span style={{ textTransform: 'capitalize' }}>{v.transmission?.toLowerCase() || 'Manual'}</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Precio de venta */}
+                                        <div style={{ marginTop: 8 }}>
+                                            <div style={{ fontSize: 10, color: '#FFFFFF', opacity: 0.75, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                                                Precio Venta
+                                            </div>
+                                            <div style={{ fontSize: 18, fontWeight: 900, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                                                {formatARS(v.sale_price)}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* MITAD 2: IMAGEN AJUSTADA DEL VEHÍCULO */}
                                     <div
                                         style={{
-                                            position: 'absolute',
-                                            inset: 0,
-                                            background: 'linear-gradient(to top, rgba(17, 22, 34, 0.95) 0%, transparent 60%)'
+                                            position: 'relative',
+                                            width: '100%',
+                                            minHeight: 135,
+                                            height: '100%',
+                                            borderRadius: 12,
+                                            overflow: 'hidden',
+                                            backgroundColor: '#05070B',
+                                            border: '1px solid rgba(255, 255, 255, 0.08)'
                                         }}
-                                    />
-
-                                    {/* Badges superiores */}
-                                    <div style={{ position: 'absolute', top: 12, left: 12, display: 'flex', gap: 6 }}>
-                                        {isReserved ? (
-                                            <span
-                                                style={{
-                                                    backgroundColor: '#D97706',
-                                                    color: '#FFFFFF',
-                                                    fontSize: 11,
-                                                    fontWeight: 800,
-                                                    padding: '3px 8px',
-                                                    borderRadius: 6,
-                                                    boxShadow: '0 2px 6px rgba(0,0,0,0.4)',
-                                                    letterSpacing: 0.4
-                                                }}
-                                            >
-                                                SEÑADO / RESERVADO
-                                            </span>
+                                    >
+                                        {mainImage ? (
+                                            <Image
+                                                src={mainImage}
+                                                alt={`${v.brand} ${v.model}`}
+                                                fill
+                                                sizes="(max-width: 768px) 50vw, 300px"
+                                                style={{ objectFit: 'cover' }}
+                                            />
                                         ) : (
-                                            <span
-                                                style={{
-                                                    backgroundColor: '#16A34A',
-                                                    color: '#FFFFFF',
-                                                    fontSize: 11,
-                                                    fontWeight: 800,
-                                                    padding: '3px 8px',
-                                                    borderRadius: 6,
-                                                    boxShadow: '0 2px 6px rgba(0,0,0,0.4)',
-                                                    letterSpacing: 0.4
-                                                }}
-                                            >
-                                                DISPONIBLE
-                                            </span>
+                                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569' }}>
+                                                <Car size={36} style={{ opacity: 0.3 }} />
+                                            </div>
                                         )}
 
+                                        {/* Badge Oferta si aplica */}
                                         {v.is_offer && (
                                             <span
                                                 style={{
+                                                    position: 'absolute',
+                                                    top: 8,
+                                                    right: 8,
                                                     backgroundColor: '#DC2626',
                                                     color: '#FFFFFF',
-                                                    fontSize: 11,
+                                                    fontSize: 10,
                                                     fontWeight: 800,
-                                                    padding: '3px 8px',
-                                                    borderRadius: 6,
+                                                    padding: '2px 6px',
+                                                    borderRadius: 5,
                                                     boxShadow: '0 2px 6px rgba(0,0,0,0.4)'
                                                 }}
                                             >
@@ -329,88 +411,41 @@ export function SellerStockView({ initialVehicles }: SellerStockViewProps) {
                                             </span>
                                         )}
                                     </div>
-
-                                    {/* Código de Stock */}
-                                    <div
-                                        style={{
-                                            position: 'absolute',
-                                            top: 12,
-                                            right: 12,
-                                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                                            backdropFilter: 'blur(4px)',
-                                            color: '#94A3B8',
-                                            fontSize: 11,
-                                            fontFamily: 'var(--font-mono)',
-                                            fontWeight: 700,
-                                            padding: '2px 7px',
-                                            borderRadius: 6
-                                        }}
-                                    >
-                                        {v.stock_code}
-                                    </div>
-
-                                    {/* Título sobre el gradiente */}
-                                    <div style={{ position: 'absolute', bottom: 10, left: 14, right: 14 }}>
-                                        <div style={{ fontSize: 18, fontWeight: 900, color: '#FFFFFF', lineHeight: 1.2 }}>
-                                            {v.brand} {v.model}
-                                        </div>
-                                        {v.version && (
-                                            <div style={{ fontSize: 12.5, color: '#CBD5E1', marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                {v.version}
-                                            </div>
-                                        )}
-                                    </div>
                                 </Link>
 
-                                {/* CUERPO DE LA TARJETA */}
-                                <div style={{ padding: '12px 14px 14px 14px' }}>
-                                    {/* Ficha técnica compacta */}
-                                    <div
+                                {/* BOTONES DE ACCIÓN PARA EL VENDEDOR */}
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 12, paddingTop: 10, borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                                    {/* Botón WhatsApp */}
+                                    <button
+                                        onClick={(e) => handleShareWhatsApp(v, e)}
                                         style={{
-                                            display: 'grid',
-                                            gridTemplateColumns: '1fr 1fr 1fr',
-                                            gap: 8,
-                                            backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                                            backgroundColor: '#25D366',
+                                            color: '#FFFFFF',
+                                            border: 'none',
                                             borderRadius: 10,
-                                            padding: '8px 10px',
-                                            marginBottom: 12,
-                                            fontSize: 12,
-                                            color: '#CBD5E1'
+                                            padding: '9px 12px',
+                                            fontSize: 12.5,
+                                            fontWeight: 800,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: 6,
+                                            cursor: 'pointer',
+                                            boxShadow: '0 2px 8px rgba(37, 211, 102, 0.3)'
                                         }}
                                     >
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                                            <Calendar size={13} style={{ color: '#94A3B8' }} />
-                                            <span>{v.year}</span>
-                                        </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                                            <Gauge size={13} style={{ color: '#94A3B8' }} />
-                                            <span>{v.mileage ? `${(v.mileage / 1000).toFixed(0)}k km` : '0 km'}</span>
-                                        </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                                            <Cog size={13} style={{ color: '#94A3B8' }} />
-                                            <span style={{ textTransform: 'capitalize' }}>{v.transmission?.toLowerCase() || 'Manual'}</span>
-                                        </div>
-                                    </div>
+                                        <WhatsAppIcon size={15} color="#FFFFFF" />
+                                        <span>Compartir</span>
+                                    </button>
 
-                                    {/* PRECIO AL PÚBLICO */}
-                                    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 12 }}>
-                                        <span style={{ fontSize: 11.5, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>
-                                            Precio Venta
-                                        </span>
-                                        <div style={{ fontSize: 20, fontWeight: 900, color: '#FB923C', fontFamily: 'var(--font-mono)' }}>
-                                            {formatARS(v.sale_price)}
-                                        </div>
-                                    </div>
-
-                                    {/* BOTONES DE ACCIÓN PARA EL VENDEDOR */}
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                                        {/* Botón WhatsApp */}
+                                    {/* Botón Señar o Ver */}
+                                    {!isReserved ? (
                                         <button
-                                            onClick={(e) => handleShareWhatsApp(v, e)}
+                                            onClick={() => setReservingVehicle(v)}
                                             style={{
-                                                backgroundColor: '#25D366',
-                                                color: '#FFFFFF',
-                                                border: 'none',
+                                                backgroundColor: 'rgba(234, 88, 12, 0.15)',
+                                                border: '1px solid #EA580C',
+                                                color: '#FB923C',
                                                 borderRadius: 10,
                                                 padding: '9px 12px',
                                                 fontSize: 12.5,
@@ -419,59 +454,34 @@ export function SellerStockView({ initialVehicles }: SellerStockViewProps) {
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
                                                 gap: 6,
-                                                cursor: 'pointer',
-                                                boxShadow: '0 2px 8px rgba(37, 211, 102, 0.3)'
+                                                cursor: 'pointer'
                                             }}
                                         >
-                                            <WhatsAppIcon size={15} color="#FFFFFF" />
-                                            <span>Compartir</span>
+                                            <BookmarkCheck size={15} />
+                                            <span>Tomar Seña</span>
                                         </button>
-
-                                        {/* Botón Señar o Ver */}
-                                        {!isReserved ? (
-                                            <button
-                                                onClick={() => setReservingVehicle(v)}
-                                                style={{
-                                                    backgroundColor: 'rgba(234, 88, 12, 0.15)',
-                                                    border: '1px solid #EA580C',
-                                                    color: '#FB923C',
-                                                    borderRadius: 10,
-                                                    padding: '9px 12px',
-                                                    fontSize: 12.5,
-                                                    fontWeight: 800,
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    gap: 6,
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                <BookmarkCheck size={15} />
-                                                <span>Tomar Seña</span>
-                                            </button>
-                                        ) : (
-                                            <Link
-                                                href={`/vendedor/vehiculos/${v.id}`}
-                                                style={{
-                                                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                                                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                                                    color: '#FFFFFF',
-                                                    borderRadius: 10,
-                                                    padding: '9px 12px',
-                                                    fontSize: 12.5,
-                                                    fontWeight: 700,
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    gap: 6,
-                                                    textDecoration: 'none'
-                                                }}
-                                            >
-                                                <span>Ver Ficha</span>
-                                                <ChevronRight size={14} />
-                                            </Link>
-                                        )}
-                                    </div>
+                                    ) : (
+                                        <Link
+                                            href={`/vendedor/vehiculos/${v.id}`}
+                                            style={{
+                                                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                                border: '1px solid rgba(255, 255, 255, 0.15)',
+                                                color: '#FFFFFF',
+                                                borderRadius: 10,
+                                                padding: '9px 12px',
+                                                fontSize: 12.5,
+                                                fontWeight: 700,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                gap: 6,
+                                                textDecoration: 'none'
+                                            }}
+                                        >
+                                            <span>Ver Ficha</span>
+                                            <ChevronRight size={14} />
+                                        </Link>
+                                    )}
                                 </div>
                             </div>
                         );
