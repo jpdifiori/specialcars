@@ -2,9 +2,8 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { BrandLogo } from '@/components/common/BrandLogo';
 import { createClient } from '@/lib/supabase/client';
-import { LogOut, Shield } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 
 export function SellerTopBar() {
     const router = useRouter();
@@ -27,7 +26,7 @@ export function SellerTopBar() {
                 top: 0,
                 left: 0,
                 right: 0,
-                height: 56,
+                height: 52,
                 backgroundColor: '#0B0E14',
                 borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
                 display: 'flex',
@@ -37,66 +36,30 @@ export function SellerTopBar() {
                 zIndex: 90
             }}
         >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <Link href="/vendedor" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-                    <BrandLogo variant="dark" size="sm" />
-                </Link>
-                <span
-                    style={{
-                        backgroundColor: 'rgba(234, 88, 12, 0.15)',
-                        border: '1px solid rgba(234, 88, 12, 0.35)',
-                        color: '#FB923C',
-                        fontSize: 10.5,
-                        fontWeight: 800,
-                        padding: '2px 7px',
-                        borderRadius: 6,
-                        textTransform: 'uppercase',
-                        letterSpacing: 0.5
-                    }}
-                >
-                    Salón
+            <Link href="/vendedor" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+                <span style={{ fontSize: 21, fontWeight: 900, letterSpacing: -0.5, fontStyle: 'italic', lineHeight: 1 }}>
+                    <span style={{ color: '#FFFFFF' }}>Special</span>
+                    <span style={{ color: '#EA580C', marginLeft: 3 }}>Cars</span>
                 </span>
-            </div>
+            </Link>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Link
-                    href="/admin"
-                    title="Ir al panel administrativo de escritorio"
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 4,
-                        fontSize: 11.5,
-                        color: '#94A3B8',
-                        textDecoration: 'none',
-                        padding: '5px 8px',
-                        borderRadius: 6,
-                        backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)'
-                    }}
-                >
-                    <Shield size={13} style={{ color: '#EA580C' }} />
-                    <span>Admin</span>
-                </Link>
-
-                <button
-                    onClick={handleLogout}
-                    title="Cerrar sesión"
-                    style={{
-                        background: 'none',
-                        border: 'none',
-                        color: '#94A3B8',
-                        padding: 6,
-                        borderRadius: 6,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}
-                >
-                    <LogOut size={16} />
-                </button>
-            </div>
+            <button
+                onClick={handleLogout}
+                title="Cerrar sesión"
+                style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#94A3B8',
+                    padding: 8,
+                    borderRadius: 8,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                <LogOut size={18} />
+            </button>
         </header>
     );
 }
