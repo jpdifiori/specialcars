@@ -102,7 +102,9 @@ export function SellerWantedView({
         const found = wantedList.filter(w => w.status === 'FOUND').length;
         const closed = wantedList.filter(w => w.status === 'CLOSED').length;
         const cancelled = wantedList.filter(w => w.status === 'CANCELLED').length;
-        return { total, active, searching, contacted, found, closed, cancelled };
+        const web = wantedList.filter(w => w.source === 'WEB').length;
+        const admin = wantedList.filter(w => w.source !== 'WEB').length;
+        return { total, active, searching, contacted, found, closed, cancelled, web, admin };
     }, [wantedList]);
 
     // Actualización de estado en memoria
@@ -398,51 +400,62 @@ export function SellerWantedView({
                         )}
                     </div>
 
-                    {/* FILTROS RÁPIDOS */}
+                    {/* CONTROL SEGMENTADO DE ORIGEN */}
+                    <div
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(3, 1fr)',
+                            backgroundColor: '#111622',
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            borderRadius: 12,
+                            padding: 3,
+                            marginBottom: 10,
+                            gap: 4
+                        }}
+                    >
+                        {[
+                            { label: `Todos (${counts.total})`, val: 'ALL' },
+                            { label: `🌐 Web (${counts.web})`, val: 'WEB' },
+                            { label: `🏢 Salón (${counts.admin})`, val: 'ADMIN' }
+                        ].map((tab) => {
+                            const active = sourceFilter === tab.val;
+                            return (
+                                <button
+                                    key={tab.val}
+                                    type="button"
+                                    onClick={() => setSourceFilter(tab.val as any)}
+                                    style={{
+                                        backgroundColor: active ? 'rgba(56, 189, 248, 0.16)' : 'transparent',
+                                        border: active ? '1px solid rgba(56, 189, 248, 0.4)' : '1px solid transparent',
+                                        borderRadius: 9,
+                                        color: active ? '#38BDF8' : '#94A3B8',
+                                        padding: '7px 4px',
+                                        fontSize: 12,
+                                        fontWeight: active ? 800 : 600,
+                                        cursor: 'pointer',
+                                        textAlign: 'center',
+                                        whiteSpace: 'nowrap',
+                                        transition: 'all 0.15s ease'
+                                    }}
+                                >
+                                    {tab.label}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* FILTROS POR ESTADO */}
                     <div
                         style={{
                             display: 'flex',
-                            gap: 6,
+                            gap: 8,
                             overflowX: 'auto',
-                            paddingBottom: 8,
+                            paddingBottom: 6,
                             marginBottom: 14,
                             scrollbarWidth: 'none',
                             WebkitOverflowScrolling: 'touch'
                         }}
                     >
-                        {/* Filtro Origen */}
-                        {[
-                            { label: 'Todos los orígenes', val: 'ALL' },
-                            { label: '🌐 Web / Landing', val: 'WEB' },
-                            { label: '🏢 Salón', val: 'ADMIN' }
-                        ].map((chip) => {
-                            const active = sourceFilter === chip.val;
-                            return (
-                                <button
-                                    key={chip.val}
-                                    type="button"
-                                    onClick={() => setSourceFilter(chip.val as any)}
-                                    style={{
-                                        whiteSpace: 'nowrap',
-                                        padding: '5px 11px',
-                                        borderRadius: 20,
-                                        fontSize: 11.5,
-                                        fontWeight: 700,
-                                        border: active ? '1px solid #38BDF8' : '1px solid rgba(255, 255, 255, 0.08)',
-                                        backgroundColor: active ? 'rgba(56, 189, 248, 0.2)' : '#111622',
-                                        color: active ? '#38BDF8' : '#94A3B8',
-                                        cursor: 'pointer',
-                                        flexShrink: 0
-                                    }}
-                                >
-                                    {chip.label}
-                                </button>
-                            );
-                        })}
-
-                        <div style={{ width: 1, height: 20, backgroundColor: 'rgba(255, 255, 255, 0.1)', alignSelf: 'center', margin: '0 4px', flexShrink: 0 }} />
-
-                        {/* Filtro Estado Dinámico con Conteo */}
                         {[
                             { label: `Activas (${counts.active})`, val: 'ACTIVE', color: '#EA580C' },
                             { label: `🔍 Buscando (${counts.searching})`, val: 'SEARCHING', color: '#60A5FA' },
@@ -460,15 +473,17 @@ export function SellerWantedView({
                                     onClick={() => setStatusFilter(chip.val)}
                                     style={{
                                         whiteSpace: 'nowrap',
-                                        padding: '5px 11px',
+                                        padding: '6px 13px',
                                         borderRadius: 20,
-                                        fontSize: 11.5,
+                                        fontSize: 12,
                                         fontWeight: 700,
                                         border: active ? `1px solid ${chip.color}` : '1px solid rgba(255, 255, 255, 0.08)',
                                         backgroundColor: active ? chip.color : '#111622',
                                         color: active ? (chip.val === 'CONTACTED' ? '#0B0E14' : '#FFFFFF') : '#94A3B8',
                                         cursor: 'pointer',
-                                        flexShrink: 0
+                                        flexShrink: 0,
+                                        boxShadow: active ? `0 2px 8px ${chip.color}40` : 'none',
+                                        transition: 'all 0.15s ease'
                                     }}
                                 >
                                     {chip.label}
