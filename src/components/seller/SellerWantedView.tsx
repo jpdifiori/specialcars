@@ -648,11 +648,11 @@ export function SellerWantedView({
 
                                         {/* VEHÍCULO DESEADO */}
                                         <div style={{ padding: '0 2px' }}>
-                                            <div style={{ fontSize: 18, fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.3px' }}>
+                                            <div style={{ fontSize: 20, fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.3px' }}>
                                                 {w.brand} {w.model}
                                             </div>
 
-                                            <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginTop: 6, fontSize: 14, color: '#CBD5E1' }}>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginTop: 6, fontSize: 16, color: '#CBD5E1' }}>
                                                 <div>
                                                     Año: <strong style={{ color: '#FFFFFF' }}>{w.year_min ? w.year_min : 'Cualquiera'} - {w.year_max ? w.year_max : 'Actual'}</strong>
                                                 </div>
@@ -666,7 +666,7 @@ export function SellerWantedView({
                                         </div>
 
                                         {/* PERMUTA Y FLEXIBILIDAD */}
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: 12 }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: 14 }}>
                                             {/* Permuta */}
                                             {w.has_trade_in ? (
                                                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6 }}>
@@ -674,27 +674,27 @@ export function SellerWantedView({
                                                         style={{
                                                             backgroundColor: 'rgba(59, 130, 246, 0.15)',
                                                             color: '#60A5FA',
-                                                            fontSize: 10.5,
+                                                            fontSize: 12.5,
                                                             fontWeight: 800,
-                                                            padding: '2px 6px',
+                                                            padding: '2px 7px',
                                                             borderRadius: 4,
                                                             flexShrink: 0
                                                         }}
                                                     >
                                                         Entrega Usado
                                                     </span>
-                                                    <span style={{ color: '#E2E8F0', fontStyle: 'italic' }}>
+                                                    <span style={{ color: '#E2E8F0', fontStyle: 'italic', fontSize: 14 }}>
                                                         {w.trade_in_details || 'Detalles no especificados'}
                                                     </span>
                                                 </div>
                                             ) : (
-                                                <div style={{ color: '#64748B', fontSize: 11.5 }}>
+                                                <div style={{ color: '#64748B', fontSize: 13.5 }}>
                                                     No entrega usado
                                                 </div>
                                             )}
 
                                             {/* Flexibilidad */}
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, color: '#10B981', fontSize: 11.5, fontWeight: 600 }}>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, color: '#10B981', fontSize: 13.5, fontWeight: 600 }}>
                                                 {w.accepts_similar_model && <span>✓ Acepta similar</span>}
                                                 {w.accepts_nearby_year && <span>✓ Año cercano (+/-2)</span>}
                                             </div>
