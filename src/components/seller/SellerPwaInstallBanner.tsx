@@ -8,8 +8,11 @@ export function SellerPwaInstallBanner() {
     const [isIOS, setIsIOS] = useState(false);
     const [isStandalone, setIsStandalone] = useState(false);
     const [dismissed, setDismissed] = useState(true);
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
+        setIsMounted(true);
+
         // Detectar si ya está en modo standalone PWA
         const isStandaloneMode = window.matchMedia('(display-mode: standalone)').matches ||
             (window.navigator as any).standalone === true;
@@ -59,7 +62,7 @@ export function SellerPwaInstallBanner() {
         sessionStorage.setItem('pwa_banner_dismissed', 'true');
     };
 
-    if (isStandalone || dismissed) return null;
+    if (!isMounted || isStandalone || dismissed) return null;
 
     return (
         <div

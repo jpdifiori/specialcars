@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import { WantedVehicle, Client, StockDemandItem } from '@/lib/types';
 import { createSellerWantedVehicle, getSellerClients, createSellerClient } from '@/lib/actions/seller';
@@ -47,9 +47,14 @@ export function SellerWantedView({
     initialClients,
     initialDemand
 }: SellerWantedViewProps) {
+    const [isMounted, setIsMounted] = useState(false);
     const [wantedList, setWantedList] = useState<WantedVehicle[]>(initialWanted);
     const [clients, setClients] = useState<Client[]>(initialClients);
     const [stockDemand, setStockDemand] = useState<StockDemandItem[]>(initialDemand);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
     
     // Pestaña activa: 'wanted' (Búsquedas de Clientes) o 'demand' (Oportunidades de Stock)
     const [activeTab, setActiveTab] = useState<'wanted' | 'demand'>('wanted');
@@ -589,10 +594,10 @@ export function SellerWantedView({
                                                         <span style={{ color: '#FFFFFF', letterSpacing: '0.2px' }}>{phone}</span>
                                                     </div>
                                                 )}
-                                                {w.last_contact_date && (
+                                                {w.last_contact_date && isMounted && (
                                                     <div style={{ fontSize: 11, color: '#FBBF24', marginTop: 3, display: 'flex', alignItems: 'center', gap: 4, fontWeight: 600 }}>
                                                         <Clock size={11} />
-                                                        <span>Último contacto: {formatRelativeContact(w.last_contact_date)}</span>
+                                                        <span suppressHydrationWarning>Último contacto: {formatRelativeContact(w.last_contact_date)}</span>
                                                     </div>
                                                 )}
                                             </div>
@@ -643,22 +648,20 @@ export function SellerWantedView({
 
                                         {/* VEHÍCULO DESEADO */}
                                         <div style={{ padding: '0 2px' }}>
-                                            <div style={{ fontSize: 16, fontWeight: 900, color: '#FFFFFF' }}>
+                                            <div style={{ fontSize: 18, fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.3px' }}>
                                                 {w.brand} {w.model}
                                             </div>
 
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 4, fontSize: 12, color: '#CBD5E1' }}>
-                                                <span>
-                                                    Año: <strong>{w.year_min ? w.year_min : 'Cualquiera'} - {w.year_max ? w.year_max : 'Actual'}</strong>
-                                                </span>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginTop: 6, fontSize: 14, color: '#CBD5E1' }}>
+                                                <div>
+                                                    Año: <strong style={{ color: '#FFFFFF' }}>{w.year_min ? w.year_min : 'Cualquiera'} - {w.year_max ? w.year_max : 'Actual'}</strong>
+                                                </div>
 
-                                                <span>•</span>
-
-                                                <span>
+                                                <div>
                                                     Presupuesto: <strong style={{ color: w.max_budget > 0 ? '#FB923C' : '#34D399' }}>
                                                         {w.max_budget > 0 ? formatARS(w.max_budget) : 'Sin tope'}
                                                     </strong>
-                                                </span>
+                                                </div>
                                             </div>
                                         </div>
 
